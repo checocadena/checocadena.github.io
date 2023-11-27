@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Medium is the Message</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #222;
+            color: #fff;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .content {
+            max-width: 600px;
+            text-align: left;
+            margin-right: 20px;
+        }
+
+        h1 {
+            color: #007BFF;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            animation: garbleText 4s infinite linear alternate;
+        }
+
+        a {
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes garbleText {
+            0% {
+                transform: rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: rotate(5deg);
+                opacity: 0.8;
+            }
+        }
+
+        .images {
+            flex: 1;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-radio {
+            display: none;
+        }
+
+        .images label {
+            width: 100%;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .image-radio:checked + label {
+            opacity: 1;
+        }
+
+        .images img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block; /* Add this line */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="content">
+        <h1>The Medium is the Message</h1>
+
+        <p>
+            Marshall McLuhan, a Canadian media theorist, introduced the profound concept that "The medium is the message."
+            This idea suggests that the medium, or the channel through which information is transmitted, shapes and influences
+            our perception and understanding of the content more than the content itself.
+        </p>
+
+        <p>
+            McLuhan argued that different mediums, such as print, radio, television, and the internet, have distinct qualities
+            that affect how information is received. For instance, the immersive and visual nature of television impacts the way
+            we process information compared to reading a printed text.
+        </p>
+
+        <p>
+            "The Medium Is the Massage: An Inventory of Effects" is a collaborative work by Marshall McLuhan, the media theorist, 
+            and Quentin Fiore, a graphic designer. The title is a play on McLuhan's famous phrase "The medium is the message," 
+            with "massage" being a pun on the word "message." This title suggests that media, as a massage, shapes and influences society.
+        </p>
+    </div>
+
+    <div class="images">
+        <input type="radio" class="image-radio" name="image" id="image1" checked>
+        <label for="image1"><img src="Movies.jpeg" alt="Movies"></label>
+        
+        <input type="radio" class="image-radio" name="image" id="image2">
+        <label for="image2"><img src="Music.jpeg" alt="Music"></label>
+        
+        <input type="radio" class="image-radio" name="image" id="image3">
+        <label for="image3"><img src="Books.jpeg" alt="Books"></label>
+    </div>
+
+</body>
+</html>
