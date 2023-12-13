@@ -5,6 +5,8 @@
 
 [Link](https://checocadena.github.io/Final.html)
 
+![](Initial.png)
+
 ## Usage
 
 ### Basic Usage
@@ -21,9 +23,7 @@
 - The orbital camera, which is an add-on for three.js
 
 ## Code 
-
 ### Setup
-
 ```jsx
 <!DOCTYPE html>
 <html lang="en">
@@ -65,6 +65,7 @@
   </script>
   ```
 - This was reaaally hard to set up at first because I couldn't get the CDN to work to I just ended up downloading the entire three.js website and mishmashing different examples to get stuff to work. Obviously I couldn't push for a while because it was just too many files
+###
 ```jsx
 
   <script type="module">
@@ -85,6 +86,7 @@
 
 ```
 - Also really struggled with ES6 modules and the import statement for a while. Getting the orbit controls inside was a nightmare. One bug to note here is that I couldn't get the raycaster to change the color of the shapes as was initially planned. Here you can see the size of the boundary cube, an array of herz values for the major pentatonic scale, and the four audio effects that all notes go through
+###
 ```jsx
     function initAudioContext() {
       Tone.start();
@@ -105,6 +107,7 @@
     }
 ```
 - One of the most annoying things is that message saying that user response is needed to start the audio context. Which I understand. But it's still annoying for me in this specific instance
+###
 ```jsx
     function playShapeNote(shape) {
       const note = majorPentatonicScale[Math.floor(Math.random() * majorPentatonicScale.length)];
@@ -122,6 +125,7 @@
     }
 ```
 - Randomly gets a value from the scale array, checks the shape to see what wave the oscillator will be, creates oscillator, sends it to the effects, starts the note, and fades out the volume so as to avoid crackling. Disconnects the oscillator after it plays for memory perservation
+###
 ```jsx
     function createShape() {
       if (shapes.length >= 20) return;
@@ -143,6 +147,7 @@
     }
 ```
 - There can only be a max of 20 shapes for lag issues. If there's less than that, it chooses a random shape, a random color, random x, y, and z coordinates, random velocity for each direction and pushes it
+###
 ```jsx
     function createStars() {
       const starsGeometry = new THREE.BufferGeometry();
@@ -160,6 +165,7 @@
     }
 ```
 - I think this is the part that really took it to the next level. Thanks to Ian for the idea. Adding the stars is possible thanks to points in three.js. Random for each coordinate,set them as position and then just add. Kinda simple for the effect it has on the entire piece, but I did have to wrap my head around the buffer attribute, sp Ilooked at the examples. Reaaaaaally cool.
+###
 ```jsx
     document.getElementById('fullscreenButton').addEventListener('mouseover', function() {
   const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
@@ -171,6 +177,7 @@
 });
 ```
 - At the very end I thought it would be a very nice touch if the button also randomly changed color like the shapes, and it took little longer than expected. A shape does spawn if you click, however.
+###
 ```jsx
     function init() {
       scene = new THREE.Scene();
@@ -242,12 +249,11 @@
 </html>
 ```
 - rest of code that runs constantly. Used edges geomtry instead of wireframe for the container cube. 
-
+###
+![](Full.png)
 ## Authors and Acknowledgment
-
 ### Authors
 - Me! Checo Cadena 
-
 ### Acknowledgments
 - Many thanks to Yotam Mann (yotam@tonejs.org) for Tone.js https://tonejs.github.io/ 
 - The whole team at Three.js (https://threejs.org)
