@@ -19,15 +19,17 @@
 - The notes that it will play are quantized to a major pentatonic scale
 - Each note is filtered through a low-pass and sent to reverb, chorus, and delay before being output.
 
-# Code 
+## Code 
 
-```
+### Setup
+
+```jsx
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-  <title>Three.js Interactive Shapes with Collisions and Sound</title>
+  <title>FORMS</title>
   <style>
     body { margin: 0; }
     button#fullscreenButton {
@@ -60,6 +62,10 @@
       }
     }
   </script>
+  ```
+- This was Hrd to set up at first
+
+```jsx
 
   <script type="module">
     import * as THREE from 'three';
@@ -77,6 +83,8 @@
     const chorus = new Tone.Chorus(4, 2.5, 0.5).connect(filter);
     const delay = new Tone.FeedbackDelay("8n", 0.5).connect(filter);
 
+```
+```jsx
     function initAudioContext() {
       Tone.start();
     }
@@ -96,6 +104,9 @@
       }
     }
 
+```
+
+```jsx
     function playShapeNote(shape) {
       const note = majorPentatonicScale[Math.floor(Math.random() * majorPentatonicScale.length)];
       const oscillatorType = shape.geometry instanceof THREE.TetrahedronGeometry ? 'triangle' :
@@ -110,7 +121,8 @@
         oscillator.disconnect();
       }, (fadeOutTime + 0.01) * 1000);
     }
-
+```
+```jsx
     function createShape() {
       if (shapes.length >= 20) return;
       const shapeType = Math.floor(Math.random() * 3);
@@ -129,7 +141,8 @@
       scene.add(shape);
       shapes.push(shape);
     }
-
+```
+```jsx
     function createStars() {
       const starsGeometry = new THREE.BufferGeometry();
       const starsMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.1 });
@@ -144,7 +157,8 @@
       const stars = new THREE.Points(starsGeometry, starsMaterial);
       scene.add(stars);
     }
-   
+```
+```jsx
     document.getElementById('fullscreenButton').addEventListener('mouseover', function() {
   const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
   this.style.backgroundColor = randomColor;
@@ -153,7 +167,8 @@
     document.getElementById('fullscreenButton').addEventListener('mouseout', function() {
   this.style.backgroundColor = '#000000'; 
 });
-
+```
+```jsx
     function init() {
       scene = new THREE.Scene();
       camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
