@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Hover-Based Navigation Bar</title>
+    <title>Music Room</title>
 
     <div id="navbar">
         <ul>
@@ -55,8 +55,6 @@
         const startButton = document.getElementById("startButton");
         let spinning = false;
         let wallShrinkProgress = 0;
-
-
 
         // Position the camera to look at the corner of the back and right wall
         camera.position.set(-5, 3, 5); // Adjust the position as needed
@@ -127,12 +125,8 @@ function changeBackgroundColor(timestamp) {
 requestAnimationFrame(changeBackgroundColor);
 }
 
-
-
-
 // Periodically change the background color (every 5 seconds in this example)
 setInterval(changeBackgroundColor, 4000); // Adjust the interval as needed
-
 
         // Ambient Light
         const ambientLight = new THREE.AmbientLight(0xffffff, 1);
@@ -160,7 +154,7 @@ setInterval(changeBackgroundColor, 4000); // Adjust the interval as needed
         // Load textures
         const diffuseTexture = loader.load('Assets/Wood_Floor_012_SD/Wood_Floor_012_basecolor.jpg');
         const normalTexture = loader.load('Assets/Wood_Floor_012_SD/Wood_Floor_012_normal.jpg');
-        const displacementTexture = loader.load('path/to/Wood_Floor_012_displacement.jpg');
+        const displacementTexture = loader.load('Assets/Wood_Floor_012_SD/Wood_Floor_012_height.png');
         const roughnessTexture = loader.load('Assets/Wood_Floor_012_SD/Wood_Floor_012_roughness.jpg');
         const aoTexture = loader.load('Assets/Wood_Floor_012_SD/Wood_Floor_012_ambientOcclusion.jpg');
 
@@ -189,7 +183,7 @@ setInterval(changeBackgroundColor, 4000); // Adjust the interval as needed
         });
 
         // Adjust displacement scale if needed
-        floorMaterial.displacementScale = 0.1; // Example value, adjust as needed
+        floorMaterial.displacementScale = 0; // Example value, adjust as needed
         wallMaterial.displacementScale = 0.8; // Example value, adjust as needed
 
         // Create geometry
