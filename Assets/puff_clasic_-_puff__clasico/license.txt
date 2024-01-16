@@ -1,0 +1,11 @@
+Model Information:
+* title:	Puff Clasic - puff  clásico
+* source:	https://sketchfab.com/3d-models/puff-clasic-puff-clasico-a77f888bac654f8191442e74f0db4e7a
+* author:	ArnoldE (https://sketchfab.com/arnoldescorcia906)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Puff Clasic - puff  clásico" (https://sketchfab.com/3d-models/puff-clasic-puff-clasico-a77f888bac654f8191442e74f0db4e7a) by ArnoldE (https://sketchfab.com/arnoldescorcia906) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

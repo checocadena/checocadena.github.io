@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Hover-Based Navigation Bar</title>
+
+    <div id="navbar">
+        <ul>
+            <li><a href="#room1">Room 1</a></li>
+            <li><a href="#room2">Room 2</a></li>
+            <li><a href="#room3">Room 3</a></li>
+        </ul>
+    </div>
+    
+
+</head>
+
+<body>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.159.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.159.0/examples/jsm/"
+            }
+        }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+        const scene = new THREE.Scene();
+        
+        const aspect = window.innerWidth / window.innerHeight;
+        const cameraWidth = 15;
+        const cameraHeight = cameraWidth / aspect;
+        const camera = new THREE.OrthographicCamera(
+            cameraWidth / -2, cameraWidth / 2, 
+            cameraHeight / 2, cameraHeight / -2, 
+            1, 1000
+        );
+        const listener = new THREE.AudioListener();
+        camera.add(listener);
+        const sound = new THREE.Audio(listener);
+        const audioLoader = new THREE.AudioLoader();
+        audioLoader.load('Assets/needle-drop-3.mp3', buffer => {
+            sound.setBuffer(buffer);
+        });
+        var mouse = new THREE.Vector2();
+        var raycaster = new THREE.Raycaster();
+        let roomRotation = 0; // Initial rotation angle
+        const canvas = document.getElementById("canvas");
+        const startButton = document.getElementById("startButton");
+        let spinning = false;
+        let wallShrinkProgress = 0;
+
+
+
+        // Position the camera to look at the corner of the back and right wall
+        camera.position.set(-5, 3, 5); // Adjust the position as needed
+        camera.lookAt(2.5, 0, -2.5); // Coordinates of the corner
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        document.body.appendChild(renderer.domElement);
+
+        renderer.domElement.style.backgroundColor = '#aceaff'; // Initial background color
+
+         // Define an array of colors to transition between
+const pastelColors = [
+    "#FFB6C1", // Light Pink
+    "#ADD8E6", // Light Blue
+    "#FFD700", // Gold
+    "#98FB98", // Pale Green
+    "#FFA07A", // Light Salmon
+    "#B0E0E6", // Powder Blue
+    "#00FF7F", // Spring Green
+    "#FFFFE0", // Light Yellow
+    "#87CEEB", // Sky Blue
+    "#FFC0CB", // Pink
+    "#F0E68C", // Khaki
+    "#9370DB", // Medium Purple
+];
+
+// Function to change the background color smoothly
+let startTime = null;
+let duration = 9000; // Transition duration in milliseconds (adjust as needed)
+let currentColorIndex = 0;
+
+function changeBackgroundColor(timestamp) {
+    if (spinning) {
+        if (!startTime) {
+            startTime = timestamp;
+        }
+
+        const progress = (timestamp - startTime) / duration;
+        if (progress >= 1) {
+            // Transition complete, reset start time and move to the next color
+            startTime = null;
+            currentColorIndex = (currentColorIndex + 1) % pastelColors.length;
+        } else {
+            const color1 = pastelColors[currentColorIndex];
+            const color2Index = (currentColorIndex + 1) % pastelColors.length;
+            const color2 = pastelColors[color2Index];
+
+            const r1 = parseInt(color1.slice(1, 3), 16);
+            const g1 = parseInt(color1.slice(3, 5), 16);
+            const b1 = parseInt(color1.slice(5, 7), 16);
+
+            const r2 = parseInt(color2.slice(1, 3), 16);
+            const g2 = parseInt(color2.slice(3, 5), 16);
+            const b2 = parseInt(color2.slice(5, 7), 16);
+
+            const r = Math.round(r1 + (r2 - r1) * progress);
+            const g = Math.round(g1 + (g2 - g1) * progress);
+            const b = Math.round(b1 + (b2 - b1) * progress);
+
+            const interpolatedColor = `rgb(${r},${g},${b})`;
+
+            renderer.domElement.style.backgroundColor = interpolatedColor;
+        }
+    } 
+    // Periodically change the background color (start immediately)
+requestAnimationFrame(changeBackgroundColor);
+}
+
+
+
+
+// Periodically change the background color (every 5 seconds in this example)
+setInterval(changeBackgroundColor, 4000); // Adjust the interval as needed
+
+
+        // Ambient Light
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+        scene.add(ambientLight);
+
+        // Directional Light
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.4);
+        directionalLight.position.set(1, 2, -1);
+        scene.add(directionalLight);
+
+        // Point Light
+        const pointLight = new THREE.PointLight(0xFFA500, 0.5, 15);
+        pointLight.position.set(0, 2, 0);
+        scene.add(pointLight);
+
+        // Spotlight 
+        const spotLight = new THREE.SpotLight(0xffffff, 4);
+        spotLight.position.set(-1, 1, 0);
+        spotLight.angle = Math.PI / 6;
+        spotLight.penumbra = 0.5;
+        scene.add(spotLight); 
+
+        const loader = new THREE.TextureLoader();
+
+        // Load textures
+        const diffuseTexture = loader.load('Assets/Wood_Floor_012_SD/Wood_Floor_012_basecolor.jpg');
+        const normalTexture = loader.load('Assets/Wood_Floor_012_SD/Wood_Floor_012_normal.jpg');
+        const displacementTexture = loader.load('path/to/Wood_Floor_012_displacement.jpg');
+        const roughnessTexture = loader.load('Assets/Wood_Floor_012_SD/Wood_Floor_012_roughness.jpg');
+        const aoTexture = loader.load('Assets/Wood_Floor_012_SD/Wood_Floor_012_ambientOcclusion.jpg');
+
+        // Create material
+        const floorMaterial = new THREE.MeshStandardMaterial({
+            map: diffuseTexture,
+            normalMap: normalTexture,
+            displacementMap: displacementTexture,
+            roughnessMap: roughnessTexture,
+            aoMap: aoTexture
+        });
+
+        const wallDiffuseTexture = loader.load('Assets/acoustic_panel_4-1K/acoustic_panel_4_basecolor-1K.png');
+        const wallNormalTexture = loader.load('Assets/acoustic_panel_4-1K/acoustic_panel_4_normal-1K.png');
+        const wallDisplacementTexture = loader.load('Assets/acoustic_panel_4-1K/acoustic_panel_4_height-1K.png');
+        const wallRoughnessTexture = loader.load('Assets/acoustic_panel_4-1K/acoustic_panel_4_roughness-1K.png');
+        const wallAOTexture = loader.load('Assets/acoustic_panel_4-1K/acoustic_panel_4_ambientocclusion-1K.png');
+
+        // Create material
+        const wallMaterial = new THREE.MeshStandardMaterial({
+            map: wallDiffuseTexture,
+            normalMap: wallNormalTexture,
+            displacementMap: wallDisplacementTexture,
+            roughnessMap: wallRoughnessTexture,
+            aoMap: wallAOTexture
+        });
+
+        // Adjust displacement scale if needed
+        floorMaterial.displacementScale = 0.1; // Example value, adjust as needed
+        wallMaterial.displacementScale = 0.8; // Example value, adjust as needed
+
+        // Create geometry
+        const floorGeometry = new THREE.BoxGeometry(5, 0.1, 5);
+
+        // Create mesh
+        const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+        floor.position.y = -2.5;
+        scene.add(floor);
+
+        let wallThickness = 0.1;
+        let wallHeight = 5;
+        let wallLength = 5;
+        const wallGeometry = new THREE.BoxGeometry(wallLength, wallHeight, wallThickness);
+
+        // Back Wall
+        const backWall = new THREE.Mesh(wallGeometry, wallMaterial);
+        backWall.position.z = -2.5;
+        backWall.position.y = 0;
+        scene.add(backWall);
+
+        // Right Wall
+        const rightWall = new THREE.Mesh(wallGeometry, wallMaterial);
+        rightWall.rotation.y = Math.PI / 2;
+        rightWall.position.x = 2.5;
+        rightWall.position.y = 0;
+        scene.add(rightWall);
+
+        // Set up OrbitControls
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.25;
+        controls.enableZoom = true;
+        controls.autoRotateSpeed = 0.2; // Adjust auto-rotate speed (lower value for slower speed)
+
+
+        const loader2 = new GLTFLoader();
+
+        // Initialize the turntable variable to undefined
+let turntable;
+
+// Load the 3D turntable
+loader2.load('Assets/vintage_stereo_hi-fi_stack_w_speakers/scene.gltf', function (gltf) {
+    turntable = gltf.scene;
+
+    // Set the initial position of the turntable below the floor
+    turntable.position.set(-17, -2.5, 0);
+
+    // Scale down the turntable
+    turntable.scale.set(0.01, 0.01, 0.01);
+
+    // Rotate the turntable
+    turntable.rotation.y = -Math.PI / 2;
+
+    scene.add(turntable);
+
+    // Start the animation after loading the turntable
+    animate();
+}, undefined, function (error) {
+    console.error(error);
+});
+
+
+// Add this event listener after you've set up your scene, camera, and turntable
+renderer.domElement.addEventListener('mousedown', onDocumentMouseDown, false);
+
+
+let chair
+
+// Load the 3D turntable
+loader2.load('Assets/puff_clasic_-_puff__clasico/scene.gltf', function (gltf) {
+    chair = gltf.scene;
+
+    // Set the initial position of the turntable below the floor
+    chair.position.set(-20, -2.5, 0);
+
+    // Scale down the turntable
+    chair.scale.set(0.015, 0.015, 0.015);
+
+    chair.rotation.y = Math.PI / 2;
+
+
+    scene.add(chair);
+
+    // Start the animation after loading the turntable
+    animate();
+}, undefined, function (error) {
+    console.error(error);
+});
+
+let guitar
+
+loader2.load('Assets/classical_guitar_-_ps1_low_poly/scene.gltf', function (gltf) {
+    guitar = gltf.scene;
+
+    // Set the initial position of the turntable below the floor
+    guitar.position.set(-20, -1.9, -2.06);
+
+    // Scale down the turntable
+    guitar.scale.set(0.1, 0.1, 0.1);
+
+    //guitar.rotation.y = Math.PI / 2;
+
+
+    scene.add(guitar);
+
+    // Start the animation after loading the turntable
+    animate();
+}, undefined, function (error) {
+    console.error(error);
+});
+
+    directionalLight.castShadow = true;
+    floor.receiveShadow = true;
+    backWall.receiveShadow = true;
+    rightWall.receiveShadow = true;
+
+// Set initial positions outside camera view
+backWall.position.set(0, 20, -2.5);
+rightWall.position.set(2.5, -20, 0);
+floor.position.set(-20, -2.5, 0);
+
+function onDocumentMouseDown(event) {
+    event.preventDefault();
+
+    // Convert mouse position to normalized device coordinates (-1 to +1)
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+
+    // Update the picking ray with the camera and mouse position
+    raycaster.setFromCamera(mouse, camera);
+
+    // Calculate objects intersecting the picking ray
+    const intersects = raycaster.intersectObject(turntable);
+
+    // Check if the turntable is intersected
+    if (intersects.length > 0) {
+        // Play sound
+        sound.play();
+        spinning = true;
+        document.getElementById('spotifyEmbedContainer').style.display = 'block';
+    }
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+
+     // Animate floor from the left
+     if (floor.position.x < 0) {
+        floor.position.x += 0.1; // Adjust speed as needed
+    }
+
+
+    // Animate back wall from below
+    if (backWall.position.y > 0) {
+        backWall.position.y -= 0.1; // Adjust speed as needed
+    }
+
+    // Animate right wall from above
+    if (rightWall.position.y < 0) {
+        rightWall.position.y += 0.1; // Adjust speed as needed
+    }
+
+    if (turntable) {
+        // Animate turntable coming up from below
+        if (turntable.position.x < 1.8) {
+            turntable.position.x += 0.1; // Adjust speed as needed
+        }
+    }
+
+    if (chair) {
+        // Animate turntable coming up from below
+        if (chair.position.x < -1.3) {
+            chair.position.x += 0.1; // Adjust speed as needed
+        }
+    }
+
+    if (guitar) {
+        // Animate turntable coming up from below
+        if (guitar.position.x < -1.3) {
+            guitar.position.x += 0.1; // Adjust speed as needed
+        }
+    }
+
+    if (spinning) {
+        controls.autoRotate = true; 
+        // Enable auto-rotation
+        //const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+        //canvas.style.backgroundColor = randomColor;
+    } else {
+        controls.autoRotate = false; // Disable auto-rotation
+    }
+
+    controls.update();
+    renderer.render(scene, camera);
+}
+
+        animate();
+    </script>
+    </div>
+
+    <div id="spotifyEmbedContainer" style="display:none;">
+        <iframe src="https://open.spotify.com/embed/artist/208yIqSbYHLg1d6twIgoE0?utm_source=generator&theme=0" width="400" height="500" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+    </div>
+
+    <script src="Script.js"></script>
+</body>
+</html>

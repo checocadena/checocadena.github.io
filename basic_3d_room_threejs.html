@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Orthographic 3D Room - Right Wall View</title>
+    <style>
+        body { margin: 0; }
+        canvas { width: 100%; height: 100%; background-color: #aceaff; }
+    </style>
+</head>
+<body>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.159.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.159.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+        import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+
+        const scene = new THREE.Scene();
+        
+        const aspect = window.innerWidth / window.innerHeight;
+        const cameraWidth = 15;
+        const cameraHeight = cameraWidth / aspect;
+        const camera = new THREE.OrthographicCamera(
+            cameraWidth / -2, cameraWidth / 2, 
+            cameraHeight / 2, cameraHeight / -2, 
+            1, 1000
+        );
+
+        // Position the camera to look at the corner of the back and right wall
+        camera.position.set(-5, 3, 5); // Adjust the position as needed
+        camera.lookAt(2.5, 0, -2.5); // Coordinates of the corner
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        document.body.appendChild(renderer.domElement);
+
+        // Ambient Light
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        // Directional Light
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.4);
+        directionalLight.position.set(1, 2, -1);
+        scene.add(directionalLight);
+
+        // Point Light
+        const pointLight = new THREE.PointLight(0xFFA500, 0.5, 15);
+        pointLight.position.set(0, 2, 0);
+        scene.add(pointLight);
+
+        // Spotlight 
+        /*
+        const spotLight = new THREE.SpotLight(0xFFA500, 8);
+        spotLight.position.set(-1, 1, 0);
+        spotLight.angle = Math.PI / 6;
+        spotLight.penumbra = 0.5;
+        scene.add(spotLight); */
+
+        const loader = new THREE.TextureLoader();
+
+        // Load textures
+        const diffuseTexture = loader.load('Assets/Wood_Floor_012_SD/Wood_Floor_012_basecolor.jpg');
+        const normalTexture = loader.load('Assets/Wood_Floor_012_SD/Wood_Floor_012_normal.jpg');
+        const displacementTexture = loader.load('path/to/Wood_Floor_012_displacement.jpg');
+        const roughnessTexture = loader.load('Assets/Wood_Floor_012_SD/Wood_Floor_012_roughness.jpg');
+        const aoTexture = loader.load('Assets/Wood_Floor_012_SD/Wood_Floor_012_ambientOcclusion.jpg');
+
+        // Create material
+        const floorMaterial = new THREE.MeshStandardMaterial({
+            map: diffuseTexture,
+            normalMap: normalTexture,
+            displacementMap: displacementTexture,
+            roughnessMap: roughnessTexture,
+            aoMap: aoTexture
+        });
+
+        const wallDiffuseTexture = loader.load('Assets/acoustic_panel_4-1K/acoustic_panel_4_basecolor-1K.png');
+        const wallNormalTexture = loader.load('Assets/acoustic_panel_4-1K/acoustic_panel_4_normal-1K.png');
+        const wallDisplacementTexture = loader.load('Assets/acoustic_panel_4-1K/acoustic_panel_4_height-1K.png');
+        const wallRoughnessTexture = loader.load('Assets/acoustic_panel_4-1K/acoustic_panel_4_roughness-1K.png');
+        const wallAOTexture = loader.load('Assets/acoustic_panel_4-1K/acoustic_panel_4_ambientocclusion-1K.png');
+
+        // Create material
+        const wallMaterial = new THREE.MeshStandardMaterial({
+            map: wallDiffuseTexture,
+            normalMap: wallNormalTexture,
+            displacementMap: wallDisplacementTexture,
+            roughnessMap: wallRoughnessTexture,
+            aoMap: wallAOTexture
+        });
+
+        // Adjust displacement scale if needed
+        floorMaterial.displacementScale = 0.1; // Example value, adjust as needed
+        wallMaterial.displacementScale = 0.8; // Example value, adjust as needed
+
+        // Create geometry
+        const floorGeometry = new THREE.BoxGeometry(5, 0.1, 5);
+
+        // Create mesh
+        const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+        floor.position.y = -2.5;
+        scene.add(floor);
+
+        let wallThickness = 0.1;
+        let wallHeight = 5;
+        let wallLength = 5;
+        let turntable;
+        const wallGeometry = new THREE.BoxGeometry(wallLength, wallHeight, wallThickness);
+
+        // Back Wall
+        const backWall = new THREE.Mesh(wallGeometry, wallMaterial);
+        backWall.position.z = -2.5;
+        backWall.position.y = 0;
+        scene.add(backWall);
+
+        // Right Wall
+        const rightWall = new THREE.Mesh(wallGeometry, wallMaterial);
+        rightWall.rotation.y = Math.PI / 2;
+        rightWall.position.x = 2.5;
+        rightWall.position.y = 0;
+        scene.add(rightWall);
+
+        // Set up OrbitControls
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.25;
+        controls.enableZoom = true;
+
+        const loader2 = new GLTFLoader();
+
+        // Initialize the model variable to undefined
+let model;
+
+// Load the 3D model
+loader2.load('Assets/vintage_stereo_hi-fi_stack_w_speakers/scene.gltf', function (gltf) {
+    model = gltf.scene;
+
+    // Set the initial position of the model below the floor
+    model.position.set(-17, -2.5, 0);
+
+    // Scale down the model
+    model.scale.set(0.01, 0.01, 0.01);
+
+    // Rotate the model
+    model.rotation.y = -Math.PI / 2;
+
+    scene.add(model);
+
+    // Start the animation after loading the model
+    animate();
+}, undefined, function (error) {
+    console.error(error);
+});
+
+    directionalLight.castShadow = true;
+    floor.receiveShadow = true;
+    backWall.receiveShadow = true;
+    rightWall.receiveShadow = true;
+
+    const gui = new GUI();
+const wallSettings = {
+    length: wallLength
+};
+
+gui.add(wallSettings, 'length', 5, 20).name('Wall Length').onChange(value => {
+    wallLength = value;
+    // Update scale
+    backWall.scale.x = wallLength / 5;
+    rightWall.scale.x = wallLength / 5; // Assuming rightWall is oriented differently
+    floor.scale.set(wallLength / 5, 1, wallLength / 5);
+
+    // Update position to extend outward
+    backWall.position.z = -wallLength / 2;
+    rightWall.position.x = wallLength / 2
+
+    camera.position.set(-wallLength, camera.position.y, camera.position.z);
+
+});
+
+// Set initial positions outside camera view
+backWall.position.set(0, 20, -2.5);
+rightWall.position.set(2.5, -20, 0);
+floor.position.set(-20, -2.5, 0);
+
+
+function animate() {
+    requestAnimationFrame(animate);
+
+     // Animate floor from the left
+     if (floor.position.x < 0) {
+        floor.position.x += 0.1; // Adjust speed as needed
+    }
+
+
+    // Animate back wall from below
+    if (backWall.position.y > 0) {
+        backWall.position.y -= 0.1; // Adjust speed as needed
+    }
+
+    // Animate right wall from above
+    if (rightWall.position.y < 0) {
+        rightWall.position.y += 0.1; // Adjust speed as needed
+    }
+
+    if (model) {
+        // Animate model coming up from below
+        if (model.position.x < 1.8) {
+            model.position.x += 0.1; // Adjust speed as needed
+        }
+    }
+
+    controls.update();
+    renderer.render(scene, camera);
+}
+
+        animate();
+    </script>
+    </body>
+    </html>

@@ -1,0 +1,8 @@
+Model Information:
+* title:	Low Poly Vintage Turntable
+* source:	https://sketchfab.com/3d-models/low-poly-vintage-turntable-1cc2d8c7e54d4be4b637650b654e0b2c
+* author:	caz (https://sketchfab.com/cazarts)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works
