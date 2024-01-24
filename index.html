@@ -8,9 +8,11 @@
 
     <div id="navbar">
         <ul>
-            <li><a href="Cyber.html">Room 1</a></li>
+            <li><a href="Cyber.html">Creative Coding Final</a></li>
             <li><a href="basic_3d_room_threejs.html">Room 2</a></li>
-            <li><a href="Forms.html">Basement</a></li>
+            <li><a href="Video.html">Video</a></li>
+            <li><a href="Forms.html">Forms</a></li>
+            <li><a href="Photo.html">Photo</a></li>
         </ul>
     </div>
     
@@ -30,13 +32,12 @@
         import * as THREE from 'three';
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
         import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-
         const scene = new THREE.Scene();
         
         const aspect = window.innerWidth / window.innerHeight;
         const cameraWidth = 15;
         const cameraHeight = cameraWidth / aspect;
-        const camera = new THREE.OrthographicCamera(
+        let camera = new THREE.OrthographicCamera(
             cameraWidth / -2, cameraWidth / 2, 
             cameraHeight / 2, cameraHeight / -2, 
             1, 1000
@@ -55,7 +56,8 @@
         const startButton = document.getElementById("startButton");
         let spinning = false;
         let wallShrinkProgress = 0;
-
+        let PerspectiveCheck = false;
+        
         // Position the camera to look at the corner of the back and right wall
         camera.position.set(-5, 3, 5); // Adjust the position as needed
         camera.lookAt(2.5, 0, -2.5); // Coordinates of the corner
@@ -68,25 +70,33 @@
         renderer.domElement.style.backgroundColor = '#aceaff'; // Initial background color
 
          // Define an array of colors to transition between
-const pastelColors = [
-    "#FFB6C1", // Light Pink
-    "#ADD8E6", // Light Blue
-    "#FFD700", // Gold
-    "#98FB98", // Pale Green
-    "#FFA07A", // Light Salmon
-    "#B0E0E6", // Powder Blue
-    "#00FF7F", // Spring Green
-    "#FFFFE0", // Light Yellow
-    "#87CEEB", // Sky Blue
-    "#FFC0CB", // Pink
-    "#F0E68C", // Khaki
-    "#9370DB", // Medium Purple
-];
+        const pastelColors = [
+            "#FFB6C1", // Light Pink
+            "#ADD8E6", // Light Blue
+            "#FFD700", // Gold
+            "#98FB98", // Pale Green
+            "#FFA07A", // Light Salmon
+            "#B0E0E6", // Powder Blue
+            "#00FF7F", // Spring Green
+            "#FFFFE0", // Light Yellow
+            "#87CEEB", // Sky Blue
+            "#FFC0CB", // Pink
+            "#F0E68C", // Khaki
+            "#9370DB", // Medium Purple
+        ];
 
 // Function to change the background color smoothly
 let startTime = null;
 let duration = 9000; // Transition duration in milliseconds (adjust as needed)
 let currentColorIndex = 0;
+
+var returnButton = document.createElement("button");
+returnButton.innerHTML = "Return to Original View";
+returnButton.style.position = "absolute";
+returnButton.style.right = "20px";
+returnButton.style.bottom = "20px";
+document.body.appendChild(returnButton);
+returnButton.style.display = "none"; 
 
 function changeBackgroundColor(timestamp) {
     if (spinning) {
@@ -317,16 +327,57 @@ function onDocumentMouseDown(event) {
     raycaster.setFromCamera(mouse, camera);
 
     // Calculate objects intersecting the picking ray
-    const intersects = raycaster.intersectObject(turntable);
+    const intersectsTurntable = raycaster.intersectObject(turntable);
+    const intersectsChair = raycaster.intersectObject(chair);
 
     // Check if the turntable is intersected
-    if (intersects.length > 0) {
+    if (intersectsTurntable.length > 0) {
         // Play sound
         sound.play();
         spinning = true;
         document.getElementById('spotifyEmbedContainer').style.display = 'block';
     }
+
+    if (intersectsChair.length > 0) {
+    if (!(camera instanceof THREE.PerspectiveCamera)) {
+        camera = new THREE.PerspectiveCamera();
+    }
+
+    controls.dispose()
+
+    // Update the camera's properties
+    camera.fov = 75;
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.near = 0.1;
+    camera.far = 1000;
+
+    // Update the projection matrix
+    camera.updateProjectionMatrix();
+
+    // Set new position and orientation
+    camera.position.set(-2, -1, 0);
+    camera.lookAt(new THREE.Vector3(40, 5, 0));
+
+    PerspectiveCheck = true;
+    returnButton.style.display = "block";
+
+    document.body.appendChild(returnButton);
 }
+}
+
+returnButton.addEventListener("click", function() {
+    camera = new THREE.OrthographicCamera(
+            cameraWidth / -2, cameraWidth / 2, 
+            cameraHeight / 2, cameraHeight / -2, 
+            1, 1000
+        );
+        camera.updateProjectionMatrix();
+        camera.position.set(-5, 2, 5); // Adjust the position as needed
+        camera.lookAt(2.5, 0, -2.5); // Coordinates of the corner
+
+    // Hide the button again
+    returnButton.style.display = "none";
+});
 
 function animate() {
     requestAnimationFrame(animate);
