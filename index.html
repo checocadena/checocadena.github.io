@@ -3,8 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
     <title>Music Room</title>
+    <style> /* styles.css */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        #navbar {
+            position: fixed;
+            top: 0;
+            left: -250px; /* Initially hidden to the left */
+            width: 200px;
+            height: 100%;
+            background-color: #b4acac;
+            color: white;
+            transition: left 0.3s;
+            overflow-y: auto; /* Add scrollbar if needed */
+        }
+        
+        #spotifyEmbedContainer {
+            position: fixed; /* Fixed positioning relative to the viewport */
+            top: 10px;  /* Distance from the top of the viewport */
+            right: 10px; /* Distance from the right of the viewport */
+            z-index: 1000; /* Ensure it's above other elements */
+            /* Add more styling as needed */
+        }
+        
+        #navbar-container {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 200px; /* Set the width of the container */
+            height: 100%;
+            overflow-x: hidden;
+            transition: width 0.5s ease; /* Adjust the transition duration as needed */
+            border-top-right-radius: 20px; /* Adjust the radius as needed */
+            border-bottom-right-radius: 20px; /* Adjust the radius as needed */
+        }
+        
+        #menuButton {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            width: 40px;
+            height: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            cursor: pointer;
+            z-index: 1000;
+            transition: left 0.3s ease;
+        }
+        
+        .bar {
+            width: 100%;
+            height: 5px;
+            background-color: white;
+        }
+        
+        #navbar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        #navbar li {
+            padding: 10px;
+        }
+        
+        #navbar {
+            transition: left 0.3s ease; /* Use a smooth easing function */
+        }
+        
+        #navbar a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        #content {
+            margin-left: 250px; /* Adjust to match the width of the navbar */
+            padding: 20px;
+        }
+        </style>
 
     <div id="navbar">
         <ul>
@@ -20,6 +101,11 @@
 </head>
 
 <body>
+    <div id="menuButton">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
     <script type="importmap">
         {
             "imports": {
@@ -379,6 +465,21 @@ returnButton.addEventListener("click", function() {
     returnButton.style.display = "none";
 });
 
+window.toggleNav = function() {
+    var nav = document.getElementById("navbar");
+    var menuButton = document.getElementById("menuButton");
+    
+    if (nav.style.left === "0px") {
+        nav.style.left = "-250px";
+        menuButton.style.left = "10px"; // Slide back to original position
+    } else {
+        nav.style.left = "0px";
+        menuButton.style.left = "230px"; // Slide right with the navbar
+    }
+};
+
+document.getElementById('menuButton').addEventListener('click', window.toggleNav);
+
 function animate() {
     requestAnimationFrame(animate);
 
@@ -440,6 +541,6 @@ function animate() {
         <iframe src="https://open.spotify.com/embed/artist/208yIqSbYHLg1d6twIgoE0?utm_source=generator&theme=0" width="400" height="500" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
     </div>
 
-    <script src="Script.js"></script>
+   
 </body>
 </html>

@@ -37,8 +37,23 @@ body {
     border-bottom-right-radius: 20px; /* Adjust the radius as needed */
 }
 
-#navbar-container:hover {
-    width: 400px; /* Expand the container width on hover */
+#menuButton {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    width: 40px;
+    height: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.bar {
+    width: 100%;
+    height: 5px;
+    background-color: white;
 }
 
 #navbar ul {
