@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Progreso - EcoLearn</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+<script>
+tailwind.config = {
+theme: {
+extend: {
+colors: {
+primary: '#0066CC',
+secondary: '#003399'
+},
+borderRadius: {
+'none': '0px',
+'sm': '4px',
+DEFAULT: '8px',
+'md': '12px',
+'lg': '16px',
+'xl': '20px',
+'2xl': '24px',
+'3xl': '32px',
+'full': '9999px',
+'button': '8px'
+}
+}
+}
+}
+</script>
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+.progress-bar {
+background: linear-gradient(90deg, #0066CC var(--progress), #e5e7eb var(--progress));
+}
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<nav class="bg-white shadow-sm fixed w-full z-50">
+<div class="max-w-7xl mx-auto px-4">
+<div class="flex justify-between h-16">
+<div class="flex items-center">
+<img src="https://static.readdy.ai/image/aa25c844f62f8160325b22e96cce821b/1008a332fa04fcc766da511172b85ad6.jpeg" alt="Cydsa Logo" class="h-8">
+<div class="hidden md:flex items-center space-x-8 ml-10">
+<a href="Index.html" class="text-gray-900 hover:text-primary px-3 py-2 text-sm font-medium">Inicio</a>
+<a href="Progreso.html" class="text-primary font-medium px-3 py-2 text-sm">Progreso</a>
+<a href="Cursos.html" class="text-gray-900 hover:text-primary px-3 py-2 text-sm font-medium">Cursos</a>
+<a href="Logros.html" class="text-gray-900 hover:text-primary px-3 py-2 text-sm font-medium">Logros</a>
+</div>
+</div>
+<div class="flex items-center space-x-4">
+<button class="relative">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-notification-3-line text-gray-600"></i>
+</div>
+<span class="absolute top-0 right-0 h-4 w-4 bg-red-500 rounded-full flex items-center justify-center text-xs text-white">2</span>
+</button>
+<div class="flex items-center space-x-3">
+<img class="h-8 w-8 rounded-full object-cover" src="https://public.readdy.ai/ai/img_res/570de11b1f5519a37cdcdf985bd28334.jpg" alt="Usuario">
+<span class="text-sm font-medium text-gray-700">Carlos Rodríguez</span>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<main class="pt-16">
+<div class="max-w-7xl mx-auto px-4 py-8">
+<div class="flex justify-between items-center mb-8">
+<div>
+<h1 class="text-3xl font-bold text-gray-900">Mi Progreso</h1>
+<p class="mt-2 text-gray-600">Seguimiento detallado de tu aprendizaje en sustentabilidad</p>
+</div>
+<div class="flex space-x-4">
+<div class="relative">
+<select id="periodFilter" class="bg-white border border-gray-300 rounded-button px-4 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+<option value="week">Última semana</option>
+<option value="month">Último mes</option>
+<option value="year">Último año</option>
+</select>
+</div>
+<button class="bg-primary text-white px-4 py-2 rounded-button text-sm flex items-center space-x-2">
+<i class="ri-download-line"></i>
+<span>Descargar Reporte</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div class="bg-white p-6 rounded-lg shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-semibold text-gray-900">Progreso General</h3>
+</div>
+<div id="progressChart" class="h-48"></div>
+</div>
+<div class="bg-white p-6 rounded-lg shadow-sm">
+<h3 class="text-lg font-semibold text-gray-900 mb-4">Tiempo de Estudio</h3>
+<div class="text-3xl font-bold text-gray-900 mb-2">124h 35m</div>
+<div class="text-sm text-gray-500">Último mes</div>
+<div id="studyTimeChart" class="h-32 mt-4"></div>
+</div>
+<div class="bg-white p-6 rounded-lg shadow-sm">
+<h3 class="text-lg font-semibold text-gray-900 mb-4">Resumen de Logros</h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="text-center p-4 bg-primary/10 rounded-lg">
+<div class="text-3xl font-bold text-primary mb-1">12</div>
+<div class="text-sm text-gray-600">Cursos Completados</div>
+</div>
+<div class="text-center p-4 bg-secondary/10 rounded-lg">
+<div class="text-3xl font-bold text-secondary mb-1">8</div>
+<div class="text-sm text-gray-600">Certificaciones</div>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+<div class="bg-white p-6 rounded-lg shadow-sm">
+<h3 class="text-lg font-semibold text-gray-900 mb-6">Cursos en Progreso</h3>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between items-center mb-2">
+<h4 class="font-medium text-gray-900">Gestión de Residuos Empresariales</h4>
+<span class="text-sm text-primary">75%</span>
+</div>
+<div class="h-2 rounded-full progress-bar" style="--progress: 75%"></div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-2">
+<h4 class="font-medium text-gray-900">Eficiencia Energética</h4>
+<span class="text-sm text-primary">45%</span>
+</div>
+<div class="h-2 rounded-full progress-bar" style="--progress: 45%"></div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-2">
+<h4 class="font-medium text-gray-900">Políticas Ambientales</h4>
+<span class="text-sm text-primary">30%</span>
+</div>
+<div class="h-2 rounded-full progress-bar" style="--progress: 30%"></div>
+</div>
+</div>
+</div>
+<div class="bg-white p-6 rounded-lg shadow-sm">
+<h3 class="text-lg font-semibold text-gray-900 mb-6">Actividad Reciente</h3>
+<div class="space-y-4">
+<div class="flex items-start space-x-4">
+<div class="w-10 h-10 flex items-center justify-center bg-green-100 rounded-full">
+<i class="ri-checkbox-circle-line text-primary"></i>
+</div>
+<div>
+<h4 class="font-medium text-gray-900">Completaste el módulo "Introducción a la Economía Circular"</h4>
+<p class="text-sm text-gray-500">Hace 2 horas</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="w-10 h-10 flex items-center justify-center bg-blue-100 rounded-full">
+<i class="ri-medal-line text-blue-500"></i>
+</div>
+<div>
+<h4 class="font-medium text-gray-900">Obtuviste la insignia "Experto en Reciclaje"</h4>
+<p class="text-sm text-gray-500">Hace 1 día</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="w-10 h-10 flex items-center justify-center bg-purple-100 rounded-full">
+<i class="ri-book-open-line text-purple-500"></i>
+</div>
+<div>
+<h4 class="font-medium text-gray-900">Iniciaste el curso "Gestión del Agua"</h4>
+<p class="text-sm text-gray-500">Hace 3 días</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white p-6 rounded-lg shadow-sm mb-8">
+<h3 class="text-lg font-semibold text-gray-900 mb-6">Calendario de Actividades</h3>
+<div id="activityChart" class="h-64"></div>
+</div>
+</div>
+</main>
+<script>
+const mockData = {
+progressData: {
+value: 75,
+target: 100
+},
+studyTimeData: {
+dates: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+hours: [2.5, 3, 4.5, 2, 3.5, 1.5, 2]
+},
+activityData: {
+months: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+values: [30, 45, 55, 65, 70, 75]
+}
+};
+const progressChart = echarts.init(document.getElementById('progressChart'));
+progressChart.setOption({
+series: [{
+type: 'gauge',
+startAngle: 180,
+endAngle: 0,
+min: 0,
+max: 100,
+splitNumber: 8,
+radius: '100%',
+progress: {
+show: true,
+width: 18
+},
+pointer: {
+show: false
+},
+axisLine: {
+lineStyle: {
+width: 18,
+color: [[0.75, '#0066CC'], [1, '#e5e7eb']]
+}
+},
+axisTick: {
+show: false
+},
+splitLine: {
+show: false
+},
+axisLabel: {
+show: false
+},
+title: {
+show: false
+},
+detail: {
+valueAnimation: true,
+offsetCenter: [0, 0],
+fontSize: 36,
+fontWeight: 'bold',
+formatter: '{value}%',
+color: 'inherit'
+},
+data: [{
+value: 75
+}]
+}],
+animation: false
+});
+const studyTimeChart = echarts.init(document.getElementById('studyTimeChart'));
+studyTimeChart.setOption({
+xAxis: {
+type: 'category',
+data: mockData.studyTimeData.dates,
+axisLine: {
+show: false
+},
+axisTick: {
+show: false
+}
+},
+yAxis: {
+type: 'value',
+show: false
+},
+grid: {
+top: 0,
+right: 0,
+bottom: 20,
+left: 0
+},
+series: [{
+data: mockData.studyTimeData.hours,
+type: 'line',
+smooth: true,
+symbol: 'none',
+areaStyle: {
+color: {
+type: 'linear',
+x: 0,
+y: 0,
+x2: 0,
+y2: 1,
+colorStops: [{
+offset: 0,
+color: 'rgba(0, 102, 204, 0.2)'
+}, {
+offset: 1,
+color: 'rgba(0, 102, 204, 0)'
+}]
+}
+},
+lineStyle: {
+color: '#0066CC',
+width: 3
+}
+}],
+animation: false
+});
+const activityChart = echarts.init(document.getElementById('activityChart'));
+activityChart.setOption({
+xAxis: {
+type: 'category',
+data: mockData.activityData.months,
+axisLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+},
+axisTick: {
+show: false
+}
+},
+yAxis: {
+type: 'value',
+splitLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+},
+axisLine: {
+show: false
+},
+axisTick: {
+show: false
+}
+},
+series: [{
+data: mockData.activityData.values,
+type: 'line',
+smooth: true,
+symbol: 'circle',
+symbolSize: 8,
+lineStyle: {
+color: '#0066CC',
+width: 3
+},
+itemStyle: {
+color: '#0066CC'
+},
+areaStyle: {
+color: {
+type: 'linear',
+x: 0,
+y: 0,
+x2: 0,
+y2: 1,
+colorStops: [{
+offset: 0,
+color: 'rgba(0, 102, 204, 0.2)'
+}, {
+offset: 1,
+color: 'rgba(0, 102, 204, 0)'
+}]
+}
+}
+}],
+animation: false
+});
+window.addEventListener('resize', () => {
+progressChart.resize();
+studyTimeChart.resize();
+activityChart.resize();
+});
+</script>
+</body>
+</html>

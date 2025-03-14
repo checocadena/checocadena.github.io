@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catálogo de Cursos - EcoLearn</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+<script>
+tailwind.config = {
+theme: {
+extend: {
+colors: {
+primary: '#0052CC',
+secondary: '#0052CC'
+},
+borderRadius: {
+'none': '0px',
+'sm': '4px',
+DEFAULT: '8px',
+'md': '12px',
+'lg': '16px',
+'xl': '20px',
+'2xl': '24px',
+'3xl': '32px',
+'full': '9999px',
+'button': '8px'
+}
+}
+}
+}
+</script>
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+.dropdown-content {
+display: none;
+position: absolute;
+background-color: white;
+min-width: 200px;
+box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+z-index: 1;
+}
+.dropdown:hover .dropdown-content {
+display: block;
+}
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<nav class="bg-white shadow-sm fixed w-full z-50">
+<div class="max-w-7xl mx-auto px-4">
+<div class="flex justify-between h-16">
+<div class="flex items-center">
+<img src="https://static.readdy.ai/image/aa25c844f62f8160325b22e96cce821b/1008a332fa04fcc766da511172b85ad6.jpeg" alt="Cydsa Logo" class="h-8">
+<div class="hidden md:flex items-center space-x-8 ml-10">
+<a href="Index.html" class="text-gray-900 hover:text-primary px-3 py-2 text-sm font-medium">Inicio</a>
+<a href="Cursos.html" class="text-primary border-b-2 border-primary px-3 py-2 text-sm font-medium">Cursos</a>
+<a href="Progreso.html" class="text-gray-900 hover:text-primary px-3 py-2 text-sm font-medium">Progreso</a>
+<a href="Logros.html" class="text-gray-900 hover:text-primary px-3 py-2 text-sm font-medium">Logros</a>
+</div>
+</div>
+<div class="flex items-center space-x-4">
+<button class="relative">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-notification-3-line text-gray-600"></i>
+</div>
+<span class="absolute top-0 right-0 h-4 w-4 bg-red-500 rounded-full flex items-center justify-center text-xs text-white">3</span>
+</button>
+<div class="flex items-center space-x-3">
+<img class="h-8 w-8 rounded-full object-cover" src="https://public.readdy.ai/ai/img_res/8ba17dc36126aa031de694aba88cdda8.jpg" alt="Usuario">
+<span class="text-sm font-medium text-gray-700">Carlos Rodríguez</span>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<main class="pt-16">
+<div class="max-w-7xl mx-auto px-4 py-8">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+<div>
+<h1 class="text-3xl font-bold text-gray-900">Catálogo de Cursos</h1>
+<p class="mt-2 text-gray-600">Explora nuestra selección de cursos en sustentabilidad</p>
+</div>
+<div class="mt-4 md:mt-0 flex space-x-4">
+<div class="relative">
+<input type="text" placeholder="Buscar cursos..." class="pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary">
+<i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+</div>
+<div class="dropdown relative">
+<button class="flex items-center space-x-2 px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50">
+<span>Filtros</span>
+<i class="ri-filter-3-line"></i>
+</button>
+<div class="dropdown-content mt-2 rounded-lg">
+<div class="p-4 space-y-4">
+<div>
+<h4 class="font-medium text-gray-900 mb-2">Nivel</h4>
+<div class="space-y-2">
+<label class="flex items-center">
+<input type="checkbox" class="form-checkbox text-primary rounded">
+<span class="ml-2 text-sm text-gray-700">Principiante</span>
+</label>
+<label class="flex items-center">
+<input type="checkbox" class="form-checkbox text-primary rounded">
+<span class="ml-2 text-sm text-gray-700">Intermedio</span>
+</label>
+<label class="flex items-center">
+<input type="checkbox" class="form-checkbox text-primary rounded">
+<span class="ml-2 text-sm text-gray-700">Avanzado</span>
+</label>
+</div>
+</div>
+<div>
+<h4 class="font-medium text-gray-900 mb-2">Duración</h4>
+<div class="space-y-2">
+<label class="flex items-center">
+<input type="checkbox" class="form-checkbox text-primary rounded">
+<span class="ml-2 text-sm text-gray-700">0-2 horas</span>
+</label>
+<label class="flex items-center">
+<input type="checkbox" class="form-checkbox text-primary rounded">
+<span class="ml-2 text-sm text-gray-700">2-5 horas</span>
+</label>
+<label class="flex items-center">
+<input type="checkbox" class="form-checkbox text-primary rounded">
+<span class="ml-2 text-sm text-gray-700">5+ horas</span>
+</label>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-12">
+<section>
+<h2 class="text-2xl font-bold text-gray-900 mb-6">Gestión Ambiental</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-white rounded-lg shadow-sm overflow-hidden">
+<img src="https://public.readdy.ai/ai/img_res/389e23b0f6909994591fc1339fa39f7e.jpg" alt="Curso" class="w-full h-48 object-cover">
+<div class="p-6">
+<div class="flex items-center space-x-2 mb-4">
+<span class="px-2 py-1 bg-primary/10 text-primary text-xs font-medium rounded">Intermedio</span>
+<span class="text-sm text-gray-500">4 horas</span>
+</div>
+<h3 class="text-lg font-semibold text-gray-900 mb-2">Sistemas de Gestión Ambiental ISO 14001</h3>
+<p class="text-sm text-gray-600 mb-4">Implementación y auditoría de sistemas de gestión ambiental según estándares internacionales.</p>
+<button class="w-full bg-primary text-white py-2 rounded-button font-medium hover:bg-primary/90 transition-colors">Inscribirse</button>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm overflow-hidden">
+<img src="https://public.readdy.ai/ai/img_res/e01e76460569d43b071efe170507f094.jpg" alt="Curso" class="w-full h-48 object-cover">
+<div class="p-6">
+<div class="flex items-center space-x-2 mb-4">
+<span class="px-2 py-1 bg-primary/10 text-primary text-xs font-medium rounded">Principiante</span>
+<span class="text-sm text-gray-500">2 horas</span>
+</div>
+<h3 class="text-lg font-semibold text-gray-900 mb-2">Gestión Integral de Residuos</h3>
+<p class="text-sm text-gray-600 mb-4">Aprende a implementar programas efectivos de gestión de residuos en tu organización.</p>
+<button class="w-full bg-primary text-white py-2 rounded-button font-medium hover:bg-primary/90 transition-colors">Inscribirse</button>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm overflow-hidden">
+<img src="https://public.readdy.ai/ai/img_res/1ef10e528f43fad6c61f17da1576f6b7.jpg" alt="Curso" class="w-full h-48 object-cover">
+<div class="p-6">
+<div class="flex items-center space-x-2 mb-4">
+<span class="px-2 py-1 bg-primary/10 text-primary text-xs font-medium rounded">Avanzado</span>
+<span class="text-sm text-gray-500">6 horas</span>
+</div>
+<h3 class="text-lg font-semibold text-gray-900 mb-2">Evaluación de Impacto Ambiental</h3>
+<p class="text-sm text-gray-600 mb-4">Metodologías y herramientas para evaluar el impacto ambiental de proyectos.</p>
+<button class="w-full bg-primary text-white py-2 rounded-button font-medium hover:bg-primary/90 transition-colors">Inscribirse</button>
+</div>
+</div>
+</div>
+</section>
+<section>
+<h2 class="text-2xl font-bold text-gray-900 mb-6">Energía Renovable</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-white rounded-lg shadow-sm overflow-hidden">
+<img src="https://public.readdy.ai/ai/img_res/bad3adbd475a50b41a23c780a5010fe3.jpg" alt="Curso" class="w-full h-48 object-cover">
+<div class="p-6">
+<div class="flex items-center space-x-2 mb-4">
+<span class="px-2 py-1 bg-primary/10 text-primary text-xs font-medium rounded">Intermedio</span>
+<span class="text-sm text-gray-500">5 horas</span>
+</div>
+<h3 class="text-lg font-semibold text-gray-900 mb-2">Sistemas Fotovoltaicos</h3>
+<p class="text-sm text-gray-600 mb-4">Diseño e implementación de sistemas de energía solar fotovoltaica.</p>
+<button class="w-full bg-primary text-white py-2 rounded-button font-medium hover:bg-primary/90 transition-colors">Inscribirse</button>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm overflow-hidden">
+<img src="https://public.readdy.ai/ai/img_res/1c985093246bdde4e2be3cbe0334fa11.jpg" alt="Curso" class="w-full h-48 object-cover">
+<div class="p-6">
+<div class="flex items-center space-x-2 mb-4">
+<span class="px-2 py-1 bg-primary/10 text-primary text-xs font-medium rounded">Principiante</span>
+<span class="text-sm text-gray-500">3 horas</span>
+</div>
+<h3 class="text-lg font-semibold text-gray-900 mb-2">Energía Eólica</h3>
+<p class="text-sm text-gray-600 mb-4">Fundamentos y aplicaciones de la energía eólica en proyectos sustentables.</p>
+<button class="w-full bg-primary text-white py-2 rounded-button font-medium hover:bg-primary/90 transition-colors">Inscribirse</button>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm overflow-hidden">
+<img src="https://public.readdy.ai/ai/img_res/4c8f2890beabf10f5f2bc9c8e29327b1.jpg" alt="Curso" class="w-full h-48 object-cover">
+<div class="p-6">
+<div class="flex items-center space-x-2 mb-4">
+<span class="px-2 py-1 bg-primary/10 text-primary text-xs font-medium rounded">Avanzado</span>
+<span class="text-sm text-gray-500">6 horas</span>
+</div>
+<h3 class="text-lg font-semibold text-gray-900 mb-2">Biomasa y Bioenergía</h3>
+<p class="text-sm text-gray-600 mb-4">Tecnologías y aplicaciones de la biomasa como fuente de energía renovable.</p>
+<button class="w-full bg-primary text-white py-2 rounded-button font-medium hover:bg-primary/90 transition-colors">Inscribirse</button>
+</div>
+</div>
+</div>
+</section>
+<section>
+<h2 class="text-2xl font-bold text-gray-900 mb-6">Normativas y Regulaciones</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-white rounded-lg shadow-sm overflow-hidden">
+<img src="https://public.readdy.ai/ai/img_res/3ec72d4fd6c852ea84d4bd904532ba97.jpg" alt="Curso" class="w-full h-48 object-cover">
+<div class="p-6">
+<div class="flex items-center space-x-2 mb-4">
+<span class="px-2 py-1 bg-primary/10 text-primary text-xs font-medium rounded">Intermedio</span>
+<span class="text-sm text-gray-500">4 horas</span>
+</div>
+<h3 class="text-lg font-semibold text-gray-900 mb-2">Marco Legal Ambiental</h3>
+<p class="text-sm text-gray-600 mb-4">Análisis del marco normativo ambiental nacional e internacional.</p>
+<button class="w-full bg-primary text-white py-2 rounded-button font-medium hover:bg-primary/90 transition-colors">Inscribirse</button>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm overflow-hidden">
+<img src="https://public.readdy.ai/ai/img_res/667bd9077c3717b39b651f5893947d47.jpg" alt="Curso" class="w-full h-48 object-cover">
+<div class="p-6">
+<div class="flex items-center space-x-2 mb-4">
+<span class="px-2 py-1 bg-primary/10 text-primary text-xs font-medium rounded">Avanzado</span>
+<span class="text-sm text-gray-500">5 horas</span>
+</div>
+<h3 class="text-lg font-semibold text-gray-900 mb-2">Auditoría Ambiental</h3>
+<p class="text-sm text-gray-600 mb-4">Metodologías y procedimientos para realizar auditorías ambientales efectivas.</p>
+<button class="w-full bg-primary text-white py-2 rounded-button font-medium hover:bg-primary/90 transition-colors">Inscribirse</button>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm overflow-hidden">
+<img src="https://public.readdy.ai/ai/img_res/d23baedd435859380a8a9602523cfaa1.jpg" alt="Curso" class="w-full h-48 object-cover">
+<div class="p-6">
+<div class="flex items-center space-x-2 mb-4">
+<span class="px-2 py-1 bg-primary/10 text-primary text-xs font-medium rounded">Principiante</span>
+<span class="text-sm text-gray-500">3 horas</span>
+</div>
+<h3 class="text-lg font-semibold text-gray-900 mb-2">Certificaciones Ambientales</h3>
+<p class="text-sm text-gray-600 mb-4">Guía completa sobre las principales certificaciones ambientales internacionales.</p>
+<button class="w-full bg-primary text-white py-2 rounded-button font-medium hover:bg-primary/90 transition-colors">Inscribirse</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<script>
+const mockCourses = {
+environmentalManagement: [
+{
+title: "Sistemas de Gestión Ambiental ISO 14001",
+description: "Implementación y auditoría de sistemas de gestión ambiental según estándares internacionales.",
+level: "Intermedio",
+duration: "4 horas",
+image: "environmental_management_1.jpg"
+},
+{
+title: "Gestión Integral de Residuos",
+description: "Aprende a implementar programas efectivos de gestión de residuos en tu organización.",
+level: "Principiante",
+duration: "2 horas",
+image: "environmental_management_2.jpg"
+},
+{
+title: "Evaluación de Impacto Ambiental",
+description: "Metodologías y herramientas para evaluar el impacto ambiental de proyectos.",
+level: "Avanzado",
+duration: "6 horas",
+image: "environmental_management_3.jpg"
+}
+],
+renewableEnergy: [
+{
+title: "Sistemas Fotovoltaicos",
+description: "Diseño e implementación de sistemas de energía solar fotovoltaica.",
+level: "Intermedio",
+duration: "5 horas",
+image: "renewable_energy_1.jpg"
+},
+{
+title: "Energía Eólica",
+description: "Fundamentos y aplicaciones de la energía eólica en proyectos sustentables.",
+level: "Principiante",
+duration: "3 horas",
+image: "renewable_energy_2.jpg"
+},
+{
+title: "Biomasa y Bioenergía",
+description: "Tecnologías y aplicaciones de la biomasa como fuente de energía renovable.",
+level: "Avanzado",
+duration: "6 horas",
+image: "renewable_energy_3.jpg"
+}
+],
+regulations: [
+{
+title: "Marco Legal Ambiental",
+description: "Análisis del marco normativo ambiental nacional e internacional.",
+level: "Intermedio",
+duration: "4 horas",
+image: "regulations_1.jpg"
+},
+{
+title: "Auditoría Ambiental",
+description: "Metodologías y procedimientos para realizar auditorías ambientales efectivas.",
+level: "Avanzado",
+duration: "5 horas",
+image: "regulations_2.jpg"
+},
+{
+title: "Certificaciones Ambientales",
+description: "Guía completa sobre las principales certificaciones ambientales internacionales.",
+level: "Principiante",
+duration: "3 horas",
+image: "regulations_3.jpg"
+}
+]
+};
+document.querySelectorAll('button').forEach(button => {
+if (button.textContent === 'Inscribirse') {
+button.addEventListener('click', function() {
+const courseTitle = this.closest('.p-6').querySelector('h3').textContent;
+const notification = document.createElement('div');
+notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-transform duration-300 translate-y-0';
+notification.textContent = `Te has inscrito exitosamente en: ${courseTitle}`;
+document.body.appendChild(notification);
+setTimeout(() => {
+notification.style.transform = 'translateY(150%)';
+setTimeout(() => notification.remove(), 300);
+}, 3000);
+});
+}
+});
+const searchInput = document.querySelector('input[type="text"]');
+searchInput.addEventListener('input', function(e) {
+const searchTerm = e.target.value.toLowerCase();
+document.querySelectorAll('.bg-white.rounded-lg').forEach(card => {
+const title = card.querySelector('h3').textContent.toLowerCase();
+const description = card.querySelector('p').textContent.toLowerCase();
+if (title.includes(searchTerm) || description.includes(searchTerm)) {
+card.style.display = 'block';
+} else {
+card.style.display = 'none';
+}
+});
+});
+</script>
+</body>
+</html>

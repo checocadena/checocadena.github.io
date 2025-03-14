@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cambio Climático y Emisiones - Lección 3</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{primary:'#3176FF',secondary:'#00B5B5'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}
+</script>
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+.progress-bar::-webkit-progress-bar {
+background-color: #e5e7eb;
+border-radius: 9999px;
+}
+.progress-bar::-webkit-progress-value {
+background-color: #3176FF;
+border-radius: 9999px;
+}
+</style>
+</head>
+<body class="bg-gray-50">
+<nav class="bg-white shadow-sm fixed w-full z-50">
+<div class="max-w-7xl mx-auto px-4">
+<div class="flex justify-between h-16">
+<div class="flex items-center">
+<a href="Index.html" data-readdy="true" class="flex items-center space-x-2">
+<i class="ri-arrow-left-line text-gray-600"></i>
+<span class="text-gray-600">Volver al Dashboard</span>
+</a>
+</div>
+<div class="flex items-center space-x-4">
+<button class="relative">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-notification-3-line text-gray-600"></i>
+</div>
+<span class="absolute top-0 right-0 h-4 w-4 bg-red-500 rounded-full flex items-center justify-center text-xs text-white">2</span>
+</button>
+<div class="flex items-center space-x-3">
+<img class="h-8 w-8 rounded-full object-cover" src="https://public.readdy.ai/ai/img_res/e6fc6e9f5fddc40965f692da20d1bceb.jpg" alt="Usuario">
+<span class="text-sm font-medium text-gray-700">Carlos Rodríguez</span>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<div class="fixed top-16 w-full bg-white shadow-sm z-40">
+<div class="max-w-7xl mx-auto px-4 py-4">
+<div class="flex items-center justify-between">
+<div class="flex-1">
+<h1 class="text-xl font-bold text-gray-900">Módulo 3: Impacto del Cambio Climático</h1>
+<div class="mt-2">
+<progress class="progress-bar w-full h-2" value="65" max="100"></progress>
+<div class="flex justify-between mt-1">
+<span class="text-sm text-gray-500">65% completado</span>
+<span class="text-sm text-gray-500">Tiempo restante: 25 min</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex h-screen pt-36">
+<div class="w-80 bg-white shadow-sm overflow-y-auto fixed h-full">
+<div class="p-4">
+<div class="space-y-4">
+<div class="border-b pb-2">
+<h3 class="font-medium text-gray-900">Contenido del Curso</h3>
+</div>
+<div class="space-y-2">
+<div class="flex items-center text-green-600 bg-green-50 p-2 rounded">
+<i class="ri-checkbox-circle-fill mr-2"></i>
+<span class="text-sm">1. Introducción al Cambio Climático</span>
+</div>
+<div class="flex items-center text-green-600 bg-green-50 p-2 rounded">
+<i class="ri-checkbox-circle-fill mr-2"></i>
+<span class="text-sm">2. Gases de Efecto Invernadero</span>
+</div>
+<div class="flex items-center text-primary bg-blue-50 p-2 rounded">
+<i class="ri-play-circle-fill mr-2"></i>
+<span class="text-sm font-medium">3. Impactos Globales</span>
+</div>
+<div class="flex items-center text-gray-500 p-2 rounded">
+<i class="ri-lock-line mr-2"></i>
+<span class="text-sm">4. Estrategias de Mitigación</span>
+</div>
+<div class="flex items-center text-gray-500 p-2 rounded">
+<i class="ri-lock-line mr-2"></i>
+<span class="text-sm">5. Evaluación Final</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex-1 ml-80">
+<div class="max-w-4xl mx-auto px-8 py-6">
+<div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+<div class="aspect-w-16 aspect-h-9 mb-6">
+<img src="https://public.readdy.ai/ai/img_res/ffbc836c844739e23af1b92553149a5b.jpg" alt="Impactos del Cambio Climático" class="w-full h-full object-cover rounded-lg">
+</div>
+<h2 class="text-2xl font-bold text-gray-900 mb-4">Impactos Globales del Cambio Climático</h2>
+<div class="prose max-w-none">
+<p class="text-gray-600 mb-4">Los impactos del cambio climático se manifiestan de diversas formas en diferentes regiones del mundo. En esta lección, analizaremos los principales efectos y sus consecuencias para los ecosistemas y las sociedades.</p>
+<div class="my-8" id="temperatureChart" style="width: 100%; height: 400px;"></div>
+<h3 class="text-xl font-semibold text-gray-900 mb-3">Cuestionario Rápido</h3>
+<div class="space-y-4 mb-8">
+<div id="question1" class="p-4 bg-gray-50 rounded-lg">
+<p class="font-medium text-gray-900 mb-3">1. ¿Cuál es el principal gas de efecto invernadero?</p>
+<div class="space-y-2">
+<label class="flex items-center space-x-3 cursor-pointer p-2 hover:bg-gray-100 rounded transition-colors duration-200">
+<input type="radio" name="question1" value="correct" class="text-primary">
+<span>Dióxido de carbono (CO₂)</span>
+</label>
+<label class="flex items-center space-x-3 cursor-pointer p-2 hover:bg-gray-100 rounded transition-colors duration-200">
+<input type="radio" name="question1" value="incorrect" class="text-primary">
+<span>Metano (CH₄)</span>
+</label>
+<label class="flex items-center space-x-3 cursor-pointer p-2 hover:bg-gray-100 rounded transition-colors duration-200">
+<input type="radio" name="question1" value="incorrect" class="text-primary">
+<span>Óxido nitroso (N₂O)</span>
+</label>
+<button id="next1" class="mt-4 px-4 py-2 bg-primary text-white rounded-button opacity-50 cursor-not-allowed" disabled>Siguiente pregunta</button>
+</div>
+</div>
+<div id="question2" class="p-4 bg-gray-50 rounded-lg hidden">
+<p class="font-medium text-gray-900 mb-3">2. ¿Qué consecuencia del cambio climático es más grave?</p>
+<div class="space-y-2">
+<label class="flex items-center space-x-3 cursor-pointer p-2 hover:bg-gray-100 rounded transition-colors duration-200">
+<input type="radio" name="question2" value="correct" class="text-primary">
+<span>Aumento del nivel del mar</span>
+</label>
+<label class="flex items-center space-x-3 cursor-pointer p-2 hover:bg-gray-100 rounded transition-colors duration-200">
+<input type="radio" name="question2" value="incorrect" class="text-primary">
+<span>Lluvia ácida</span>
+</label>
+<label class="flex items-center space-x-3 cursor-pointer p-2 hover:bg-gray-100 rounded transition-colors duration-200">
+<input type="radio" name="question2" value="incorrect" class="text-primary">
+<span>Contaminación del aire</span>
+</label>
+<button id="next2" class="mt-4 px-4 py-2 bg-primary text-white rounded-button opacity-50 cursor-not-allowed" disabled>Siguiente pregunta</button>
+</div>
+</div>
+<div id="question3" class="p-4 bg-gray-50 rounded-lg hidden">
+<p class="font-medium text-gray-900 mb-3">3. ¿Cuál es el objetivo del Acuerdo de París?</p>
+<div class="space-y-2">
+<label class="flex items-center space-x-3 cursor-pointer p-2 hover:bg-gray-100 rounded transition-colors duration-200">
+<input type="radio" name="question3" value="correct" class="text-primary">
+<span>Limitar el aumento de temperatura global a 1.5°C</span>
+</label>
+<label class="flex items-center space-x-3 cursor-pointer p-2 hover:bg-gray-100 rounded transition-colors duration-200">
+<input type="radio" name="question3" value="incorrect" class="text-primary">
+<span>Eliminar todos los combustibles fósiles</span>
+</label>
+<label class="flex items-center space-x-3 cursor-pointer p-2 hover:bg-gray-100 rounded transition-colors duration-200">
+<input type="radio" name="question3" value="incorrect" class="text-primary">
+<span>Proteger la capa de ozono</span>
+</label>
+<button id="next3" class="mt-4 px-4 py-2 bg-primary text-white rounded-button opacity-50 cursor-not-allowed" disabled>Finalizar</button>
+</div>
+</div>
+<script>
+function handleQuestionResponse(questionNumber, selectedLabel) {
+const labels = document.querySelectorAll(`input[name="question${questionNumber}"]`).forEach(radio => {
+const label = radio.closest('label');
+if (radio.value === 'correct') {
+label.classList.add('bg-green-100');
+} else if (radio.checked && radio.value === 'incorrect') {
+label.classList.add('bg-red-100');
+document.querySelector(`input[name="question${questionNumber}"][value="correct"]`).closest('label').classList.add('bg-green-100');
+}
+});
+document.getElementById(`next${questionNumber}`).disabled = false;
+document.getElementById(`next${questionNumber}`).classList.remove('opacity-50', 'cursor-not-allowed');
+}
+document.querySelectorAll('input[type="radio"]').forEach(radio => {
+radio.addEventListener('change', function() {
+const questionNumber = this.name.replace('question', '');
+handleQuestionResponse(questionNumber, this.closest('label'));
+});
+});
+document.getElementById('next1').addEventListener('click', function() {
+document.getElementById('question1').classList.add('hidden');
+document.getElementById('question2').classList.remove('hidden');
+});
+document.getElementById('next2').addEventListener('click', function() {
+document.getElementById('question2').classList.add('hidden');
+document.getElementById('question3').classList.remove('hidden');
+});
+document.getElementById('next3').addEventListener('click', function() {
+if (checkAllAnswers()) {
+showCompletionDialog();
+}
+});
+</script>
+</div>
+</div>
+</div>
+<div id="completionDialog" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+<div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+<div class="text-center mb-6">
+<div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="ri-check-line text-green-500 text-3xl"></i>
+</div>
+<h3 class="text-xl font-bold text-gray-900 mb-2">¡Felicitaciones!</h3>
+<p class="text-gray-600">Has completado exitosamente la Lección 3: Impactos Globales</p>
+<div class="mt-4 mb-6">
+<div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+<div id="newProgress" class="bg-primary h-2 rounded-full" style="width: 80%"></div>
+</div>
+<p class="text-sm text-gray-500">Progreso del curso: 80%</p>
+</div>
+</div>
+<div class="flex flex-col space-y-3">
+<button onclick="handleContinue()" class="w-full px-6 py-2 bg-primary text-white rounded-button hover:bg-primary/90">
+Continuar a la siguiente lección
+</button>
+<button onclick="handleReview()" class="w-full px-6 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50">
+Repasar esta lección
+</button>
+</div>
+</div>
+<script>
+function checkAllAnswers() {
+const question1 = document.querySelector('input[name="question1"]:checked')?.value === 'correct';
+const question2 = document.querySelector('input[name="question2"]:checked')?.value === 'correct';
+const question3 = document.querySelector('input[name="question3"]:checked')?.value === 'correct';
+return question1 && question2 && question3;
+}
+function showCompletionDialog() {
+if (!document.querySelector('input[name="question1"]:checked') ||
+!document.querySelector('input[name="question2"]:checked') ||
+!document.querySelector('input[name="question3"]:checked')) {
+alert('Por favor, responde todas las preguntas antes de continuar.');
+return;
+}
+if (checkAllAnswers()) {
+document.getElementById('completionDialog').classList.remove('hidden');
+// Update sidebar lesson status
+const currentLesson = document.querySelector('.text-primary.bg-blue-50');
+currentLesson.classList.remove('text-primary', 'bg-blue-50');
+currentLesson.classList.add('text-green-600', 'bg-green-50');
+const playIcon = currentLesson.querySelector('.ri-play-circle-fill');
+playIcon.classList.remove('ri-play-circle-fill');
+playIcon.classList.add('ri-checkbox-circle-fill');
+// Update progress bar
+const progressBar = document.querySelector('.progress-bar');
+progressBar.value = 80;
+document.querySelector('.text-sm.text-gray-500').textContent = '80% completado';
+} else {
+alert('Por favor, revisa tus respuestas. Algunas son incorrectas.');
+}
+}
+function handleContinue() {
+document.getElementById('completionDialog').classList.add('hidden');
+// Here you would typically navigate to the next lesson
+}
+function handleReview() {
+document.getElementById('completionDialog').classList.add('hidden');
+}
+</script>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+const temperatureChart = echarts.init(document.getElementById('temperatureChart'));
+const option = {
+animation: false,
+title: {
+text: 'Aumento de la Temperatura Global (1880-2024)',
+left: 'center',
+textStyle: {
+color: '#1f2937'
+}
+},
+tooltip: {
+trigger: 'axis',
+backgroundColor: 'rgba(255, 255, 255, 0.9)',
+borderColor: '#e5e7eb',
+textStyle: {
+color: '#1f2937'
+}
+},
+xAxis: {
+type: 'category',
+data: ['1880', '1900', '1920', '1940', '1960', '1980', '2000', '2024'],
+axisLabel: {
+color: '#1f2937'
+}
+},
+yAxis: {
+type: 'value',
+name: '°C',
+axisLabel: {
+color: '#1f2937'
+}
+},
+series: [{
+data: [-0.2, -0.1, 0, 0.2, 0.3, 0.5, 0.8, 1.2],
+type: 'line',
+smooth: true,
+lineStyle: {
+color: 'rgba(87, 181, 231, 1)'
+},
+areaStyle: {
+color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+offset: 0,
+color: 'rgba(87, 181, 231, 0.3)'
+}, {
+offset: 1,
+color: 'rgba(87, 181, 231, 0.1)'
+}])
+}
+}]
+};
+temperatureChart.setOption(option);
+window.addEventListener('resize', () => {
+temperatureChart.resize();
+});
+document.querySelectorAll('input[name="question1"]').forEach(radio => {
+radio.addEventListener('change', function() {
+if (this.value === 'correct') {
+this.parentElement.classList.add('bg-green-100');
+}
+});
+});
+</script>
+</body>
+</html>

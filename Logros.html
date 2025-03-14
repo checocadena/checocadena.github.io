@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mis Logros - EcoLearn</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+<script>
+tailwind.config={theme:{extend:{colors:{primary:'#3176FF',secondary:'#00B8A9'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}
+</script>
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+.progress-ring {
+  transform: rotate(-90deg);
+}
+.progress-ring circle {
+  transition: stroke-dashoffset 0.35s;
+  transform-origin: 50% 50%;
+}
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<nav class="bg-white shadow-sm fixed w-full z-50">
+<div class="max-w-7xl mx-auto px-4">
+<div class="flex justify-between h-16">
+<div class="flex items-center">
+<img src="https://static.readdy.ai/image/aa25c844f62f8160325b22e96cce821b/1008a332fa04fcc766da511172b85ad6.jpeg" alt="Cydsa Logo" class="h-8">
+<div class="hidden md:flex items-center space-x-8 ml-10">
+<a href="Index.html" class="text-gray-900 hover:text-primary px-3 py-2 text-sm font-medium">Inicio</a>
+<a href="Cursos.html" class="text-gray-900 hover:text-primary px-3 py-2 text-sm font-medium">Cursos</a>
+<a href="Progreso.html" class="text-gray-900 hover:text-primary px-3 py-2 text-sm font-medium">Progreso</a>
+<a href="Logros.html" class="text-primary border-b-2 border-primary px-3 py-2 text-sm font-medium">Logros</a>
+</div>
+</div>
+<div class="flex items-center space-x-4">
+<div class="relative">
+<div class="w-8 h-8 flex items-center justify-center cursor-pointer">
+<i class="ri-notification-3-line text-gray-600"></i>
+</div>
+<span class="absolute top-0 right-0 h-4 w-4 bg-red-500 rounded-full flex items-center justify-center text-xs text-white">3</span>
+</div>
+<div class="flex items-center space-x-3">
+<img class="h-8 w-8 rounded-full object-cover" src="https://public.readdy.ai/ai/img_res/074bc3dd1877565257c5f066d232de26.jpg" alt="Usuario">
+<span class="text-sm font-medium text-gray-700">Carlos Rodríguez</span>
+</div>
+</div>
+</div>
+</div>
+</nav>
+
+<main class="pt-16">
+<div class="max-w-7xl mx-auto px-4 py-8">
+<div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+<div class="flex items-center justify-between">
+<div>
+<h1 class="text-3xl font-bold text-gray-900">Mis Logros</h1>
+<p class="mt-2 text-gray-600">Nivel 15 - Experto en Sustentabilidad</p>
+</div>
+<div class="flex items-center space-x-4">
+<div class="text-right">
+<p class="text-sm text-gray-500">Experiencia Total</p>
+<p class="text-2xl font-bold text-primary">15,750 XP</p>
+</div>
+<div class="w-20 h-20">
+<svg class="progress-ring" width="80" height="80">
+<circle cx="40" cy="40" r="34" stroke="#E5E7EB" stroke-width="4" fill="transparent"/>
+<circle cx="40" cy="40" r="34" stroke="#3176FF" stroke-width="4" fill="transparent" stroke-dasharray="213.628" stroke-dashoffset="53.407"/>
+</svg>
+</div>
+</div>
+</div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+<div class="bg-white rounded-lg shadow-sm p-6">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-semibold text-gray-900">Medallas</h3>
+<span class="text-2xl font-bold text-primary">12</span>
+</div>
+<div class="flex space-x-2">
+<div class="w-12 h-12 flex items-center justify-center bg-yellow-100 rounded-full">
+<i class="ri-medal-line text-yellow-500 ri-xl"></i>
+</div>
+<div class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-full">
+<i class="ri-medal-2-line text-gray-500 ri-xl"></i>
+</div>
+<div class="w-12 h-12 flex items-center justify-center bg-orange-100 rounded-full">
+<i class="ri-medal-fill text-orange-500 ri-xl"></i>
+</div>
+</div>
+</div>
+
+<div class="bg-white rounded-lg shadow-sm p-6">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-semibold text-gray-900">Certificados</h3>
+<span class="text-2xl font-bold text-primary">8</span>
+</div>
+<div class="flex space-x-2">
+<div class="w-12 h-12 flex items-center justify-center bg-blue-100 rounded-full">
+<i class="ri-award-line text-primary ri-xl"></i>
+</div>
+<div class="w-12 h-12 flex items-center justify-center bg-green-100 rounded-full">
+<i class="ri-award-fill text-green-500 ri-xl"></i>
+</div>
+<div class="w-12 h-12 flex items-center justify-center bg-purple-100 rounded-full">
+<i class="ri-award-line text-purple-500 ri-xl"></i>
+</div>
+</div>
+</div>
+
+<div class="bg-white rounded-lg shadow-sm p-6">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-semibold text-gray-900">Insignias</h3>
+<span class="text-2xl font-bold text-primary">15</span>
+</div>
+<div class="flex space-x-2">
+<div class="w-12 h-12 flex items-center justify-center bg-red-100 rounded-full">
+<i class="ri-shield-star-line text-red-500 ri-xl"></i>
+</div>
+<div class="w-12 h-12 flex items-center justify-center bg-indigo-100 rounded-full">
+<i class="ri-shield-star-fill text-indigo-500 ri-xl"></i>
+</div>
+<div class="w-12 h-12 flex items-center justify-center bg-teal-100 rounded-full">
+<i class="ri-shield-star-line text-teal-500 ri-xl"></i>
+</div>
+</div>
+</div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="md:col-span-2">
+<div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+<h2 class="text-xl font-bold text-gray-900 mb-6">Logros Recientes</h2>
+<div class="space-y-6">
+<div class="flex items-start space-x-4">
+<div class="w-12 h-12 flex items-center justify-center bg-yellow-100 rounded-full shrink-0">
+<i class="ri-medal-line text-yellow-500 ri-xl"></i>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<h4 class="font-medium text-gray-900">Maestro del Reciclaje</h4>
+<span class="text-sm text-gray-500">14 Mar 2025</span>
+</div>
+<p class="text-sm text-gray-600 mt-1">Completaste todos los módulos del curso de gestión de residuos</p>
+<div class="flex items-center mt-2">
+<i class="ri-star-fill text-yellow-400 mr-1"></i>
+<span class="text-sm text-gray-500">500 XP</span>
+</div>
+</div>
+</div>
+
+<div class="flex items-start space-x-4">
+<div class="w-12 h-12 flex items-center justify-center bg-blue-100 rounded-full shrink-0">
+<i class="ri-award-line text-primary ri-xl"></i>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<h4 class="font-medium text-gray-900">Certificado en Energías Renovables</h4>
+<span class="text-sm text-gray-500">10 Mar 2025</span>
+</div>
+<p class="text-sm text-gray-600 mt-1">Obtuviste la certificación avanzada en energías renovables</p>
+<div class="flex items-center mt-2">
+<i class="ri-star-fill text-yellow-400 mr-1"></i>
+<span class="text-sm text-gray-500">1000 XP</span>
+</div>
+</div>
+</div>
+
+<div class="flex items-start space-x-4">
+<div class="w-12 h-12 flex items-center justify-center bg-green-100 rounded-full shrink-0">
+<i class="ri-shield-star-line text-green-500 ri-xl"></i>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<h4 class="font-medium text-gray-900">Líder en Huella de Carbono</h4>
+<span class="text-sm text-gray-500">5 Mar 2025</span>
+</div>
+<p class="text-sm text-gray-600 mt-1">Redujiste exitosamente la huella de carbono en tu área</p>
+<div class="flex items-center mt-2">
+<i class="ri-star-fill text-yellow-400 mr-1"></i>
+<span class="text-sm text-gray-500">750 XP</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm p-6">
+<h2 class="text-xl font-bold text-gray-900 mb-6">Próximos Logros</h2>
+<div class="space-y-6">
+<div class="flex items-start space-x-4">
+<div class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-full shrink-0">
+<i class="ri-medal-line text-gray-400 ri-xl"></i>
+</div>
+<div class="flex-1">
+<h4 class="font-medium text-gray-900">Experto en Biodiversidad</h4>
+<p class="text-sm text-gray-600 mt-1">Completa el curso avanzado de biodiversidad</p>
+<div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+<div class="bg-primary h-2 rounded-full" style="width: 75%"></div>
+</div>
+<span class="text-sm text-gray-500 mt-1">75% completado</span>
+</div>
+</div>
+
+<div class="flex items-start space-x-4">
+<div class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-full shrink-0">
+<i class="ri-shield-star-line text-gray-400 ri-xl"></i>
+</div>
+<div class="flex-1">
+<h4 class="font-medium text-gray-900">Innovador Sostenible</h4>
+<p class="text-sm text-gray-600 mt-1">Propón 3 iniciativas de sustentabilidad</p>
+<div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+<div class="bg-primary h-2 rounded-full" style="width: 30%"></div>
+</div>
+<span class="text-sm text-gray-500 mt-1">1 de 3 completadas</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="md:col-span-1">
+<div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+<h2 class="text-xl font-bold text-gray-900 mb-6">Estadísticas</h2>
+<div id="achievementsChart" class="w-full h-64"></div>
+</div>
+
+<div class="bg-white rounded-lg shadow-sm p-6">
+<h2 class="text-xl font-bold text-gray-900 mb-6">Ranking</h2>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<div class="w-8 h-8 flex items-center justify-center bg-yellow-100 rounded-full text-sm font-medium text-yellow-600">1</div>
+<img class="w-8 h-8 rounded-full" src="https://public.readdy.ai/ai/img_res/684aa06deb1659b21320948b7e1ad194.jpg" alt="Ana">
+<span class="font-medium">Ana Martínez</span>
+</div>
+<span class="text-sm font-medium text-primary">18,500 XP</span>
+</div>
+
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<div class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-sm font-medium text-gray-600">2</div>
+<img class="w-8 h-8 rounded-full" src="https://public.readdy.ai/ai/img_res/1d2ec88069b3492d8f17d58e8ae55688.jpg" alt="Carlos">
+<span class="font-medium">Carlos Rodríguez</span>
+</div>
+<span class="text-sm font-medium text-primary">15,750 XP</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<div class="w-8 h-8 flex items-center justify-center bg-orange-100 rounded-full text-sm font-medium text-orange-600">3</div>
+<img class="w-8 h-8 rounded-full" src="https://public.readdy.ai/ai/img_res/51a0303664528d0204f27597afbc964c.jpg" alt="Miguel">
+<span class="font-medium">Miguel López</span>
+</div>
+<span class="text-sm font-medium text-primary">14,200 XP</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+<script>
+const mockData = {
+  achievements: {
+    medals: 12,
+    certificates: 8,
+    badges: 15,
+    totalXP: 15750,
+    level: 15,
+    progress: 75,
+    recent: [
+      {
+        title: 'Maestro del Reciclaje',
+        description: 'Completaste todos los módulos del curso de gestión de residuos',
+        date: '14 Mar 2025',
+        xp: 500,
+        type: 'medal'
+      },
+      {
+        title: 'Certificado en Energías Renovables',
+        description: 'Obtuviste la certificación avanzada en energías renovables',
+        date: '10 Mar 2025',
+        xp: 1000,
+        type: 'certificate'
+      },
+      {
+        title: 'Líder en Huella de Carbono',
+        description: 'Redujiste exitosamente la huella de carbono en tu área',
+        date: '5 Mar 2025',
+        xp: 750,
+        type: 'badge'
+      }
+    ],
+    upcoming: [
+      {
+        title: 'Experto en Biodiversidad',
+        description: 'Completa el curso avanzado de biodiversidad',
+        progress: 75
+      },
+      {
+        title: 'Innovador Sostenible',
+        description: 'Propón 3 iniciativas de sustentabilidad',
+        progress: 30
+      }
+    ],
+    distribution: {
+      'Medallas': 12,
+      'Certificados': 8,
+      'Insignias': 15
+    }
+  },
+  ranking: [
+    {
+      name: 'Ana Martínez',
+      xp: 18500,
+      position: 1
+    },
+    {
+      name: 'Carlos Rodríguez',
+      xp: 15750,
+      position: 2
+    },
+    {
+      name: 'Miguel López',
+      xp: 14200,
+      position: 3
+    }
+  ]
+};
+
+const chartDom = document.getElementById('achievementsChart');
+const myChart = echarts.init(chartDom);
+const option = {
+  animation: false,
+  tooltip: {
+    trigger: 'item'
+  },
+  series: [
+    {
+      type: 'pie',
+      radius: ['50%', '70%'],
+      data: [
+        { value: 12, name: 'Medallas', itemStyle: { color: 'rgba(87, 181, 231, 1)' } },
+        { value: 8, name: 'Certificados', itemStyle: { color: 'rgba(141, 211, 199, 1)' } },
+        { value: 15, name: 'Insignias', itemStyle: { color: 'rgba(251, 191, 114, 1)' } }
+      ],
+      label: {
+        show: true,
+        position: 'outside',
+        formatter: '{b}: {c}'
+      },
+      emphasis: {
+        itemStyle: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.5)'
+        }
+      }
+    }
+  ]
+};
+myChart.setOption(option);
+window.addEventListener('resize', () => {
+  myChart.resize();
+});
+</script>
+</body>
+</html>
