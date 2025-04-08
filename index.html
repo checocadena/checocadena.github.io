@@ -201,62 +201,79 @@ border-radius: 9999px;
 </div>
 </div>
 </main>
-<script>
-const mockData = {
-user: {
-name: 'Carlos Rodríguez',
-progress: 75,
-completedCourses: 12,
-totalCourses: 16
-},
-courses: [
-{
-title: 'Cambio Climático y Emisiones',
-description: 'Comprende el impacto del cambio climático y estrategias para poder reducir emisiones corporativas.',
-progress: 60
-},
-{
-title: 'Eficiencia Energética',
-description: 'Estrategias para optimizar el consumo de energía en tu organización.',
-progress: 30
-},
-{
-title: 'Políticas Ambientales',
-description: 'Fundamentos de normativas y regulaciones ambientales corporativas.',
-progress: 45
-}
-],
-events: [
-{
-title: 'Webinar: Innovación en Sustentabilidad',
-date: '15 de marzo, 2025 - 15:00'
-},
-{
-title: 'Taller: Reducción de Huella de Carbono',
-date: '20 de marzo, 2025 - 10:00'
-}
-],
-achievements: [
-{
-title: 'Experto en Reciclaje',
-description: 'Completaste el módulo avanzado',
-date: 'Hace 2 días'
-},
-{
-title: 'Líder Sustentable',
-description: '5 cursos completados',
-date: 'Hace 1 semana'
-}
-]
-};
+<script type="module">
+import { moodleService } from './services/moodleService.js';
 
-document.addEventListener('DOMContentLoaded', function() {
-  const mobileMenuButton = document.querySelector('.mobile-menu-button');
-  const mobileMenu = document.querySelector('.mobile-menu');
+// Replace the mockData with real data fetching
+async function loadDashboard() {
+    try {
+        // Get user info and courses
+        const [userInfo, courses] = await Promise.all([
+            moodleService.getUserInfo(),
+            moodleService.getUserCourses()
+        ]);
 
-  mobileMenuButton.addEventListener('click', function() {
+        // Update user profile
+        document.querySelector('.text-sm.font-medium.text-gray-700').textContent = userInfo.fullname;
+        document.querySelector('.h-8.w-8.rounded-full.object-cover').src = userInfo.profileimageurl;
+
+        // Calculate progress
+        const completedCourses = courses.filter(course => course.progress === 100).length;
+        const totalCourses = courses.length;
+        const progressPercentage = Math.round((completedCourses / totalCourses) * 100) || 0;
+
+        // Update progress indicators
+        document.querySelector('.text-2xl.font-bold.text-primary').textContent = `${progressPercentage}%`;
+        document.querySelector('.bg-primary.h-2\\.5.rounded-full').style.width = `${progressPercentage}%`;
+
+        // Update completed courses count
+        document.querySelector('.text-3xl.font-bold.text-gray-900').textContent = completedCourses;
+        document.querySelector('.text-sm.text-gray-500').textContent = `de ${totalCourses} cursos`;
+
+        // Update courses in progress
+        const inProgressCourses = courses
+            .filter(course => course.progress > 0 && course.progress < 100)
+            .slice(0, 3);  // Show only first 3 courses
+
+        const coursesContainer = document.querySelector('.grid.grid-cols-1.md\\:grid-cols-3.gap-6');
+        coursesContainer.innerHTML = inProgressCourses.map(course => `
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                <img src="${course.overviewfiles[0]?.fileurl || 'default-course-image.jpg'}" 
+                     alt="${course.fullname}" 
+                     class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">${course.fullname}</h3>
+                    <p class="text-sm text-gray-600 mb-4">${course.summary}</p>
+                    <progress class="course-progress w-full h-2 mb-2" 
+                              value="${course.progress}" 
+                              max="100"></progress>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-500">${course.progress}% completado</span>
+                        <a href="Lección.html?courseid=${course.id}" 
+                           class="text-sm font-medium text-primary hover:text-primary/80">
+                            Continuar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+    } catch (error) {
+        console.error('Failed to load dashboard:', error);
+        // Redirect to login if unauthorized
+        if (error.message.includes('Failed to fetch')) {
+            window.location.href = 'login.html';
+        }
+    }
+}
+
+// Load dashboard data when page loads
+document.addEventListener('DOMContentLoaded', loadDashboard);
+
+// Add logout functionality
+document.querySelector('.mobile-menu-button').addEventListener('click', function() {
+    const mobileMenu = document.querySelector('.mobile-menu');
     mobileMenu.classList.toggle('hidden');
-  });
 });
 </script>
 </body>

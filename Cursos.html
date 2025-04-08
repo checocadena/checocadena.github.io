@@ -276,114 +276,91 @@ display: block;
 </div>
 </div>
 </main>
-<script>
-const mockCourses = {
-environmentalManagement: [
-{
-title: "Sistemas de Gestión Ambiental ISO 14001",
-description: "Implementación y auditoría de sistemas de gestión ambiental según estándares internacionales.",
-level: "Intermedio",
-duration: "4 horas",
-image: "environmental_management_1.jpg"
-},
-{
-title: "Gestión Integral de Residuos",
-description: "Aprende a implementar programas efectivos de gestión de residuos en tu organización.",
-level: "Principiante",
-duration: "2 horas",
-image: "environmental_management_2.jpg"
-},
-{
-title: "Evaluación de Impacto Ambiental",
-description: "Metodologías y herramientas para evaluar el impacto ambiental de proyectos.",
-level: "Avanzado",
-duration: "6 horas",
-image: "environmental_management_3.jpg"
-}
-],
-renewableEnergy: [
-{
-title: "Sistemas Fotovoltaicos",
-description: "Diseño e implementación de sistemas de energía solar fotovoltaica.",
-level: "Intermedio",
-duration: "5 horas",
-image: "renewable_energy_1.jpg"
-},
-{
-title: "Energía Eólica",
-description: "Fundamentos y aplicaciones de la energía eólica en proyectos sustentables.",
-level: "Principiante",
-duration: "3 horas",
-image: "renewable_energy_2.jpg"
-},
-{
-title: "Biomasa y Bioenergía",
-description: "Tecnologías y aplicaciones de la biomasa como fuente de energía renovable.",
-level: "Avanzado",
-duration: "6 horas",
-image: "renewable_energy_3.jpg"
-}
-],
-regulations: [
-{
-title: "Marco Legal Ambiental",
-description: "Análisis del marco normativo ambiental nacional e internacional.",
-level: "Intermedio",
-duration: "4 horas",
-image: "regulations_1.jpg"
-},
-{
-title: "Auditoría Ambiental",
-description: "Metodologías y procedimientos para realizar auditorías ambientales efectivas.",
-level: "Avanzado",
-duration: "5 horas",
-image: "regulations_2.jpg"
-},
-{
-title: "Certificaciones Ambientales",
-description: "Guía completa sobre las principales certificaciones ambientales internacionales.",
-level: "Principiante",
-duration: "3 horas",
-image: "regulations_3.jpg"
-}
-]
-};
-document.querySelectorAll('button').forEach(button => {
-if (button.textContent === 'Inscribirse') {
-button.addEventListener('click', function() {
-const courseTitle = this.closest('.p-6').querySelector('h3').textContent;
-const notification = document.createElement('div');
-notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-transform duration-300 translate-y-0';
-notification.textContent = `Te has inscrito exitosamente en: ${courseTitle}`;
-document.body.appendChild(notification);
-setTimeout(() => {
-notification.style.transform = 'translateY(150%)';
-setTimeout(() => notification.remove(), 300);
-}, 3000);
-});
-}
-});
-const searchInput = document.querySelector('input[type="text"]');
-searchInput.addEventListener('input', function(e) {
-const searchTerm = e.target.value.toLowerCase();
-document.querySelectorAll('.bg-white.rounded-lg').forEach(card => {
-const title = card.querySelector('h3').textContent.toLowerCase();
-const description = card.querySelector('p').textContent.toLowerCase();
-if (title.includes(searchTerm) || description.includes(searchTerm)) {
-card.style.display = 'block';
-} else {
-card.style.display = 'none';
-}
-});
-});
+<script type="module">
+import { moodleService } from './services/moodleService.js';
 
-document.addEventListener('DOMContentLoaded', function() {
-  const mobileMenuButton = document.querySelector('.mobile-menu-button');
-  const mobileMenu = document.querySelector('.mobile-menu');
+async function loadCourses() {
+    try {
+        // Get user courses and info
+        const [courses, userInfo] = await Promise.all([
+            moodleService.getUserCourses(),
+            moodleService.getUserInfo()
+        ]);
 
-  mobileMenuButton.addEventListener('click', function() {
-    mobileMenu.classList.toggle('hidden');
-  });
+        // Update user profile
+        document.querySelector('.text-sm.font-medium.text-gray-700').textContent = userInfo.fullname;
+        document.querySelector('img[alt="Usuario"]').src = userInfo.profileimageurl;
+
+        // Group courses by category
+        const coursesByCategory = courses.reduce((acc, course) => {
+            const category = course.categoryname || 'Otros';
+            if (!acc[category]) {
+                acc[category] = [];
+            }
+            acc[category].push(course);
+            return acc;
+        }, {});
+
+        // Create HTML for each category
+        const coursesContainer = document.querySelector('.space-y-12');
+        coursesContainer.innerHTML = Object.entries(coursesByCategory)
+            .map(([category, courses]) => `
+                <section>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">${category}</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        ${courses.map(course => `
+                            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                                <img src="${course.overviewfiles[0]?.fileurl || 'default-course-image.jpg'}" 
+                                     alt="${course.fullname}" 
+                                     class="w-full h-48 object-cover">
+                                <div class="p-6">
+                                    <div class="flex items-center space-x-2 mb-4">
+                                        <span class="px-2 py-1 bg-primary/10 text-primary text-xs font-medium rounded">
+                                            ${course.format === 'topics' ? 'Intermedio' : 'Principiante'}
+                                        </span>
+                                        <span class="text-sm text-gray-500">
+                                            ${course.progress || 0}% Completado
+                                        </span>
+                                    </div>
+                                    <h3 class="text-lg font-semibold text-gray-900 mb-2">${course.fullname}</h3>
+                                    <p class="text-sm text-gray-600 mb-4">${course.summary}</p>
+                                    <a href="Lección.html?courseid=${course.id}" 
+                                       class="w-full bg-primary text-white py-2 rounded-button font-medium hover:bg-primary/90 transition-colors inline-block text-center">
+                                        ${course.progress > 0 ? 'Continuar' : 'Comenzar'}
+                                    </a>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </section>
+            `).join('');
+
+        // Implement search functionality
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            document.querySelectorAll('.bg-white.rounded-lg').forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+                const matches = title.includes(searchTerm) || description.includes(searchTerm);
+                card.style.display = matches ? 'block' : 'none';
+            });
+        });
+
+    } catch (error) {
+        console.error('Failed to load courses:', error);
+        if (error.message.includes('Failed to fetch')) {
+            window.location.href = 'login.html';
+        }
+    }
+}
+
+// Load courses when page loads
+document.addEventListener('DOMContentLoaded', loadCourses);
+
+// Mobile menu toggle
+document.querySelector('.mobile-menu-button').addEventListener('click', function() {
+    document.querySelector('.mobile-menu').classList.toggle('hidden');
 });
 </script>
 </body>

@@ -276,96 +276,145 @@ document.getElementById('completionDialog').classList.add('hidden');
 </div>
 </div>
 </div>
-<script>
-const temperatureChart = echarts.init(document.getElementById('temperatureChart'));
-const option = {
-animation: false,
-title: {
-text: 'Aumento de la Temperatura Global (1880-2024)',
-left: 'center',
-textStyle: {
-color: '#1f2937'
-}
-},
-tooltip: {
-trigger: 'axis',
-backgroundColor: 'rgba(255, 255, 255, 0.9)',
-borderColor: '#e5e7eb',
-textStyle: {
-color: '#1f2937'
-}
-},
-xAxis: {
-type: 'category',
-data: ['1880', '1900', '1920', '1940', '1960', '1980', '2000', '2024'],
-axisLabel: {
-color: '#1f2937'
-}
-},
-yAxis: {
-type: 'value',
-name: '°C',
-axisLabel: {
-color: '#1f2937'
-}
-},
-series: [{
-data: [-0.2, -0.1, 0, 0.2, 0.3, 0.5, 0.8, 1.2],
-type: 'line',
-smooth: true,
-lineStyle: {
-color: 'rgba(87, 181, 231, 1)'
-},
-areaStyle: {
-color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-offset: 0,
-color: 'rgba(87, 181, 231, 0.3)'
-}, {
-offset: 1,
-color: 'rgba(87, 181, 231, 0.1)'
-}])
-}
-}]
-};
-temperatureChart.setOption(option);
-window.addEventListener('resize', () => {
-temperatureChart.resize();
-});
-document.querySelectorAll('input[name="question1"]').forEach(radio => {
-radio.addEventListener('change', function() {
-if (this.value === 'correct') {
-this.parentElement.classList.add('bg-green-100');
-}
-});
-});
+</div>
+<script type="module">
+import { moodleService } from './services/moodleService.js';
 
-// Add sidebar toggle functionality
+async function loadLesson() {
+    try {
+        // Get course ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const courseId = urlParams.get('courseid');
+        
+        if (!courseId) {
+            window.location.href = 'index.html';
+            return;
+        }
+
+        // Get user info and course details
+        const [userInfo, courses] = await Promise.all([
+            moodleService.getUserInfo(),
+            moodleService.getUserCourses()
+        ]);
+
+        // Update user profile
+        document.querySelector('.text-sm.font-medium.text-gray-700').textContent = userInfo.fullname;
+        document.querySelector('img[alt="Usuario"]').src = userInfo.profileimageurl;
+
+        // Find current course
+        const currentCourse = courses.find(c => c.id.toString() === courseId);
+        if (!currentCourse) {
+            window.location.href = 'index.html';
+            return;
+        }
+
+        // Update course title and progress
+        document.querySelector('.text-lg.md\\:text-xl.font-bold').textContent = currentCourse.fullname;
+        const progressBar = document.querySelector('progress');
+        progressBar.value = currentCourse.progress || 0;
+        document.querySelector('.text-xs.md\\:text-sm.text-gray-500').textContent = 
+            `${currentCourse.progress || 0}% completado`;
+
+        // Update course content
+        const modules = currentCourse.modules || [];
+        const sidebarContent = document.querySelector('.space-y-2');
+        sidebarContent.innerHTML = modules.map((module, index) => `
+            <div class="flex items-center ${module.completion ? 'text-green-600 bg-green-50' : 'text-gray-500'} p-2 rounded">
+                <i class="ri-${module.completion ? 'checkbox-circle-fill' : 'lock-line'} mr-2"></i>
+                <span class="text-sm">${index + 1}. ${module.name}</span>
+            </div>
+        `).join('');
+
+        // Handle quiz submissions
+        const quizForm = document.getElementById('question1');
+        if (quizForm) {
+            quizForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const answers = Object.fromEntries(formData);
+                
+                try {
+                    await moodleService.updateGrade(courseId, 'quiz1', calculateScore(answers));
+                    await moodleService.completeActivity(courseId, currentCourse.modules[2].id);
+                    showCompletionDialog();
+                } catch (error) {
+                    console.error('Failed to submit quiz:', error);
+                }
+            });
+        }
+
+        // Initialize temperature chart with real data
+        const temperatureChart = echarts.init(document.getElementById('temperatureChart'));
+        temperatureChart.setOption({
+            animation: false
+        });
+
+    } catch (error) {
+        console.error('Failed to load lesson:', error);
+        if (error.message.includes('Failed to fetch')) {
+            window.location.href = 'login.html';
+        }
+    }
+}
+
+function calculateScore(answers) {
+    // Example scoring logic - adjust based on your needs
+    let score = 0;
+    if (answers.question1 === 'correct') score += 33.33;
+    if (answers.question2 === 'correct') score += 33.33;
+    if (answers.question3 === 'correct') score += 33.34;
+    return Math.round(score);
+}
+
+function showCompletionDialog() {
+    const dialog = document.getElementById('completionDialog');
+    dialog.classList.remove('hidden');
+
+    // Update progress indicators
+    document.querySelector('.progress-bar').value = 80;
+    document.querySelector('.text-sm.text-gray-500').textContent = '80% completado';
+
+    // Update sidebar status
+    const currentLesson = document.querySelector('.text-primary.bg-blue-50');
+    if (currentLesson) {
+        currentLesson.classList.remove('text-primary', 'bg-blue-50');
+        currentLesson.classList.add('text-green-600', 'bg-green-50');
+        const icon = currentLesson.querySelector('.ri-play-circle-fill');
+        if (icon) {
+            icon.classList.remove('ri-play-circle-fill');
+            icon.classList.add('ri-checkbox-circle-fill');
+        }
+    }
+}
+
+// Handle continue and review buttons
+window.handleContinue = function() {
+    document.getElementById('completionDialog').classList.add('hidden');
+    // Navigate to next lesson or course page
+    window.location.href = 'Cursos.html';
+};
+
+window.handleReview = function() {
+    document.getElementById('completionDialog').classList.add('hidden');
+};
+
+// Load lesson when page loads
+document.addEventListener('DOMContentLoaded', loadLesson);
+
+// Mobile menu toggle
+const sidebarToggle = document.getElementById('sidebarToggle');
 const sidebar = document.getElementById('sidebar');
 const mainContent = document.getElementById('mainContent');
-const sidebarToggle = document.getElementById('sidebarToggle');
 
 sidebarToggle.addEventListener('click', () => {
-  const isOpen = !sidebar.classList.contains('-translate-x-full');
-  
-  if (isOpen) {
-    sidebar.classList.add('-translate-x-full');
-    mainContent.classList.remove('ml-80');
-  } else {
-    sidebar.classList.remove('-translate-x-full');
-    mainContent.classList.add('ml-80');
-  }
-});
-
-// Close sidebar when clicking outside on mobile
-document.addEventListener('click', (e) => {
-  const isMobile = window.innerWidth < 768;
-  const clickedOutsideSidebar = !sidebar.contains(e.target);
-  const clickedToggleButton = sidebarToggle.contains(e.target);
-  
-  if (isMobile && clickedOutsideSidebar && !clickedToggleButton && !sidebar.classList.contains('-translate-x-full')) {
-    sidebar.classList.add('-translate-x-full');
-    mainContent.classList.remove('ml-80');
-  }
+    const isOpen = !sidebar.classList.contains('-translate-x-full');
+    if (isOpen) {
+        sidebar.classList.add('-translate-x-full');
+        mainContent.classList.remove('md:ml-80');
+    } else {
+        sidebar.classList.remove('-translate-x-full');
+        mainContent.classList.add('md:ml-80');
+    }
 });
 </script>
 </body>

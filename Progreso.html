@@ -198,193 +198,139 @@ background: linear-gradient(90deg, #0066CC var(--progress), #e5e7eb var(--progre
 </div>
 </div>
 </main>
-<script>
-const mockData = {
-progressData: {
-value: 75,
-target: 100
-},
-studyTimeData: {
-dates: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
-hours: [2.5, 3, 4.5, 2, 3.5, 1.5, 2]
-},
-activityData: {
-months: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
-values: [30, 45, 55, 65, 70, 75]
-}
-};
-const progressChart = echarts.init(document.getElementById('progressChart'));
-progressChart.setOption({
-series: [{
-type: 'gauge',
-startAngle: 180,
-endAngle: 0,
-min: 0,
-max: 100,
-splitNumber: 8,
-radius: '100%',
-progress: {
-show: true,
-width: 18
-},
-pointer: {
-show: false
-},
-axisLine: {
-lineStyle: {
-width: 18,
-color: [[0.75, '#0066CC'], [1, '#e5e7eb']]
-}
-},
-axisTick: {
-show: false
-},
-splitLine: {
-show: false
-},
-axisLabel: {
-show: false
-},
-title: {
-show: false
-},
-detail: {
-valueAnimation: true,
-offsetCenter: [0, 0],
-fontSize: 36,
-fontWeight: 'bold',
-formatter: '{value}%',
-color: 'inherit'
-},
-data: [{
-value: 75
-}]
-}],
-animation: false
-});
-const studyTimeChart = echarts.init(document.getElementById('studyTimeChart'));
-studyTimeChart.setOption({
-xAxis: {
-type: 'category',
-data: mockData.studyTimeData.dates,
-axisLine: {
-show: false
-},
-axisTick: {
-show: false
-}
-},
-yAxis: {
-type: 'value',
-show: false
-},
-grid: {
-top: 0,
-right: 0,
-bottom: 20,
-left: 0
-},
-series: [{
-data: mockData.studyTimeData.hours,
-type: 'line',
-smooth: true,
-symbol: 'none',
-areaStyle: {
-color: {
-type: 'linear',
-x: 0,
-y: 0,
-x2: 0,
-y2: 1,
-colorStops: [{
-offset: 0,
-color: 'rgba(0, 102, 204, 0.2)'
-}, {
-offset: 1,
-color: 'rgba(0, 102, 204, 0)'
-}]
-}
-},
-lineStyle: {
-color: '#0066CC',
-width: 3
-}
-}],
-animation: false
-});
-const activityChart = echarts.init(document.getElementById('activityChart'));
-activityChart.setOption({
-xAxis: {
-type: 'category',
-data: mockData.activityData.months,
-axisLine: {
-lineStyle: {
-color: '#e5e7eb'
-}
-},
-axisTick: {
-show: false
-}
-},
-yAxis: {
-type: 'value',
-splitLine: {
-lineStyle: {
-color: '#e5e7eb'
-}
-},
-axisLine: {
-show: false
-},
-axisTick: {
-show: false
-}
-},
-series: [{
-data: mockData.activityData.values,
-type: 'line',
-smooth: true,
-symbol: 'circle',
-symbolSize: 8,
-lineStyle: {
-color: '#0066CC',
-width: 3
-},
-itemStyle: {
-color: '#0066CC'
-},
-areaStyle: {
-color: {
-type: 'linear',
-x: 0,
-y: 0,
-x2: 0,
-y2: 1,
-colorStops: [{
-offset: 0,
-color: 'rgba(0, 102, 204, 0.2)'
-}, {
-offset: 1,
-color: 'rgba(0, 102, 204, 0)'
-}]
-}
-}
-}],
-animation: false
-});
-window.addEventListener('resize', () => {
-progressChart.resize();
-studyTimeChart.resize();
-activityChart.resize();
-});
+<script type="module">
+import { moodleService } from './services/moodleService.js';
 
-document.addEventListener('DOMContentLoaded', function() {
-  const mobileMenuButton = document.querySelector('.mobile-menu-button');
-  const mobileMenu = document.querySelector('.mobile-menu');
+async function loadProgress() {
+    try {
+        // Get user info and courses
+        const [userInfo, courses] = await Promise.all([
+            moodleService.getUserInfo(),
+            moodleService.getUserCourses()
+        ]);
 
-  mobileMenuButton.addEventListener('click', function() {
-    mobileMenu.classList.toggle('hidden');
-  });
+        // Update user profile
+        document.querySelector('.text-sm.font-medium.text-gray-700').textContent = userInfo.fullname;
+        document.querySelector('img[alt="Usuario"]').src = userInfo.profileimageurl;
+
+        // Calculate total study time (in hours)
+        const totalStudyTime = courses.reduce((total, course) => {
+            return total + (course.timemodified - course.timecreated) / 3600;
+        }, 0);
+
+        // Update study time display
+        document.querySelector('.text-3xl.font-bold.text-gray-900').textContent = 
+            `${Math.floor(totalStudyTime)}h ${Math.round((totalStudyTime % 1) * 60)}m`;
+
+        // Initialize charts with real data
+        const progressChart = echarts.init(document.getElementById('progressChart'));
+        const completedCourses = courses.filter(course => course.progress === 100).length;
+        const inProgressCourses = courses.filter(course => course.progress > 0 && course.progress < 100).length;
+        const notStartedCourses = courses.filter(course => !course.progress).length;
+
+        progressChart.setOption({
+            series: [{
+                type: 'gauge',
+                startAngle: 180,
+                endAngle: 0,
+                min: 0,
+                max: 100,
+                splitNumber: 8,
+                radius: '100%',
+                progress: {
+                    show: true,
+                    width: 18
+                },
+                pointer: {
+                    show: false
+                },
+                axisLine: {
+                    lineStyle: {
+                        width: 18,
+                        color: [[courses.length ? completedCourses / courses.length : 0, '#0066CC'], [1, '#e5e7eb']]
+                    }
+                },
+                axisTick: {
+                    show: false
+                },
+                splitLine: {
+                    show: false
+                },
+                axisLabel: {
+                    show: false
+                },
+                title: {
+                    show: false
+                },
+                detail: {
+                    valueAnimation: true,
+                    offsetCenter: [0, 0],
+                    fontSize: 36,
+                    fontWeight: 'bold',
+                    formatter: '{value}%',
+                    color: 'inherit'
+                },
+                data: [{
+                    value: Math.round((completedCourses / courses.length) * 100) || 0
+                }]
+            }]
+        });
+
+        // Update courses in progress section
+        const inProgressCoursesContainer = document.querySelector('.space-y-6');
+        const inProgressCoursesList = courses
+            .filter(course => course.progress > 0 && course.progress < 100)
+            .slice(0, 3);  // Show only top 3
+
+        inProgressCoursesContainer.innerHTML = inProgressCoursesList
+            .map(course => `
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-medium text-gray-900">${course.fullname}</h4>
+                        <span class="text-sm text-primary">${course.progress}%</span>
+                    </div>
+                    <div class="h-2 rounded-full progress-bar" style="--progress: ${course.progress}%"></div>
+                </div>
+            `).join('');
+
+        // Update recent activity
+        const recentActivity = courses
+            .filter(course => course.lastaccess)
+            .sort((a, b) => b.lastaccess - a.lastaccess)
+            .slice(0, 3);
+
+        const activityContainer = document.querySelector('.space-y-4');
+        activityContainer.innerHTML = recentActivity
+            .map(course => `
+                <div class="flex items-start space-x-4">
+                    <div class="w-10 h-10 flex items-center justify-center bg-${course.progress === 100 ? 'green' : 'blue'}-100 rounded-full">
+                        <i class="ri-${course.progress === 100 ? 'checkbox-circle' : 'book-open'}-line text-${course.progress === 100 ? 'green' : 'blue'}-500"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-gray-900">
+                            ${course.progress === 100 ? 'Completaste' : 'Progreso en'} "${course.fullname}"
+                        </h4>
+                        <p class="text-sm text-gray-500">
+                            ${new Date(course.lastaccess * 1000).toLocaleString()}
+                        </p>
+                    </div>
+                </div>
+            `).join('');
+
+    } catch (error) {
+        console.error('Failed to load progress:', error);
+        if (error.message.includes('Failed to fetch')) {
+            window.location.href = 'login.html';
+        }
+    }
+}
+
+// Load progress when page loads
+document.addEventListener('DOMContentLoaded', loadProgress);
+
+// Mobile menu toggle
+document.querySelector('.mobile-menu-button').addEventListener('click', function() {
+    document.querySelector('.mobile-menu').classList.toggle('hidden');
 });
 </script>
 </body>

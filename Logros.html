@@ -279,118 +279,126 @@ tailwind.config={theme:{extend:{colors:{primary:'#3176FF',secondary:'#00B8A9'},b
 </div>
 </main>
 
-<script>
-const mockData = {
-  achievements: {
-    medals: 12,
-    certificates: 8,
-    badges: 15,
-    totalXP: 15750,
-    level: 15,
-    progress: 75,
-    recent: [
-      {
-        title: 'Maestro del Reciclaje',
-        description: 'Completaste todos los módulos del curso de gestión de residuos',
-        date: '14 Mar 2025',
-        xp: 500,
-        type: 'medal'
-      },
-      {
-        title: 'Certificado en Energías Renovables',
-        description: 'Obtuviste la certificación avanzada en energías renovables',
-        date: '10 Mar 2025',
-        xp: 1000,
-        type: 'certificate'
-      },
-      {
-        title: 'Líder en Huella de Carbono',
-        description: 'Redujiste exitosamente la huella de carbono en tu área',
-        date: '5 Mar 2025',
-        xp: 750,
-        type: 'badge'
-      }
-    ],
-    upcoming: [
-      {
-        title: 'Experto en Biodiversidad',
-        description: 'Completa el curso avanzado de biodiversidad',
-        progress: 75
-      },
-      {
-        title: 'Innovador Sostenible',
-        description: 'Propón 3 iniciativas de sustentabilidad',
-        progress: 30
-      }
-    ],
-    distribution: {
-      'Medallas': 12,
-      'Certificados': 8,
-      'Insignias': 15
-    }
-  },
-  ranking: [
-    {
-      name: 'Ana Martínez',
-      xp: 18500,
-      position: 1
-    },
-    {
-      name: 'Carlos Rodríguez',
-      xp: 15750,
-      position: 2
-    },
-    {
-      name: 'Miguel López',
-      xp: 14200,
-      position: 3
-    }
-  ]
-};
+<script type="module">
+import { moodleService } from './services/moodleService.js';
 
-const chartDom = document.getElementById('achievementsChart');
-const myChart = echarts.init(chartDom);
-const option = {
-  animation: false,
-  tooltip: {
-    trigger: 'item'
-  },
-  series: [
-    {
-      type: 'pie',
-      radius: ['50%', '70%'],
-      data: [
-        { value: 12, name: 'Medallas', itemStyle: { color: 'rgba(87, 181, 231, 1)' } },
-        { value: 8, name: 'Certificados', itemStyle: { color: 'rgba(141, 211, 199, 1)' } },
-        { value: 15, name: 'Insignias', itemStyle: { color: 'rgba(251, 191, 114, 1)' } }
-      ],
-      label: {
-        show: true,
-        position: 'outside',
-        formatter: '{b}: {c}'
-      },
-      emphasis: {
-        itemStyle: {
-          shadowBlur: 10,
-          shadowOffsetX: 0,
-          shadowColor: 'rgba(0, 0, 0, 0.5)'
+async function loadAchievements() {
+    try {
+        // Get user info and courses
+        const [userInfo, courses] = await Promise.all([
+            moodleService.getUserInfo(),
+            moodleService.getUserCourses()
+        ]);
+
+        // Update user profile
+        document.querySelector('.text-sm.font-medium.text-gray-700').textContent = userInfo.fullname;
+        document.querySelector('img[alt="Usuario"]').src = userInfo.profileimageurl;
+
+        // Calculate achievements
+        const completedCourses = courses.filter(course => course.progress === 100);
+        const totalXP = completedCourses.length * 1000; // 1000 XP per completed course
+        const level = Math.floor(totalXP / 1000); // 1 level per 1000 XP
+
+        // Update level and XP display
+        document.querySelector('.text-3xl.font-bold.text-gray-900').textContent = `Nivel ${level}`;
+        document.querySelector('.text-2xl.font-bold.text-primary').textContent = `${totalXP} XP`;
+
+        // Calculate progress ring
+        const progressRing = document.querySelector('.progress-ring circle:last-child');
+        const circumference = 2 * Math.PI * 34; // r = 34
+        const progress = (totalXP % 1000) / 1000;
+        progressRing.style.strokeDasharray = circumference;
+        progressRing.style.strokeDashoffset = circumference * (1 - progress);
+
+        // Update achievement counts
+        const medals = completedCourses.length;
+        const certificates = Math.floor(completedCourses.length / 3); // 1 certificate per 3 completed courses
+        const badges = completedCourses.reduce((total, course) => 
+            total + (course.completiondata?.completions?.length || 0), 0);
+
+        document.querySelectorAll('.text-2xl.font-bold.text-primary').forEach((el, index) => {
+            if (index === 1) el.textContent = medals;
+            if (index === 2) el.textContent = certificates;
+            if (index === 3) el.textContent = badges;
+        });
+
+        // Update recent achievements
+        const recentAchievements = courses
+            .filter(course => course.progress === 100)
+            .sort((a, b) => b.timemodified - a.timemodified)
+            .slice(0, 3);
+
+        const achievementsContainer = document.querySelector('.space-y-6');
+        achievementsContainer.innerHTML = recentAchievements
+            .map(course => `
+                <div class="flex items-start space-x-4">
+                    <div class="w-12 h-12 flex items-center justify-center bg-yellow-100 rounded-full shrink-0">
+                        <i class="ri-medal-line text-yellow-500 ri-xl"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-medium text-gray-900">Curso Completado: ${course.fullname}</h4>
+                            <span class="text-sm text-gray-500">
+                                ${new Date(course.timemodified * 1000).toLocaleDateString()}
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">${course.summary}</p>
+                        <div class="flex items-center mt-2">
+                            <i class="ri-star-fill text-yellow-400 mr-1"></i>
+                            <span class="text-sm text-gray-500">1000 XP</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+        // Update achievements chart
+        const chartDom = document.getElementById('achievementsChart');
+        const myChart = echarts.init(chartDom);
+        const option = {
+            animation: false,
+            tooltip: {
+                trigger: 'item'
+            },
+            series: [
+                {
+                    type: 'pie',
+                    radius: ['50%', '70%'],
+                    data: [
+                        { value: medals, name: 'Medallas', itemStyle: { color: 'rgba(87, 181, 231, 1)' } },
+                        { value: certificates, name: 'Certificados', itemStyle: { color: 'rgba(141, 211, 199, 1)' } },
+                        { value: badges, name: 'Insignias', itemStyle: { color: 'rgba(251, 191, 114, 1)' } }
+                    ],
+                    label: {
+                        show: true,
+                        position: 'outside',
+                        formatter: '{b}: {c}'
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        myChart.setOption(option);
+
+    } catch (error) {
+        console.error('Failed to load achievements:', error);
+        if (error.message.includes('Failed to fetch')) {
+            window.location.href = 'login.html';
         }
-      }
     }
-  ]
-};
-myChart.setOption(option);
-window.addEventListener('resize', () => {
-  myChart.resize();
-});
+}
 
-document.addEventListener('DOMContentLoaded', function() {
-  const mobileMenuButton = document.querySelector('.mobile-menu-button');
-  const mobileMenu = document.querySelector('.mobile-menu');
+// Load achievements when page loads
+document.addEventListener('DOMContentLoaded', loadAchievements);
 
-  mobileMenuButton.addEventListener('click', function() {
-    mobileMenu.classList.toggle('hidden');
-  });
+// Mobile menu toggle
+document.querySelector('.mobile-menu-button').addEventListener('click', function() {
+    document.querySelector('.mobile-menu').classList.toggle('hidden');
 });
 </script>
 </body>
