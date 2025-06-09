@@ -1,0 +1,2092 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 1: ¿Qué es el cambio climático?</title>
+<script>
+// Check for saved theme preference before any content loads
+(function() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+    }
+})();
+
+// Check if user is logged in
+const username = localStorage.getItem('username');
+if (!username) {
+    window.location.href = 'login.html';
+}
+
+// Update user information
+document.addEventListener('DOMContentLoaded', function() {
+    const username = localStorage.getItem('username');
+    if (username) {
+        // Update user profile - only target elements in the user profile section
+        const userElements = document.querySelectorAll('.flex.items-center.space-x-3 .text-sm.font-medium.text-gray-700');
+        userElements.forEach(element => {
+            element.textContent = username;
+        });
+        
+        // Update user avatar - only target elements in the user profile section
+        const userImages = document.querySelectorAll('.flex.items-center.space-x-3 img[alt="Usuario"]');
+        const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=3176FF&color=fff`;
+        userImages.forEach(img => {
+            img.src = avatarUrl;
+            img.alt = username;
+        });
+    }
+});
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+    darkMode: 'class',
+    theme: {
+        extend: {
+            colors: {
+                primary: '#3b82f6',
+                secondary: '#10b981'
+            },
+            borderRadius: {
+                'none': '0px',
+                'sm': '4px',
+                DEFAULT: '8px',
+                'md': '12px',
+                'lg': '16px',
+                'xl': '20px',
+                '2xl': '24px',
+                '3xl': '32px',
+                'full': '9999px',
+                'button': '8px'
+            }
+        }
+    }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+:root {
+    color-scheme: light dark;
+    --header-height: 3rem;
+    --progress-height: 2.5rem;
+    --nav-bottom-height: 4rem;
+    --top-offset: 8.5rem;
+}
+
+.page {
+    position: absolute;
+    width: 100%;
+    height: calc(100vh - var(--top-offset) - var(--nav-bottom-height) - 2rem);
+    opacity: 0;
+    transform: translateX(30px);
+    transition: all 0.4s ease-out;
+    visibility: hidden;
+    overflow-y: auto;
+    padding: 1rem;
+    box-sizing: border-box;
+    left: 0;
+    top: 0;
+}
+
+.page.active {
+    opacity: 1;
+    transform: translateX(0);
+    visibility: visible;
+}
+
+.page.hidden {
+    visibility: hidden;
+}
+
+/* Simplify the animations */
+.page.next-enter {
+    transform: translateX(30px);
+    opacity: 0;
+}
+
+.page.prev-enter {
+    transform: translateX(-30px);
+    opacity: 0;
+}
+
+.page.next-exit {
+    transform: translateX(-30px);
+    opacity: 0;
+}
+
+.page.prev-exit {
+    transform: translateX(30px);
+    opacity: 0;
+}
+
+.card-container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    overflow: visible; /* Allow cards to animate outside */
+}
+
+.card-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden; /* Prevent content overflow */
+}
+
+.card-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+    box-sizing: border-box;
+}
+
+#mainContent {
+    padding-top: var(--top-offset);
+    padding-bottom: var(--nav-bottom-height);
+    min-height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden; /* Hide overflow at the wrapper level */
+}
+
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f8fafc;
+    transition: background-color 0.3s ease;
+}
+body.dark {
+    background-color: #111827;
+    color: #e5e7eb;
+}
+.dark .bg-white {
+    background-color: #1f2937;
+}
+.dark .text-gray-800 {
+    color: #f3f4f6;
+}
+.dark .text-gray-600 {
+    color: #d1d5db;
+}
+.dark .text-gray-700 {
+    color: #e5e7eb;
+}
+.dark .text-gray-500 {
+    color: #9ca3af;
+}
+.dark .border-gray-200 {
+    border-color: rgba(17, 24, 39, 0.7);
+}
+.dark .bg-gray-50 {
+    background-color: #111827;
+}
+.dark .bg-blue-50 {
+    background-color: #1e3a8a;
+}
+.dark .bg-orange-50 {
+    background-color: #7c2d12;
+}
+.dark .bg-yellow-50 {
+    background-color: #713f12;
+}
+.dark .bg-red-50 {
+    background-color: #7f1d1d;
+}
+.dark .bg-purple-50 {
+    background-color: #4c1d95;
+}
+.dark .bg-green-50 {
+    background-color: #14532d;
+}
+.dark .bg-gray-100 {
+    background-color: #374151;
+}
+.dark .border-gray-300 {
+    border-color: #374151;
+}
+.dark .shadow-sm {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+}
+.dark .bg-primary {
+    background-color: #1d4ed8;
+}
+.dark .text-primary {
+    color: #60a5fa;
+}
+.dark .bg-primary\/10 {
+    background-color: rgba(29, 78, 216, 0.1);
+}
+.dark .bg-primary\/90 {
+    background-color: rgba(29, 78, 216, 0.9);
+}
+.dark .bg-gray-200 {
+    background-color: #374151;
+}
+.dark .text-gray-900 {
+    color: #f3f4f6;
+}
+.dark .border-gray-300 {
+    border-color: #4b5563;
+}
+.dark .hover\:bg-gray-200:hover {
+    background-color: #374151;
+}
+.dark .hover\:text-gray-900:hover {
+    color: #f3f4f6;
+}
+.dark .hover\:bg-primary\/90:hover {
+    background-color: rgba(29, 78, 216, 0.9);
+}
+.dark .hover\:text-primary:hover {
+    color: #60a5fa;
+}
+.dark .bg-yellow-100 {
+    background-color: #713f12;
+}
+.dark .text-yellow-500 {
+    color: #f59e0b;
+}
+.dark .bg-blue-100 {
+    background-color: #1e3a8a;
+}
+.dark .text-blue-500 {
+    color: #60a5fa;
+}
+.dark .bg-green-100 {
+    background-color: #14532d;
+}
+.dark .text-green-500 {
+    color: #34d399;
+}
+.dark .bg-purple-100 {
+    background-color: #4c1d95;
+}
+.dark .text-purple-500 {
+    color: #a78bfa;
+}
+.dark .bg-red-100 {
+    background-color: #7f1d1d;
+}
+.dark .text-red-500 {
+    color: #f87171;
+}
+.dark .bg-indigo-100 {
+    background-color: #312e81;
+}
+.dark .text-indigo-500 {
+    color: #818cf8;
+}
+.dark .bg-teal-100 {
+    background-color: #134e4a;
+}
+.dark .text-teal-500 {
+    color: #2dd4bf;
+}
+.dark .bg-orange-100 {
+    background-color: #7c2d12;
+}
+.dark .text-orange-500 {
+    color: #f97316;
+}
+.dark .text-yellow-400 {
+    color: #fbbf24;
+}
+.dark .bg-gray-200 {
+    background-color: #374151;
+}
+.dark .text-gray-400 {
+    color: #9ca3af;
+}
+.dark .bg-gray-100 {
+    background-color: #374151;
+}
+.dark .text-gray-600 {
+    color: #d1d5db;
+}
+.dark .border-gray-300 {
+    border-color: #4b5563;
+}
+.dark .focus\:ring-primary:focus {
+    --tw-ring-color: rgba(29, 78, 216, 0.5);
+}
+.dark .focus\:border-primary:focus {
+    border-color: #60a5fa;
+}
+.dark .bg-secondary\/10 {
+    background-color: rgba(16, 185, 129, 0.1);
+}
+.dark .text-secondary {
+    color: #34d399;
+}
+.progress-bar::-webkit-progress-bar {
+    background-color: #e5e7eb;
+    border-radius: 9999px;
+}
+.progress-bar::-webkit-progress-value {
+    background-color: #3b82f6;
+    border-radius: 9999px;
+}
+.nav .h-12 {
+    height: var(--header-height);
+}
+.py-1 {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+.custom-checkbox {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #d1d5db;
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.custom-checkbox:checked {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+}
+.custom-checkbox:checked::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M5 13l4 4L19 7' /%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+@media (max-width: 768px) {
+    :root {
+        --header-height: 2.5rem;
+        --progress-height: 2rem;
+    }
+}
+.intro-card {
+    position: absolute;
+    width: 100%;
+    height: calc(100vh - 12rem - 4rem);
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.intro-card.active {
+    opacity: 1;
+    transform: scale(1);
+}
+.intro-card.hidden {
+    opacity: 0;
+    transform: scale(1.2);
+}
+.outro-card {
+    position: absolute;
+    width: 100%;
+    height: calc(100vh - 12rem - 4rem);
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.outro-card.active {
+    opacity: 1;
+    transform: scale(1);
+}
+.outro-card.hidden {
+    opacity: 0;
+    transform: scale(1.2);
+}
+.text-gray-900 {
+    color: #111827;
+}
+.dark .text-gray-900 {
+    color: #f3f4f6;
+}
+.text-black {
+    color: #000000 !important;
+}
+.dark .text-black {
+    color: #f3f4f6 !important;
+}
+.logo-black {
+    display: block;
+}
+.dark .logo-black {
+    display: none;
+}
+.logo-white {
+    display: none;
+}
+.dark .logo-white {
+    display: block;
+}
+.dark .text-secondary {
+    color: #34d399;
+}
+.dark input {
+    color: #f3f4f6;
+    background-color: #1f2937;
+}
+.dark input::placeholder {
+    color: #9ca3af;
+}
+.dark textarea {
+    color: #f3f4f6;
+    background-color: #1f2937;
+}
+.dark textarea::placeholder {
+    color: #9ca3af;
+}
+.dark nav.shadow-sm,
+.dark .bg-white.shadow-sm {
+    border-bottom: 1px solid rgba(17, 24, 39, 0.7);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+}
+.dark #sidebar {
+    border-right: 1px solid rgba(17, 24, 39, 0.7);
+}
+.dark .card-container .bg-white {
+    border: 1px solid rgba(17, 24, 39, 0.7);
+}
+.dark .border-b {
+    border-color: rgba(17, 24, 39, 0.7);
+}
+
+/* Add these styles */
+.card-header {
+    padding: 0.75rem 1.5rem;
+    border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    background-color: rgba(59, 130, 246, 0.05);
+}
+
+.card-header-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.card-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    flex-shrink: 0;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    line-height: 1.2;
+}
+
+.dark .card-header {
+    border-bottom-color: rgba(17, 24, 39, 0.7);
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.dark .card-title {
+    color: #f3f4f6;
+}
+
+/* Add styles for the explanation animation */
+.explanation-box {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.5s ease-out;
+}
+
+.explanation-box.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Add styles for card animations */
+.example-card {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.5s ease-out;
+}
+
+.example-card.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#topSection {
+    opacity: 1;
+    transform: none;
+    transition: none;
+}
+
+#normalSection, #changeSection {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease-out;
+}
+
+#normalSection.show, #changeSection.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Add these styles to your existing styles */
+.drag-item.dragging {
+    opacity: 0.5;
+    transform: scale(0.95);
+}
+
+.drop-zone.can-drop {
+    background-color: rgba(252, 211, 77, 0.2);
+    border-style: solid;
+}
+
+.drop-zone.correct-match {
+    border-color: #34D399;
+    background-color: rgba(52, 211, 153, 0.1);
+}
+
+.drop-zone.wrong-match {
+    border-color: #EF4444;
+    background-color: rgba(239, 68, 68, 0.1);
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Add these styles to your existing styles */
+@media (min-width: 768px) {
+    #questionsContainer.show-results,
+    #dragContainer.show-results {
+        width: 50%;
+        transition: all 0.5s ease-in-out;
+    }
+    
+    #quizResult.show-results,
+    #dragResult.show-results {
+        display: block;
+        width: 50%;
+        opacity: 1;
+        transform: translateX(0);
+        transition: all 0.5s ease-in-out;
+    }
+}
+
+#quizResult,
+#dragResult {
+    transform: translateX(20px);
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+}
+
+#quizResult.show-results,
+#dragResult.show-results {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.card-body > div {
+    height: 100%;
+}
+
+/* Add these to your existing styles */
+.aspect-w-16 {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+}
+
+.aspect-w-16 > * {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+</style>
+</head>
+<body class="bg-gray-50">
+<nav class="bg-white shadow-sm fixed w-full z-[60]">
+<div class="max-w-7xl mx-auto px-4">
+<div class="flex justify-between h-12">
+<div class="flex items-center space-x-4">
+<button id="sidebarToggle" class="md:hidden text-gray-600">
+  <i class="ri-menu-line text-xl"></i>
+</button>
+<a href="index.html" class="flex items-center space-x-2">
+<i class="ri-arrow-left-line text-gray-600"></i>
+<span class="text-gray-600 hidden md:inline">Volver</span>
+</a>
+</div>
+<div class="flex items-center">
+<img src="public/cydsa-logo-black (1).svg" alt="CYDSA Logo" class="h-8 w-auto object-contain logo-black">
+<img src="public/cydsa-logo-white (1).svg" alt="CYDSA Logo" class="h-8 w-auto object-contain logo-white">
+</div>
+<div class="flex items-center space-x-4">
+<div class="flex items-center space-x-3">
+<button id="themeToggle" class="text-gray-600 dark:text-gray-300">
+<i class="ri-sun-line text-xl"></i>
+</button>
+<img class="h-6 w-6 rounded-full object-cover" id="userAvatar" src="" alt="Usuario">
+<span class="text-sm font-medium text-gray-700 dark:text-gray-300 hidden md:inline" id="userName"></span>
+</div>
+</div>
+</div>
+</div>
+</nav>
+
+<div class="bg-white shadow-sm fixed w-full top-12 z-[50]">
+<div class="max-w-7xl mx-auto px-4 py-1 md:py-2">
+<div class="flex items-center justify-between">
+<div class="flex-1">
+<div class="flex items-center space-x-4">
+<h1 class="text-sm md:text-lg font-bold text-black dark:text-gray-100">Módulo 1: ¿Qué es el cambio climático?</h1>
+</div>
+<div class="mt-0.5 md:mt-1">
+<progress id="progressBar" class="progress-bar w-full h-1 md:h-1.5" value="0" max="100"></progress>
+<div class="flex justify-between mt-0.5 md:mt-1 text-xs text-gray-500">
+<span id="progressText">0% completado</span>
+<span id="timeDisplay">15 min</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="flex">
+<div id="sidebar" class="w-64 bg-white shadow-sm overflow-y-auto fixed h-[calc(100vh-8.5rem)] top-[8.5rem] transition-transform duration-300 transform -translate-x-full md:translate-x-0 z-[40]">
+<div class="p-3">
+<div class="space-y-2">
+<div class="border-b pb-1">
+<h3 class="font-medium text-sm text-gray-900">Contenido del Curso</h3>
+</div>
+<div class="space-y-1">
+<div class="flex items-center text-primary bg-blue-50 p-1.5 rounded text-sm">
+<i class="ri-play-circle-fill mr-2"></i>
+<span>1. ¿Qué es el cambio climático?</span>
+</div>
+<div class="flex items-center text-gray-500 p-2 rounded">
+<i class="ri-lock-line mr-2"></i>
+<span class="text-sm">2. ¿Por qué está cambiando el clima?</span>
+</div>
+<div class="flex items-center text-gray-500 p-2 rounded">
+<i class="ri-lock-line mr-2"></i>
+<span class="text-sm">3. ¿Qué pasa si no hacemos nada?</span>
+</div>
+<div class="flex items-center text-gray-500 p-2 rounded">
+<i class="ri-lock-line mr-2"></i>
+<span class="text-sm">4. ¿Qué están haciendo los gobiernos?</span>
+</div>
+<div class="flex items-center text-gray-500 p-2 rounded">
+<i class="ri-lock-line mr-2"></i>
+<span class="text-sm">5. ¿Cómo se mide la contaminación?</span>
+</div>
+<div class="flex items-center text-gray-500 p-2 rounded">
+<i class="ri-lock-line mr-2"></i>
+<span class="text-sm">6. ¿Cómo podemos contaminar menos?</span>
+</div>
+<div class="flex items-center text-gray-500 p-2 rounded">
+<i class="ri-lock-line mr-2"></i>
+<span class="text-sm">7. ¿Cómo podemos adaptarnos?</span>
+</div>
+<div class="flex items-center text-gray-500 p-2 rounded">
+<i class="ri-lock-line mr-2"></i>
+<span class="text-sm">8. ¿Qué es el mercado de carbono?</span>
+</div>
+<div class="flex items-center text-gray-500 p-2 rounded">
+<i class="ri-lock-line mr-2"></i>
+<span class="text-sm">9. ¿Qué está haciendo CYDSA?</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="mainContent" class="flex-1 md:ml-64 transition-all duration-300 pt-[8.5rem]">
+<div class="max-w-4xl mx-auto px-4 md:px-8 py-4 bg-gray-50">
+<div class="card-container">
+<!-- Intro Card -->
+<div id="intro-card" class="bg-white rounded-lg shadow-sm page active">
+<div class="card-content">
+        <div class="flex flex-col items-center justify-center h-full p-4 md:p-8 text-center">
+            <div class="w-16 h-16 md:w-24 md:h-24 flex items-center justify-center bg-red-100 text-red-600 rounded-full mb-4 md:mb-6">
+                <i class="ri-alert-line text-2xl md:text-4xl"></i>
+            </div>
+            <h2 class="text-xl md:text-3xl font-bold text-gray-800 mb-2 md:mb-4">Módulo 3: ¿Qué pasa si no hacemos nada?</h2>
+            <p class="text-base md:text-xl text-gray-600 mb-4 md:mb-8">Exploraremos las consecuencias del cambio climático si no tomamos acción ahora</p>
+            <div class="flex items-center space-x-2 text-sm md:text-base text-gray-500">
+                <i class="ri-time-line"></i>
+                <span>Duración: 15 minutos</span>
+            </div>
+            <button onclick="nextCard()" class="mt-4 md:mt-8 px-4 md:px-6 py-2 md:py-3 bg-primary text-white text-sm md:text-base font-medium rounded-lg hover:bg-blue-600 transition-colors">
+                Comenzar
+            </button>
+        </div>
+</div>
+</div>
+
+<!-- Card 1: Introduction -->
+<div id="card1" class="bg-white rounded-lg shadow-sm page hidden">
+<div class="card-content">
+        <div class="card-header !py-1 md:!py-3">
+            <div class="card-header-content">
+                <div class="card-icon bg-red-100 text-red-600 w-6 h-6 md:w-10 md:h-10">
+                    <i class="ri-temp-hot-line text-base md:text-xl"></i>
+                </div>
+                <h2 class="card-title text-base md:text-lg">Ya estamos sintiendo los cambios</h2>
+            </div>
+        </div>
+        <div class="card-body !p-1.5 md:!p-4">
+            <div class="prose max-w-none space-y-3 md:space-y-6">
+                <div class="bg-red-50 p-4 md:p-8 rounded-xl">
+                    <p class="text-base md:text-xl font-medium text-gray-800 leading-relaxed">
+                        <span class="block mb-2 md:mb-4 text-red-600">¿Te has dado cuenta que el calor se siente más fuerte que antes?</span>
+                        ¿O que las frutas y verduras están más caras porque no llovió lo suficiente? Estas son señales de que el clima ya nos está afectando.
+                    </p>
+                </div>
+                <div id="definitionBox" class="bg-orange-100 p-4 md:p-8 rounded-xl opacity-0 translate-y-4 transition-all duration-500">
+                    <div class="flex items-center justify-center">
+                        <i class="ri-error-warning-line text-2xl md:text-4xl text-orange-600 mr-2 md:mr-4"></i>
+                        <p class="text-xl md:text-3xl font-bold text-orange-600">
+                            Si no cambiamos, el problema empeorará.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+</div>
+
+<!-- Card 2: Main Impacts -->
+<div id="card2" class="bg-white rounded-lg shadow-sm page hidden">
+<div class="card-content">
+        <div class="card-header !py-1 md:!py-3">
+            <div class="card-header-content">
+                <div class="card-icon bg-yellow-100 text-yellow-600 w-6 h-6 md:w-10 md:h-10">
+                    <i class="ri-flood-line text-base md:text-xl"></i>
+                </div>
+                <h2 class="card-title text-base md:text-lg">Principales Impactos</h2>
+            </div>
+        </div>
+        <div class="card-body !p-1.5 md:!p-4">
+            <div class="prose max-w-3xl mx-auto w-full space-y-3 md:space-y-8">
+                <div class="bg-yellow-50 p-4 md:p-8 rounded-xl shadow-sm">
+                    <h3 class="text-lg md:text-2xl font-bold text-gray-800 mb-2 md:mb-6">Los expertos advierten sobre:</h3>
+                    <div id="impactsGrid" class="grid grid-cols-2 md:grid-cols-2 gap-4">
+                        <div class="example-card bg-white p-4 rounded-xl shadow-sm">
+                            <div class="flex items-center mb-2">
+                                <i class="ri-plant-line text-2xl text-red-500 mr-2"></i>
+                                <h4 class="font-semibold text-gray-800">Biodiversidad</h4>
+                            </div>
+                            <p class="text-sm text-gray-700">Animales y plantas pueden desaparecer</p>
+                        </div>
+                        <div class="example-card bg-white p-4 rounded-xl shadow-sm">
+                            <div class="flex items-center mb-2">
+                                <i class="ri-thunderstorms-line text-2xl text-yellow-500 mr-2"></i>
+                                <h4 class="font-semibold text-gray-800">Clima extremo</h4>
+                            </div>
+                            <p class="text-sm text-gray-700">Más tormentas e incendios</p>
+                        </div>
+                        <div class="example-card bg-white p-4 rounded-xl shadow-sm">
+                            <div class="flex items-center mb-2">
+                                <i class="ri-water-flash-line text-2xl text-blue-500 mr-2"></i>
+                                <h4 class="font-semibold text-gray-800">Inundaciones</h4>
+                            </div>
+                            <p class="text-sm text-gray-700">Ciudades costeras en riesgo</p>
+                        </div>
+                        <div class="example-card bg-white p-4 rounded-xl shadow-sm">
+                            <div class="flex items-center mb-2">
+                                <i class="ri-money-dollar-circle-line text-2xl text-green-500 mr-2"></i>
+                                <h4 class="font-semibold text-gray-800">Economía</h4>
+                            </div>
+                            <p class="text-sm text-gray-700">Daños a nuestra economía</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+</div>
+
+<!-- Card 3: Direct Effects -->
+<div id="card3" class="bg-white rounded-lg shadow-sm page hidden">
+<div class="card-content">
+        <div class="card-header !py-1 md:!py-3">
+            <div class="card-header-content">
+                <div class="card-icon bg-red-100 text-red-600 w-6 h-6 md:w-10 md:h-10">
+                    <i class="ri-heart-pulse-line text-base md:text-xl"></i>
+                </div>
+                <h2 class="card-title text-base md:text-lg">Efectos en nuestra vida diaria</h2>
+            </div>
+        </div>
+        <div class="card-body !p-1.5 md:!p-4">
+            <div class="prose max-w-3xl mx-auto w-full space-y-3 md:space-y-8">
+                <div class="bg-red-50 p-4 md:p-8 rounded-xl shadow-sm">
+                    <h3 class="text-lg md:text-2xl font-bold text-gray-800 mb-2 md:mb-6">¿Cómo nos afecta?</h3>
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-xl shadow-sm">
+                            <div class="flex items-start space-x-3">
+                                <i class="ri-seedling-line text-2xl text-green-500 mt-1"></i>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-1">Alimentos</h4>
+                                    <p class="text-gray-700">"Nuestros alimentos no crecen sin lluvia. Si no llueve en el campo, no hay maíz. Y si no hay maíz, sube el precio de la tortilla."</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm">
+                            <div class="flex items-start space-x-3">
+                                <i class="ri-sun-foggy-line text-2xl text-yellow-500 mt-1"></i>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-1">Salud</h4>
+                                    <p class="text-gray-700">"Con calor extremo, las personas se enferman más, especialmente los adultos mayores y niños."</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm">
+                            <div class="flex items-start space-x-3">
+                                <i class="ri-drop-line text-2xl text-blue-500 mt-1"></i>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-1">Agua</h4>
+                                    <p class="text-gray-700">"Las sequías hacen que haya menos agua limpia disponible para todos."</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+</div>
+
+<!-- Card 4: Health Impacts -->
+<div id="card4" class="bg-white rounded-lg shadow-sm page hidden">
+<div class="card-content">
+        <div class="card-header !py-1 md:!py-3">
+            <div class="card-header-content">
+                <div class="card-icon bg-red-100 text-red-600 w-6 h-6 md:w-10 md:h-10">
+                    <i class="ri-hospital-line text-base md:text-xl"></i>
+                </div>
+                <h2 class="card-title text-base md:text-lg">Impacto en la Salud</h2>
+            </div>
+        </div>
+        <div class="card-body !p-1.5 md:!p-4">
+            <div class="prose max-w-3xl mx-auto w-full space-y-3 md:space-y-6">
+                <div class="bg-red-50 p-4 md:p-8 rounded-xl shadow-sm">
+                    <h3 class="text-lg md:text-2xl font-bold text-gray-800 mb-4">Riesgos para la Salud</h3>
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-xl shadow-sm">
+                            <div class="flex items-start space-x-3">
+                                <i class="ri-temp-hot-line text-2xl text-red-500 mt-1"></i>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Calor Extremo</h4>
+                                    <ul class="list-disc pl-4 space-y-2 text-gray-700">
+                                        <li>Golpes de calor y deshidratación</li>
+                                        <li>Afecta especialmente a niños y adultos mayores</li>
+                                        <li>Aumenta las enfermedades respiratorias</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm">
+                            <div class="flex items-start space-x-3">
+                                <i class="ri-virus-line text-2xl text-purple-500 mt-1"></i>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Enfermedades</h4>
+                                    <ul class="list-disc pl-4 space-y-2 text-gray-700">
+                                        <li>Propagación de enfermedades tropicales</li>
+                                        <li>Aumento de alergias</li>
+                                        <li>Problemas de salud mental por eventos extremos</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+</div>
+
+<!-- Card 5: Food Security -->
+<div id="card5" class="bg-white rounded-lg shadow-sm page hidden">
+<div class="card-content">
+        <div class="card-header !py-1 md:!py-3">
+            <div class="card-header-content">
+                <div class="card-icon bg-orange-100 text-orange-600 w-6 h-6 md:w-10 md:h-10">
+                    <i class="ri-restaurant-line text-base md:text-xl"></i>
+                </div>
+                <h2 class="card-title text-base md:text-lg">Seguridad Alimentaria</h2>
+            </div>
+        </div>
+        <div class="card-body !p-1.5 md:!p-4">
+            <div class="prose max-w-3xl mx-auto w-full space-y-3 md:space-y-6">
+                <div class="bg-orange-50 p-4 md:p-8 rounded-xl shadow-sm">
+                    <h3 class="text-lg md:text-2xl font-bold text-gray-800 mb-4">Impacto en los Alimentos</h3>
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-xl shadow-sm">
+                            <div class="flex items-start space-x-3">
+                                <i class="ri-plant-line text-2xl text-green-500 mt-1"></i>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Producción Agrícola</h4>
+                                    <ul class="list-disc pl-4 space-y-2 text-gray-700">
+                                        <li>Menor rendimiento de cultivos por sequías</li>
+                                        <li>Pérdida de cosechas por eventos extremos</li>
+                                        <li>Cambios en las temporadas de siembra</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm">
+                            <div class="flex items-start space-x-3">
+                                <i class="ri-money-dollar-circle-line text-2xl text-yellow-500 mt-1"></i>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Precios y Disponibilidad</h4>
+                                    <ul class="list-disc pl-4 space-y-2 text-gray-700">
+                                        <li>Aumento en el precio de alimentos básicos</li>
+                                        <li>Escasez de ciertos productos</li>
+                                        <li>Mayor dependencia de importaciones</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+</div>
+
+<!-- Card 6: Economic Impact -->
+<div id="card6" class="bg-white rounded-lg shadow-sm page hidden">
+<div class="card-content">
+        <div class="card-header !py-1 md:!py-3">
+            <div class="card-header-content">
+                <div class="card-icon bg-green-100 text-green-600 w-6 h-6 md:w-10 md:h-10">
+                    <i class="ri-funds-line text-base md:text-xl"></i>
+                </div>
+                <h2 class="card-title text-base md:text-lg">Impacto Económico</h2>
+            </div>
+        </div>
+        <div class="card-body !p-1.5 md:!p-4">
+            <div class="prose max-w-3xl mx-auto w-full space-y-3 md:space-y-6">
+                <div class="bg-green-50 p-4 md:p-8 rounded-xl shadow-sm">
+                    <h3 class="text-lg md:text-2xl font-bold text-gray-800 mb-4">Consecuencias Económicas</h3>
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-xl shadow-sm">
+                            <div class="flex items-start space-x-3">
+                                <i class="ri-building-line text-2xl text-blue-500 mt-1"></i>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Infraestructura</h4>
+                                    <ul class="list-disc pl-4 space-y-2 text-gray-700">
+                                        <li>Daños a edificios y carreteras</li>
+                                        <li>Costos de reconstrucción tras desastres</li>
+                                        <li>Necesidad de adaptación de infraestructura</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm">
+                            <div class="flex items-start space-x-3">
+                                <i class="ri-briefcase-line text-2xl text-red-500 mt-1"></i>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Negocios y Empleos</h4>
+                                    <ul class="list-disc pl-4 space-y-2 text-gray-700">
+                                        <li>Pérdidas en agricultura y turismo</li>
+                                        <li>Interrupción de cadenas de suministro</li>
+                                        <li>Mayores costos de operación</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+</div>
+
+<!-- Card 7: Interactive Activity -->
+<div id="card7" class="bg-white rounded-lg shadow-sm page hidden">
+<div class="card-content">
+        <div class="card-header !py-1 md:!py-2">
+            <div class="card-header-content">
+                <div class="card-icon bg-yellow-100 text-yellow-600 w-6 h-6 md:w-8 md:h-8">
+                    <i class="ri-drag-drop-line text-base md:text-lg"></i>
+                </div>
+                <h2 class="card-title text-base md:text-lg">Relaciona los Impactos</h2>
+            </div>
+        </div>
+        <div class="card-body !p-1 md:!p-2">
+            <div class="md:flex md:gap-4 relative">
+                <div id="dragContainer" class="transition-all duration-500 ease-in-out md:flex-1">
+                    <div class="bg-yellow-50 p-1.5 md:p-3 rounded-lg">
+                        <p class="text-gray-700 mb-1.5 md:mb-3 text-xs md:text-base">Relaciona cada impacto con su consecuencia correspondiente.</p>
+                        <div class="flex flex-col space-y-1.5 md:space-y-3">
+                            <!-- Matching Row 1 -->
+                            <div class="flex items-center space-x-1.5 md:space-x-3">
+            <div class="prose max-w-none space-y-2 md:space-y-4">
+                <div class="bg-gray-50 p-2 md:p-4 rounded-xl">
+                    <div class="aspect-w-16 aspect-h-9">
+                        <iframe 
+                            src="https://www.youtube.com/embed/weIBPwFuYwA" 
+                            title="Video sobre el cambio climático" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen
+                            class="w-full h-full rounded-lg shadow-sm">
+                        </iframe>
+</div>
+</div>
+                <div class="bg-blue-50 p-2 md:p-4 rounded-xl">
+                    <div class="flex items-start space-x-2">
+                        <i class="ri-information-line text-blue-500 text-lg mt-0.5"></i>
+                        <p class="text-sm md:text-base text-gray-700">
+                            Este video nos ayuda a entender mejor cómo el cambio climático está afectando nuestro planeta y qué podemos hacer al respecto.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Card 8: Normal vs Climate Change -->
+<div id="card8" class="bg-white rounded-lg shadow-sm page hidden">
+<div class="card-content">
+        <div class="card-header !py-1 md:!py-3">
+            <div class="card-header-content">
+                <div class="card-icon bg-blue-100 text-primary w-6 h-6 md:w-10 md:h-10">
+                    <i class="ri-line-chart-line text-base md:text-xl"></i>
+</div>
+                <h2 class="card-title text-base md:text-lg">Temperatura Global</h2>
+</div>
+</div>
+        <div class="card-body !p-1 md:!p-4">
+            <div class="space-y-2 md:space-y-4">
+                <div id="temperatureChart" class="w-full h-60 md:h-80 bg-gray-50 rounded"></div>
+                <div class="bg-blue-50 p-2 md:p-4 rounded-lg text-xs md:text-base">
+                    <h3 class="font-medium text-gray-800 mb-1 md:mb-2">¿Qué nos muestra esta gráfica?</h3>
+                    <ul class="space-y-1 md:space-y-2">
+<li class="flex items-start">
+                            <i class="ri-information-line text-blue-500 mr-1 md:mr-2 mt-0.5"></i>
+                            <span class="text-xs md:text-sm">La línea muestra cuánto ha cambiado la temperatura global comparada con el promedio de 1951-1980</span>
+</li>
+<li class="flex items-start">
+                            <i class="ri-celsius-line text-blue-500 mr-1 md:mr-2 mt-0.5"></i>
+                            <span class="text-xs md:text-sm">Los valores positivos indican que la temperatura fue más alta que el promedio</span>
+</li>
+<li class="flex items-start">
+                            <i class="ri-error-warning-line text-orange-500 mr-1 md:mr-2 mt-0.5"></i>
+                            <span class="text-xs md:text-sm">El aumento acelerado desde 1980 es evidencia clara del cambio climático</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Card 9: Carbon Footprint Calculator -->
+<div id="card9" class="bg-white rounded-lg shadow-sm page hidden">
+<div class="card-content">
+        <div class="card-header !py-1 md:!py-3">
+            <div class="card-header-content">
+                <div class="card-icon bg-green-100 text-green-600 w-6 h-6 md:w-10 md:h-10">
+                    <i class="ri-footprint-line text-base md:text-xl"></i>
+</div>
+                <h2 class="card-title text-base md:text-lg">Calcula tu huella de carbono</h2>
+</div>
+</div>
+        <div class="card-body !p-1.5 md:!p-4">
+            <div class="space-y-3 md:space-y-6">
+                <div class="bg-green-50 p-3 md:p-6 rounded-lg">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-2 md:mb-4">Calculadora de Huella de Carbono</h3>
+                    <div class="space-y-2 md:space-y-4">
+<div>
+                            <label class="block text-xs md:text-sm font-medium text-gray-700 mb-1">Kilómetros recorridos en auto por semana</label>
+                            <input type="number" id="carKm" class="w-full p-1.5 md:p-2 text-sm md:text-base border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" min="0" placeholder="Ej: 100">
+</div>
+                        <div>
+                            <label class="block text-xs md:text-sm font-medium text-gray-700 mb-1">Horas de electricidad por día</label>
+                            <input type="number" id="electricity" class="w-full p-1.5 md:p-2 text-sm md:text-base border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" min="0" placeholder="Ej: 5">
+</div>
+                        <div>
+                            <label class="block text-xs md:text-sm font-medium text-gray-700 mb-1">Kilogramos de basura por semana</label>
+                            <input type="number" id="waste" class="w-full p-1.5 md:p-2 text-sm md:text-base border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" min="0" placeholder="Ej: 2">
+</div>
+                        <button onclick="calculateFootprint()" class="w-full bg-green-500 text-white py-1.5 md:py-2 px-3 md:px-4 text-sm md:text-base rounded-lg hover:bg-green-600 transition-colors">
+                            Calcular Huella de Carbono
+                        </button>
+</div>
+                </div>
+                <div id="footprintResult" class="bg-white p-3 md:p-6 rounded-lg shadow-sm hidden">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-1 md:mb-2">Tu Huella de Carbono:</h3>
+                    <p id="footprintValue" class="text-xl md:text-2xl font-bold text-green-600 mb-1 md:mb-2"></p>
+                    <p id="footprintMessage" class="text-sm md:text-base text-gray-600"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Card 10: Resources -->
+<div id="card10" class="bg-white rounded-lg shadow-sm page hidden">
+<div class="card-content">
+        <div class="card-header">
+            <div class="card-header-content">
+                <div class="card-icon bg-blue-100 text-primary">
+                    <i class="ri-book-2-line text-xl"></i>
+</div>
+                <h2 class="card-title">Recursos Adicionales</h2>
+</div>
+</div>
+<div class="card-body">
+            <div class="space-y-4">
+                <div class="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                    <h3 class="font-bold mb-2">Sitios web recomendados:</h3>
+                    <ul class="list-disc pl-5">
+                        <li><a href="https://www.un.org/es/climatechange" class="text-blue-500 hover:underline" target="_blank">Naciones Unidas - Cambio Climático</a></li>
+                        <li><a href="https://www.ipcc.ch" class="text-blue-500 hover:underline" target="_blank">IPCC - Panel Intergubernamental sobre Cambio Climático</a></li>
+                        <li><a href="https://climate.nasa.gov" class="text-blue-500 hover:underline" target="_blank">NASA - Cambio Climático</a></li>
+</ul>
+</div>
+                <div class="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                    <h3 class="font-bold mb-2">Documentales:</h3>
+                    <ul class="list-disc pl-5">
+                        <li>Una verdad incómoda (2006)</li>
+                        <li>Before the Flood (2016)</li>
+                        <li>Our Planet (2019)</li>
+                    </ul>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Card 11: Conclusion -->
+<div id="card11" class="bg-white rounded-lg shadow-sm page hidden">
+    <div class="card-content">
+        <div class="card-header !py-1 md:!py-2">
+            <div class="card-header-content">
+                <div class="card-icon bg-green-100 text-green-600 w-6 h-6 md:w-8 md:h-8">
+                    <i class="ri-checkbox-circle-line text-base md:text-lg"></i>
+    </div>
+                <h2 class="card-title text-base md:text-lg">Conclusión</h2>
+    </div>
+    </div>
+        <div class="card-body !p-1 md:!p-2">
+            <div class="space-y-1.5 md:space-y-4">
+                <div class="bg-blue-50 p-2 md:p-4 rounded-xl shadow-sm">
+                    <h3 class="text-lg md:text-2xl font-bold text-gray-800 mb-1 md:mb-3">El cambio climático es:</h3>
+                    <p class="text-base md:text-xl text-gray-700 leading-relaxed">
+                        Cuando el clima de todo el planeta cambia y se queda así.
+                    </p>
+                </div>
+
+                <div class="bg-green-50 p-2 md:p-4 rounded-xl shadow-sm">
+                    <h3 class="text-base md:text-xl font-bold text-gray-800 mb-1.5 md:mb-3">¿Qué podemos hacer?</h3>
+                    <div class="space-y-1.5 md:space-y-2">
+                        <div class="flex items-start space-x-1.5 md:space-x-2">
+                            <i class="ri-check-line text-green-500 text-sm md:text-base mt-0.5"></i>
+                            <p class="text-sm md:text-base text-gray-700">Reducir nuestro consumo de energía</p>
+                        </div>
+                        <div class="flex items-start space-x-1.5 md:space-x-2">
+                            <i class="ri-check-line text-green-500 text-sm md:text-base mt-0.5"></i>
+                            <p class="text-sm md:text-base text-gray-700">Utilizar transporte sostenible</p>
+                        </div>
+                        <div class="flex items-start space-x-1.5 md:space-x-2">
+                            <i class="ri-check-line text-green-500 text-sm md:text-base mt-0.5"></i>
+                            <p class="text-sm md:text-base text-gray-700">Adoptar una dieta más sostenible</p>
+                        </div>
+                        <div class="flex items-start space-x-1.5 md:space-x-2">
+                            <i class="ri-check-line text-green-500 text-sm md:text-base mt-0.5"></i>
+                            <p class="text-sm md:text-base text-gray-700">Reducir, reutilizar y reciclar</p>
+                        </div>
+                        <div class="flex items-start space-x-1.5 md:space-x-2">
+                            <i class="ri-check-line text-green-500 text-sm md:text-base mt-0.5"></i>
+                            <p class="text-sm md:text-base text-gray-700">Apoyar políticas y tecnologías sostenibles</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-yellow-50 p-2 md:p-3 rounded-xl">
+                    <div class="flex items-start space-x-1.5 md:space-x-2">
+                        <i class="ri-lightbulb-line text-yellow-500 text-sm md:text-lg mt-0.5"></i>
+                        <p class="text-sm md:text-base text-gray-600 leading-relaxed">
+                            Recuerda que cada acción cuenta y que juntos podemos marcar la diferencia en la lucha contra el cambio climático.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+<!-- First, add the overlay HTML before the closing body tag -->
+<div id="completionOverlay" class="fixed inset-0 bg-black/50 z-[70] hidden items-center justify-center backdrop-blur-sm">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 md:p-8 max-w-lg w-full mx-4 transform scale-95 opacity-0 transition-all duration-300">
+        <div class="flex flex-col items-center text-center">
+            <div class="w-16 h-16 md:w-24 md:h-24 flex items-center justify-center bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400 rounded-full mb-4 md:mb-6">
+                <i class="ri-medal-line text-2xl md:text-4xl"></i>
+            </div>
+            <h2 class="text-xl md:text-3xl font-bold text-gray-800 dark:text-white mb-2 md:mb-4">¡Felicidades!</h2>
+            <p class="text-base md:text-xl text-gray-600 dark:text-gray-300 mb-4 md:mb-6">Has completado el Módulo 1: ¿Qué es el cambio climático?</p>
+            <div class="flex items-center space-x-2 text-sm md:text-base text-gray-500 dark:text-gray-400 mb-6 md:mb-8">
+                <i class="ri-time-line"></i>
+                <span>Módulo completado</span>
+            </div>
+            <div class="flex flex-col md:flex-row gap-3 w-full">
+                <a href="index.html" class="px-4 md:px-6 py-2 md:py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm md:text-base font-medium rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex items-center justify-center">
+                    <i class="ri-arrow-left-line mr-2"></i>
+    Volver al inicio
+    </a>
+                <a href="Lección2.html" class="px-4 md:px-6 py-2 md:py-3 bg-primary text-white text-sm md:text-base font-medium rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center">
+    Siguiente módulo
+                    <i class="ri-arrow-right-line ml-2"></i>
+    </a>
+    </div>
+    </div>
+    </div>
+    </div>
+
+</div>
+</div>
+</div>
+</div>
+
+<!-- Navigation buttons at the bottom -->
+<div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 z-[50] md:left-64" style="height: 4rem;">
+    <div class="max-w-2xl mx-auto flex justify-between">
+        <button onclick="prevCard()" class="px-4 py-2 border border-gray-300 text-gray-700 font-medium !rounded-button whitespace-nowrap flex items-center text-sm">
+            <div class="w-4 h-4 flex items-center justify-center mr-1">
+                <i class="ri-arrow-left-line"></i>
+            </div>
+            Anterior
+        </button>
+        <button onclick="nextCard()" class="px-4 py-2 bg-primary text-white font-medium !rounded-button whitespace-nowrap flex items-center text-sm">
+            Siguiente
+            <div class="w-4 h-4 flex items-center justify-center ml-1">
+                <i class="ri-arrow-right-line"></i>
+            </div>
+        </button>
+</div>
+</div>
+
+<script>
+// Add these variables at the top
+let currentCard = -1;
+let hasShownCard1 = false;
+let hasShownCard2Explanation = false;
+let hasShownCard3Examples = false;
+let hasShownCard4Causes = false;
+let hasShownCard5Sections = false;
+const totalCards = 11; // Adjusted to the correct number of cards
+let chart = null; // Initialize chart variable
+
+// Initialize cards on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize all cards
+    const cards = [
+        'intro-card',
+        'card1', 'card2', 'card3', 'card4', 'card5', 'card6',
+        'card7', 'card8', 'card9', 'card10', 'card11'  // Added card11
+    ];
+
+    // Hide all cards except intro
+    cards.forEach((cardId, index) => {
+        const card = document.getElementById(cardId);
+        if (card) {
+            if (index === 0) {
+                // Show intro card
+                card.classList.add('active');
+                card.classList.remove('hidden');
+            } else {
+                // Hide all other cards
+            card.classList.add('hidden');
+            card.classList.remove('active');
+        }
+        } else {
+            console.error(`Card ${cardId} not found!`);
+        }
+    });
+    
+    // Initialize progress
+    updateProgress();
+    updateTime();
+
+    // Initialize chart with NASA GISS data
+    const chartElement = document.getElementById('temperatureChart');
+    if (chartElement) {
+        chart = echarts.init(chartElement);
+    const option = {
+            title: {
+                text: 'Anomalía de Temperatura Global (°C)',
+                left: 'center',
+                top: 0,
+                textStyle: {
+                    color: document.body.classList.contains('dark') ? '#e5e7eb' : '#111827'
+                }
+            },
+        tooltip: {
+            trigger: 'axis',
+                formatter: function(params) {
+                    return `${params[0].name}: ${params[0].value.toFixed(2)}°C`;
+                },
+            backgroundColor: document.body.classList.contains('dark') ? '#1f2937' : '#ffffff',
+            borderColor: document.body.classList.contains('dark') ? '#374151' : '#e5e7eb',
+            textStyle: {
+                color: document.body.classList.contains('dark') ? '#e5e7eb' : '#111827'
+            }
+        },
+            grid: {
+                left: '12%',  // Reduced left margin on mobile
+                right: '4%',  // Reduced right margin on mobile
+                bottom: '12%',
+                top: '15%',
+                containLabel: true  // This ensures labels are included in the grid size
+        },
+        xAxis: {
+            type: 'category',
+                data: ['1880', '1890', '1900', '1910', '1920', '1930', '1940', '1950', '1960', '1970', '1980', '1990', '2000', '2010', '2020', '2023'],
+                name: 'Año',
+                nameLocation: 'middle',
+                nameGap: 35,
+                nameTextStyle: {
+                color: document.body.classList.contains('dark') ? '#9ca3af' : '#6b7280'
+            },
+                axisLabel: {
+                    fontSize: 10,  // Smaller font on mobile
+                    color: document.body.classList.contains('dark') ? '#9ca3af' : '#6b7280',
+                    rotate: 45,
+                    interval: window.innerWidth < 768 ? 2 : 0  // Show fewer labels on mobile
+            },
+            axisLine: {
+                lineStyle: {
+                    color: document.body.classList.contains('dark') ? '#374151' : '#e5e7eb'
+                }
+            }
+        },
+        yAxis: {
+            type: 'value',
+                name: 'Diferencia de temperatura (°C)',
+                nameLocation: 'middle',
+                nameGap: 50,
+            nameTextStyle: {
+                    fontSize: window.innerWidth < 768 ? 10 : 12,  // Smaller font on mobile
+                    color: document.body.classList.contains('dark') ? '#9ca3af' : '#6b7280',
+                    padding: [0, 0, 0, window.innerWidth < 768 ? 15 : 30]  // Less padding on mobile
+            },
+            axisLabel: {
+                    formatter: '{value}°C',
+                    fontSize: window.innerWidth < 768 ? 10 : 12,  // Smaller font on mobile
+                color: document.body.classList.contains('dark') ? '#9ca3af' : '#6b7280'
+            },
+            axisLine: {
+                lineStyle: {
+                    color: document.body.classList.contains('dark') ? '#374151' : '#e5e7eb'
+                }
+            },
+            splitLine: {
+                lineStyle: {
+                    color: document.body.classList.contains('dark') ? '#374151' : '#e5e7eb'
+                }
+            }
+        },
+        series: [{
+                name: 'Anomalía de temperatura',
+                data: [
+                    -0.17, // 1880
+                    -0.36, // 1890
+                    -0.09, // 1900
+                    -0.45, // 1910
+                    -0.28, // 1920
+                    -0.16, // 1930
+                    0.12,  // 1940
+                    -0.18, // 1950
+                    -0.03, // 1960
+                    0.03,  // 1970
+                    0.26,  // 1980
+                    0.45,  // 1990
+                    0.39,  // 2000
+                    0.73,  // 2010
+                    1.01,  // 2020
+                    1.17   // 2023
+                ],
+            type: 'line',
+            smooth: true,
+            lineStyle: {
+                color: '#3b82f6',
+                width: 3
+            },
+            areaStyle: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        { offset: 0, color: 'rgba(59, 130, 246, 0.5)' },
+                    { offset: 1, color: 'rgba(59, 130, 246, 0.1)' }
+                ])
+                },
+                markLine: {
+                    silent: true,
+                    lineStyle: {
+                        color: '#ef4444'
+                    },
+                    data: [{
+                        yAxis: 0,
+                        label: {
+                            formatter: window.innerWidth < 768 ? 'Temp. base' : 'Temperatura base\n(promedio 1951-1980)',
+                            position: 'insideEndTop',
+                            distance: [0, 10],
+                            fontSize: window.innerWidth < 768 ? 10 : 12,
+                            color: '#ef4444'
+                        }
+                    }]
+                },
+                markArea: {
+                    silent: true,
+                    itemStyle: {
+                        color: 'rgba(239, 68, 68, 0.1)'
+                    },
+                    data: [[{
+                        yAxis: 0,
+                        itemStyle: {
+                            color: 'rgba(59, 130, 246, 0.1)'
+                        }
+                    }, {
+                        yAxis: 'max'
+                    }]]
+                }
+            }]
+    };
+    chart.setOption(option);
+    
+    // Initial resize
+    chart.resize();
+    
+    // Add resize handler to make chart responsive
+    window.addEventListener('resize', function() {
+        chart.resize();
+    });
+
+    // Also resize when the card becomes visible
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.attributeName === 'class') {
+                const card = document.getElementById('card6');
+                if (card && !card.classList.contains('hidden')) {
+                    chart.resize();
+                }
+            }
+        });
+    });
+
+    const card6 = document.getElementById('card6');
+    if (card6) {
+        observer.observe(card6, { attributes: true });
+    }
+    }
+});
+
+function nextCard() {
+    if (currentCard >= totalCards - 1) {
+        const overlay = document.getElementById('completionOverlay');
+        if (overlay) {
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+            setTimeout(() => {
+                const modal = overlay.querySelector('div');
+                if (modal) {
+                    modal.classList.remove('scale-95', 'opacity-0');
+                    modal.classList.add('scale-100', 'opacity-100');
+                }
+            }, 10);
+            triggerConfetti();
+        }
+        return;
+    }
+    
+    // Handle transition from intro to card1
+    if (currentCard === -1) {
+        const currentElement = document.getElementById('intro-card');
+        if (currentElement) {
+            currentElement.classList.remove('active');
+            currentElement.classList.add('hidden');
+        }
+        
+        currentCard = 0;
+        const nextElement = document.getElementById('card1');
+        if (nextElement) {
+            nextElement.classList.remove('hidden');
+            nextElement.classList.add('next-enter');
+            nextElement.offsetHeight;
+            nextElement.classList.remove('next-enter');
+            nextElement.classList.add('active');
+            hasShownCard1 = true;
+        }
+        updateProgress();
+        return;
+    }
+    
+    // Handle animation on card1
+    if (currentCard === 0 && hasShownCard1) {
+        const definitionBox = document.getElementById('definitionBox');
+        if (definitionBox) {
+            definitionBox.classList.remove('opacity-0', 'translate-y-4');
+            hasShownCard1 = false;
+        }
+        return;
+    }
+
+    // Move to card2 if we're done with card1
+    if (currentCard === 0 && !hasShownCard1) {
+        const currentElement = document.getElementById('card1');
+        if (currentElement) {
+            currentElement.classList.remove('active');
+            currentElement.classList.add('hidden');
+        }
+        
+        currentCard = 1;
+        const nextElement = document.getElementById('card2');
+        if (nextElement) {
+            nextElement.classList.remove('hidden');
+            nextElement.classList.add('next-enter');
+            nextElement.offsetHeight;
+            nextElement.classList.remove('next-enter');
+            nextElement.classList.add('active');
+        }
+        updateProgress();
+        return;
+    }
+
+    // Move to card3 from card2
+    if (currentCard === 1) {
+        const currentElement = document.getElementById('card2');
+        if (currentElement) {
+            currentElement.classList.remove('active');
+            currentElement.classList.add('hidden');
+        }
+        
+        currentCard = 2;
+        const nextElement = document.getElementById('card3');
+        if (nextElement) {
+            nextElement.classList.remove('hidden');
+            nextElement.classList.add('next-enter');
+            nextElement.offsetHeight;
+            nextElement.classList.remove('next-enter');
+            nextElement.classList.add('active');
+        }
+        updateProgress();
+        return;
+    }
+    
+    // Handle all other card transitions
+    const currentElement = document.getElementById(getCardId(currentCard));
+    if (currentElement) {
+        currentElement.classList.remove('active');
+        currentElement.classList.add('hidden');
+    }
+    
+    currentCard++;
+    const nextElement = document.getElementById(getCardId(currentCard));
+    if (nextElement) {
+        nextElement.classList.remove('hidden');
+        nextElement.classList.add('next-enter');
+        nextElement.offsetHeight;
+        nextElement.classList.remove('next-enter');
+        nextElement.classList.add('active');
+    }
+    
+    updateProgress();
+}
+
+function prevCard() {
+    if (currentCard <= -1) return;
+    
+    // Reset animations when going back
+    if (currentCard === 1) {
+        const currentElement = document.getElementById('card2');
+        if (currentElement) {
+            currentElement.classList.remove('active');
+            currentElement.classList.add('hidden');
+        }
+        
+        currentCard = 0;
+        const prevElement = document.getElementById('card1');
+        if (prevElement) {
+            prevElement.classList.remove('hidden');
+            prevElement.classList.add('active');
+            hasShownCard1 = false;
+        }
+    } else if (currentCard === 2) {
+        const currentElement = document.getElementById('card3');
+        if (currentElement) {
+            currentElement.classList.remove('active');
+            currentElement.classList.add('hidden');
+        }
+        
+        currentCard = 1;
+        const prevElement = document.getElementById('card2');
+        if (prevElement) {
+            prevElement.classList.remove('hidden');
+            prevElement.classList.add('active');
+        }
+    } else {
+        const currentElement = document.getElementById(getCardId(currentCard));
+        if (currentElement) {
+            currentElement.classList.remove('active');
+            currentElement.classList.add('hidden');
+        }
+        
+        currentCard--;
+        const prevElement = document.getElementById(getCardId(currentCard));
+        if (prevElement) {
+            prevElement.classList.remove('hidden');
+            prevElement.classList.add('prev-enter');
+            prevElement.offsetHeight;
+            prevElement.classList.remove('prev-enter');
+            prevElement.classList.add('active');
+        }
+    }
+    
+    updateProgress();
+}
+
+function getCardId(index) {
+    if (index === -1) return 'intro-card';
+    if (index === 0) return 'card1';
+    if (index === 1) return 'card2';
+    if (index === 2) return 'card3';
+    if (index === 3) return 'card4';
+    if (index === 4) return 'card5';
+    if (index === 5) return 'card6';
+    if (index === 6) return 'card7';
+    if (index === 7) return 'card8';
+    if (index === 8) return 'card9';
+    return '';
+}
+
+function triggerConfetti() {
+    const duration = 1.5 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 20, spread: 360, ticks: 100, zIndex: 0 };
+
+    function randomInRange(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+
+    const interval = setInterval(function() {
+        const timeLeft = animationEnd - Date.now();
+
+        if (timeLeft <= 0) {
+            return clearInterval(interval);
+        }
+
+        const particleCount = 25 * (timeLeft / duration);
+
+        // Three fixed positions around the card
+        const positions = [
+            { x: 0.4, y: 0.3 }, // Top left
+            { x: 0.8, y: 0.3 }, // Top right
+            { x: 0.6, y: 0.9 }  // Bottom center
+        ];
+
+        positions.forEach(pos => {
+            confetti({
+                ...defaults,
+                particleCount,
+                origin: pos,
+                spread: 60,
+                startVelocity: 25
+            });
+        });
+    }, 200);
+}
+
+function updateTime() {
+    const timeDisplay = document.getElementById('timeDisplay');
+    // Calculate remaining time based on card progress
+    const contentCards = totalCards - 2; // Subtract intro and outro cards
+    const currentProgress = Math.max(0, currentCard - 1); // Subtract intro card
+    const remainingMinutes = Math.max(0, Math.ceil(15 * (1 - (currentProgress / contentCards))));
+    timeDisplay.textContent = `${remainingMinutes} min`;
+}
+
+function updateProgress() {
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const contentCards = totalCards - 1; // Changed from totalCards - 2 to totalCards - 1
+    const currentProgress = Math.max(0, currentCard);
+    const progress = Math.round((currentProgress / contentCards) * 100);
+    
+    progressBar.value = progress;
+    progressText.textContent = `${progress}% completado`;
+    updateTime();
+}
+
+// Update theme toggle functionality and user profile
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize user profile
+    const userAvatar = document.getElementById('userAvatar');
+    const userName = document.getElementById('userName');
+    const savedUser = JSON.parse(localStorage.getItem('user') || '{}');
+    
+    if (userAvatar && savedUser.avatar) {
+        userAvatar.src = savedUser.avatar;
+    }
+    if (userName && savedUser.name) {
+        userName.textContent = savedUser.name;
+    }
+
+    // Initialize theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = themeToggle.querySelector('i');
+    const html = document.documentElement;
+    const body = document.body;
+    
+    // Set initial theme based on saved preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        body.classList.add('dark');
+        themeIcon.classList.replace('ri-sun-line', 'ri-moon-line');
+    }
+
+    themeToggle.addEventListener('click', function() {
+        html.classList.toggle('dark');
+        body.classList.toggle('dark');
+        if (body.classList.contains('dark')) {
+            localStorage.setItem('theme', 'dark');
+            themeIcon.classList.replace('ri-sun-line', 'ri-moon-line');
+        } else {
+            localStorage.setItem('theme', 'light');
+            themeIcon.classList.replace('ri-moon-line', 'ri-sun-line');
+        }
+    });
+});
+
+// Update chart colors when theme changes
+const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        if (mutation.attributeName === 'class' && chart) { // Add chart check
+            const isDark = document.body.classList.contains('dark');
+            chart.setOption({
+                tooltip: {
+                    backgroundColor: isDark ? '#1f2937' : '#ffffff',
+                    borderColor: isDark ? '#374151' : '#e5e7eb',
+                    textStyle: {
+                        color: isDark ? '#e5e7eb' : '#111827'
+                    }
+                },
+                xAxis: {
+                    axisLabel: {
+                        color: isDark ? '#9ca3af' : '#6b7280'
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: isDark ? '#374151' : '#e5e7eb'
+                        }
+                    }
+                },
+                yAxis: {
+                    nameTextStyle: {
+                        color: isDark ? '#9ca3af' : '#6b7280'
+                    },
+                    axisLabel: {
+                        color: isDark ? '#9ca3af' : '#6b7280'
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: isDark ? '#374151' : '#e5e7eb'
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: isDark ? '#374151' : '#e5e7eb'
+                        }
+                    }
+                }
+            });
+        }
+    });
+});
+
+observer.observe(document.body, { attributes: true });
+
+// Quiz functionality
+function checkQuiz() {
+    const q1 = document.querySelector('input[name="q1"]:checked');
+    const q2 = document.querySelector('input[name="q2"]:checked');
+    
+    if (!q1 || !q2) {
+        alert('Por favor responde todas las preguntas');
+        return;
+    }
+    
+    const correctAnswers = {
+        q1: 'b',
+        q2: 'b'
+    };
+    
+    const score = (q1.value === correctAnswers.q1 ? 1 : 0) + 
+                 (q2.value === correctAnswers.q2 ? 1 : 0);
+    
+    const quizResult = document.getElementById('quizResult');
+    const questionsContainer = document.getElementById('questionsContainer');
+    const quizIcon = document.getElementById('quizIcon');
+    const quizTitle = document.getElementById('quizTitle');
+    const feedback1 = document.getElementById('feedback1');
+    const feedback2 = document.getElementById('feedback2');
+    
+    // Update feedback
+    feedback1.textContent = q1.value === correctAnswers.q1 
+        ? "¡Correcto! El cambio climático es un cambio significativo y duradero en los patrones climáticos globales."
+        : "Incorrecto. El cambio climático es un cambio significativo y duradero en los patrones climáticos globales.";
+    
+    feedback2.textContent = q2.value === correctAnswers.q2
+        ? "¡Correcto! Las emisiones de gases de efecto invernadero por actividades humanas son la principal causa."
+        : "Incorrecto. Las emisiones de gases de efecto invernadero por actividades humanas son la principal causa.";
+    
+    // Update icons and colors
+    const icons = quizResult.querySelectorAll('.ri-checkbox-circle-line');
+    icons[0].className = q1.value === correctAnswers.q1 
+        ? 'ri-checkbox-circle-line text-green-500 text-base mt-0.5'
+        : 'ri-close-circle-line text-red-500 text-base mt-0.5';
+    icons[1].className = q2.value === correctAnswers.q2
+        ? 'ri-checkbox-circle-line text-green-500 text-base mt-0.5'
+        : 'ri-close-circle-line text-red-500 text-base mt-0.5';
+    
+    // Update title and icon
+    if (score === 2) {
+        quizIcon.className = 'ri-emotion-happy-line text-green-500 text-lg md:text-xl';
+        quizTitle.textContent = '¡Excelente! Has respondido correctamente todas las preguntas.';
+        quizTitle.className = 'text-sm md:text-base font-semibold text-green-500';
+        triggerConfetti();
+    } else if (score === 1) {
+        quizIcon.className = 'ri-emotion-normal-line text-yellow-500 text-lg md:text-xl';
+        quizTitle.textContent = '¡Casi! Has respondido correctamente una pregunta.';
+        quizTitle.className = 'text-sm md:text-base font-semibold text-yellow-500';
+    } else {
+        quizIcon.className = 'ri-emotion-unhappy-line text-red-500 text-lg md:text-xl';
+        quizTitle.textContent = 'Intenta de nuevo. No has respondido correctamente las preguntas.';
+        quizTitle.className = 'text-sm md:text-base font-semibold text-red-500';
+    }
+    
+    // Show results with animation
+    quizResult.classList.remove('hidden');
+    questionsContainer.classList.add('show-results');
+    quizResult.classList.add('show-results');
+}
+
+// Temperature slider functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const tempSlider = document.getElementById('tempSlider');
+    const temp1950 = document.getElementById('temp1950');
+    const temp2023 = document.getElementById('temp2023');
+    
+    if (tempSlider) {
+        tempSlider.addEventListener('input', function() {
+            const value = this.value;
+            const temp1950Value = 14.5;
+            const temp2023Value = 15.7;
+            const currentTemp = temp1950Value + (value / 100) * (temp2023Value - temp1950Value);
+            
+            temp1950.textContent = `${temp1950Value.toFixed(1)}°C`;
+            temp2023.textContent = `${currentTemp.toFixed(1)}°C`;
+        });
+    }
+});
+
+// Carbon footprint calculator
+function calculateFootprint() {
+    const carKm = parseFloat(document.getElementById('carKm').value) || 0;
+    const electricity = parseFloat(document.getElementById('electricity').value) || 0;
+    const waste = parseFloat(document.getElementById('waste').value) || 0;
+    
+    // Simplified calculation (in tons of CO2 per year)
+    const carEmissions = (carKm * 52 * 0.2) / 1000; // 0.2 kg CO2 per km
+    const electricityEmissions = (electricity * 365 * 0.4) / 1000; // 0.4 kg CO2 per kWh
+    const wasteEmissions = waste * 0.001; // 1 kg CO2 per kg of waste
+    
+    const totalEmissions = carEmissions + electricityEmissions + wasteEmissions;
+    
+    const resultDiv = document.getElementById('footprintResult');
+    const footprintValue = document.getElementById('footprintValue');
+    const footprintMessage = document.getElementById('footprintMessage');
+    
+    footprintValue.textContent = `${totalEmissions.toFixed(1)} toneladas de CO2`;
+    
+    let comparison = '';
+    if (totalEmissions < 2) {
+        comparison = '¡Buen trabajo! Tu huella de carbono es menor que el promedio mundial.';
+    } else if (totalEmissions < 5) {
+        comparison = 'Tu huella de carbono está cerca del promedio mundial.';
+    } else {
+        comparison = 'Tu huella de carbono es mayor que el promedio mundial. Considera reducir tus emisiones.';
+    }
+    
+    footprintMessage.textContent = comparison;
+    resultDiv.classList.remove('hidden');
+}
+
+// Drag and drop functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const dragItems = document.querySelectorAll('.drag-item');
+    const dropZones = document.querySelectorAll('.drop-zone');
+    const dragResult = document.getElementById('dragResult');
+    const dragContainer = document.getElementById('dragContainer');
+    const correctMatches = new Set();
+
+    // Add touch event handlers for mobile
+    dragItems.forEach(item => {
+        // Touch start handler
+        item.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            this.classList.add('opacity-50');
+            dropZones.forEach(zone => {
+                if (!zone.querySelector('.drag-item')) {
+                    zone.classList.add('bg-yellow-100/50');
+                }
+            });
+        }, { passive: false });
+
+        // Touch end handler
+        item.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            this.classList.remove('opacity-50');
+            dropZones.forEach(zone => {
+                zone.classList.remove('bg-yellow-100/50');
+            });
+        }, { passive: false });
+
+        // Touch move handler
+        item.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        // Original drag handlers
+        item.addEventListener('dragstart', function(e) {
+            e.dataTransfer.setData('text/plain', item.dataset.solution);
+            this.classList.add('opacity-50');
+            dropZones.forEach(zone => {
+                if (!zone.querySelector('.drag-item')) {
+                    zone.classList.add('bg-yellow-100/50');
+                }
+            });
+        });
+
+        item.addEventListener('dragend', function() {
+            this.classList.remove('opacity-50');
+            dropZones.forEach(zone => {
+                zone.classList.remove('bg-yellow-100/50');
+            });
+        });
+    });
+
+    // Add drop handlers to drop zones
+    dropZones.forEach(zone => {
+        // Touch handlers for mobile
+        zone.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        zone.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            const draggedItem = document.querySelector('.drag-item.opacity-50');
+            if (draggedItem) {
+                handleDrop(this, draggedItem.dataset.solution);
+            }
+        }, { passive: false });
+
+        // Original drop handlers
+        zone.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            if (!zone.querySelector('.drag-item')) {
+                this.classList.add('bg-yellow-200/50');
+            }
+        });
+
+        zone.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('bg-yellow-200/50');
+        });
+
+        zone.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('bg-yellow-200/50');
+            const solution = e.dataTransfer.getData('text/plain');
+            handleDrop(this, solution);
+        });
+    });
+
+    // Helper function to handle drops
+    function handleDrop(zone, solution) {
+        const draggedItem = document.querySelector(`[data-solution="${solution}"]`);
+        
+        if (draggedItem && !zone.querySelector('.drag-item')) {
+            if (zone.dataset.matches === solution) {
+                const clone = draggedItem.cloneNode(true);
+                clone.classList.remove('cursor-move', 'hover:shadow-md', 'touch-manipulation');
+                clone.draggable = false;
+                
+                zone.innerHTML = '';
+                zone.appendChild(clone);
+                
+                zone.classList.add('border-green-400', 'bg-green-50/50');
+                
+                correctMatches.add(solution);
+                
+                draggedItem.classList.add('opacity-50', 'pointer-events-none');
+                
+                if (correctMatches.size === dragItems.length) {
+                    setTimeout(() => {
+                        const dragResult = document.getElementById('dragResult');
+                        const dragContainer = document.getElementById('dragContainer');
+                        if (dragResult && dragContainer) {
+                            dragResult.classList.remove('hidden');
+                            dragContainer.classList.add('show-results');
+                            dragResult.classList.add('show-results');
+                            triggerConfetti();
+                        }
+                    }, 500);
+                }
+            } else {
+                zone.classList.add('border-red-400', 'bg-red-50/50');
+                setTimeout(() => {
+                    zone.classList.remove('border-red-400', 'bg-red-50/50');
+                }, 1000);
+            }
+        }
+    }
+});
+
+// Add keyboard event listener
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'ArrowLeft') {
+        prevCard();
+    } else if (event.key === 'ArrowRight') {
+        nextCard();
+    }
+});
+</script>
+</body>
+</html>

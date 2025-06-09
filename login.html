@@ -18,13 +18,175 @@
         }
     }
     </script>
+    <style>
+    :where([class^="ri-"])::before { content: "\f3c2"; }
+    .logo-black {
+        display: block;
+    }
+    .dark .logo-black {
+        display: none;
+    }
+    .logo-white {
+        display: none;
+    }
+    .dark .logo-white {
+        display: block;
+    }
+    body.dark {
+        background-color: #111827;
+        color: #f3f4f6;
+    }
+    .dark .bg-white {
+        background-color: #1f2937;
+    }
+    .dark .text-gray-900 {
+        color: #f3f4f6;
+    }
+    .dark .text-gray-600 {
+        color: #e5e7eb;
+    }
+    .dark .text-gray-700 {
+        color: #f3f4f6;
+    }
+    .dark .text-gray-500 {
+        color: #e5e7eb;
+    }
+    .dark .text-gray-400 {
+        color: #e5e7eb;
+    }
+    .dark .border-gray-200 {
+        border-color: #374151;
+    }
+    .dark .bg-gray-50 {
+        background-color: #1f2937;
+    }
+    .dark .bg-primary {
+        background-color: #1d4ed8;
+    }
+    .dark .text-primary {
+        color: #60a5fa;
+    }
+    .dark .bg-primary\/10 {
+        background-color: rgba(29, 78, 216, 0.1);
+    }
+    .dark .bg-primary\/90 {
+        background-color: rgba(29, 78, 216, 0.9);
+    }
+    .dark .bg-gray-200 {
+        background-color: #374151;
+    }
+    .dark .border-gray-300 {
+        border-color: #4b5563;
+    }
+    .dark .hover\:bg-gray-200:hover {
+        background-color: #374151;
+    }
+    .dark .hover\:text-gray-900:hover {
+        color: #f3f4f6;
+    }
+    .dark .hover\:bg-primary\/90:hover {
+        background-color: rgba(29, 78, 216, 0.9);
+    }
+    .dark .hover\:text-primary:hover {
+        color: #60a5fa;
+    }
+    .dark .bg-yellow-100 {
+        background-color: #713f12;
+    }
+    .dark .text-yellow-500 {
+        color: #f59e0b;
+    }
+    .dark .bg-blue-100 {
+        background-color: #1e3a8a;
+    }
+    .dark .text-blue-500 {
+        color: #60a5fa;
+    }
+    .dark .bg-green-100 {
+        background-color: #14532d;
+    }
+    .dark .text-green-500 {
+        color: #34d399;
+    }
+    .dark .bg-purple-100 {
+        background-color: #4c1d95;
+    }
+    .dark .text-purple-500 {
+        color: #a78bfa;
+    }
+    .dark .bg-red-100 {
+        background-color: #7f1d1d;
+    }
+    .dark .text-red-500 {
+        color: #f87171;
+    }
+    .dark .bg-indigo-100 {
+        background-color: #312e81;
+    }
+    .dark .text-indigo-500 {
+        color: #818cf8;
+    }
+    .dark .bg-teal-100 {
+        background-color: #134e4a;
+    }
+    .dark .text-teal-500 {
+        color: #2dd4bf;
+    }
+    .dark .bg-orange-100 {
+        background-color: #7c2d12;
+    }
+    .dark .text-orange-500 {
+        color: #f97316;
+    }
+    .dark .text-yellow-400 {
+        color: #fbbf24;
+    }
+    .dark .bg-gray-200 {
+        background-color: #374151;
+    }
+    .dark .text-gray-400 {
+        color: #9ca3af;
+    }
+    .dark .bg-gray-100 {
+        background-color: #374151;
+    }
+    .dark .text-gray-600 {
+        color: #d1d5db;
+    }
+    .dark .border-gray-300 {
+        border-color: #4b5563;
+    }
+    .dark .focus\:ring-primary:focus {
+        --tw-ring-color: rgba(29, 78, 216, 0.5);
+    }
+    .dark .focus\:border-primary:focus {
+        border-color: #60a5fa;
+    }
+    .dark .bg-secondary\/10 {
+        background-color: rgba(16, 185, 129, 0.1);
+    }
+    .dark .text-secondary {
+        color: #34d399;
+    }
+    .dark input {
+        color: #f3f4f6;
+        background-color: #1f2937;
+    }
+    .dark input::placeholder {
+        color: #9ca3af;
+    }
+    </style>
 </head>
 <body class="bg-gray-50 min-h-screen flex items-center justify-center">
     <div class="max-w-md w-full mx-4">
         <div class="text-center mb-8">
-            <img src="https://static.readdy.ai/image/aa25c844f62f8160325b22e96cce821b/1008a332fa04fcc766da511172b85ad6.jpeg" 
-                 alt="Cydsa Logo" 
-                 class="h-12 mx-auto mb-4">
+            <div class="flex justify-between items-center mb-4">
+                <img src="public/cydsa-logo-black (1).svg" alt="CYDSA Logo" class="h-8 w-auto object-contain logo-black">
+                <img src="public/cydsa-logo-white (1).svg" alt="CYDSA Logo" class="h-8 w-auto object-contain logo-white">
+                <button id="themeToggle" class="text-gray-600 dark:text-gray-300 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <i class="ri-sun-line text-xl"></i>
+                </button>
+            </div>
             <h2 class="text-3xl font-bold text-gray-900">Bienvenido a EcoLearn</h2>
             <p class="mt-2 text-gray-600">Inicia sesión para continuar tu aprendizaje</p>
         </div>
@@ -72,28 +234,50 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            try {
-                await moodleService.login(username, password);
-                // Redirect to dashboard on successful login
-                window.location.href = 'index.html';
-            } catch (error) {
-                errorMessage.textContent = 'Usuario o contraseña incorrectos';
-                errorMessage.classList.remove('hidden');
-            }
+            // Mock login - store username in localStorage
+            localStorage.setItem('username', username);
+            
+            // Redirect to dashboard on successful login
+            window.location.href = 'index.html';
         });
 
         // Check if user is already logged in
         async function checkAuth() {
-            try {
-                await moodleService.getUserInfo();
-                // If request succeeds, user is logged in, redirect to dashboard
+            const username = localStorage.getItem('username');
+            if (username) {
+                // If username exists in localStorage, user is logged in, redirect to dashboard
                 window.location.href = 'index.html';
-            } catch (error) {
-                // User is not logged in, stay on login page
             }
+            // If no username, stay on login page
         }
 
         checkAuth();
+    </script>
+
+    <script>
+    // Add theme toggle functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark');
+            themeIcon.classList.replace('ri-sun-line', 'ri-moon-line');
+        }
+
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('dark');
+            if (document.body.classList.contains('dark')) {
+                localStorage.setItem('theme', 'dark');
+                themeIcon.classList.replace('ri-sun-line', 'ri-moon-line');
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeIcon.classList.replace('ri-moon-line', 'ri-sun-line');
+            }
+        });
+    });
     </script>
 </body>
 </html> 

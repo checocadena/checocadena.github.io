@@ -1,0 +1,94 @@
+<!-- Navigation bar -->
+<nav class="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-md z-50">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between items-center h-12">
+            <div class="flex items-center space-x-4">
+                <button id="sidebarToggle" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white">
+                    <i class="ri-menu-line text-2xl"></i>
+                </button>
+                <h1 class="text-xl font-semibold text-gray-800 dark:text-white">Módulo 2</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="themeToggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <i class="ri-sun-line text-xl text-gray-500 dark:text-gray-400 dark:hidden"></i>
+                    <i class="ri-moon-line text-xl text-gray-500 dark:text-gray-400 hidden dark:block"></i>
+                </button>
+                <div id="userInfo" class="flex items-center space-x-3">
+                    <img src="" alt="User" class="w-8 h-8 rounded-full">
+                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Progress bar -->
+<div class="fixed top-12 left-0 right-0 bg-white dark:bg-gray-800 shadow-md z-40">
+    <div class="max-w-7xl mx-auto px-4 h-10 flex items-center">
+        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+            <div class="progress-bar bg-blue-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Sidebar -->
+<aside id="sidebar" class="fixed top-22 left-0 bottom-0 w-64 bg-white dark:bg-gray-800 shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out z-30 overflow-y-auto">
+    <nav class="p-4">
+        <div class="space-y-2">
+            <p class="text-sm font-medium text-gray-400 dark:text-gray-500">Contenido del módulo</p>
+            <div class="space-y-1">
+                <a href="#intro" class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">Introducción</a>
+                <a href="#card1" class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">1. El efecto invernadero</a>
+                <a href="#card2" class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">2. Gases de efecto invernadero</a>
+                <a href="#card3" class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">3. Actividades humanas</a>
+                <a href="#card4" class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">4. Impacto industrial</a>
+                <a href="#card5" class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">5. Deforestación</a>
+                <a href="#card6" class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">6. Transporte y energía</a>
+                <a href="#card7" class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">7. Agricultura y ganadería</a>
+                <a href="#card8" class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">8. Actividad interactiva</a>
+                <a href="#card9" class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">9. Cuestionario</a>
+                <a href="#card10" class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">10. Conclusión</a>
+            </div>
+        </div>
+    </nav>
+</aside>
+
+<!-- Bottom navigation -->
+<div class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 z-40">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="h-16 flex justify-between items-center">
+            <button class="prev-btn px-4 py-2 bg-blue-600 text-white rounded-button hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                <i class="ri-arrow-left-line mr-2"></i>Anterior
+            </button>
+            <button class="next-btn px-4 py-2 bg-blue-600 text-white rounded-button hover:bg-blue-700 transition-colors duration-200">
+                Siguiente<i class="ri-arrow-right-line ml-2"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        const isDark = document.documentElement.classList.contains('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+
+    // Sidebar toggle
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebar');
+    sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('-translate-x-full');
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+            document.querySelector('.next-btn').click();
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            document.querySelector('.prev-btn').click();
+        }
+    });
+</script> 

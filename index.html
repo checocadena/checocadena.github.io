@@ -4,12 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EcoLearn - Plataforma de Capacitación en Sustentabilidad</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<link href="./dist/output.css" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
-<script>tailwind.config={theme:{extend:{colors:{primary:'#3176FF',secondary:'#3176FF'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
 <style>
 :where([class^="ri-"])::before { content: "\f3c2"; }
 .course-progress::-webkit-progress-bar {
@@ -20,6 +19,161 @@ border-radius: 9999px;
 background-color: #3176FF;
 border-radius: 9999px;
 }
+.logo-black {
+    display: block;
+}
+.dark .logo-black {
+    display: none;
+}
+.logo-white {
+    display: none;
+}
+.dark .logo-white {
+    display: block;
+}
+body.dark {
+    background-color: #111827;
+    color: #f3f4f6;
+}
+.dark .bg-white {
+    background-color: #1f2937;
+}
+.dark .text-gray-900 {
+    color: #f3f4f6;
+}
+.dark .text-gray-600 {
+    color: #e5e7eb;
+}
+.dark .text-gray-700 {
+    color: #f3f4f6;
+}
+.dark .text-gray-500 {
+    color: #e5e7eb;
+}
+.dark .text-gray-400 {
+    color: #e5e7eb;
+}
+.dark .border-gray-200 {
+    border-color: #374151;
+}
+.dark .bg-gray-50 {
+    background-color: #1f2937;
+}
+.dark .bg-primary {
+    background-color: #1d4ed8;
+}
+.dark .text-primary {
+    color: #60a5fa;
+}
+.dark .bg-primary\/10 {
+    background-color: rgba(29, 78, 216, 0.1);
+}
+.dark .bg-primary\/90 {
+    background-color: rgba(29, 78, 216, 0.9);
+}
+.dark .bg-gray-200 {
+    background-color: #374151;
+}
+.dark .border-gray-300 {
+    border-color: #4b5563;
+}
+.dark .hover\:bg-gray-200:hover {
+    background-color: #374151;
+}
+.dark .hover\:text-gray-900:hover {
+    color: #f3f4f6;
+}
+.dark .hover\:bg-primary\/90:hover {
+    background-color: rgba(29, 78, 216, 0.9);
+}
+.dark .hover\:text-primary:hover {
+    color: #60a5fa;
+}
+.dark .bg-yellow-100 {
+    background-color: #713f12;
+}
+.dark .text-yellow-500 {
+    color: #f59e0b;
+}
+.dark .bg-blue-100 {
+    background-color: #1e3a8a;
+}
+.dark .text-blue-500 {
+    color: #60a5fa;
+}
+.dark .bg-green-100 {
+    background-color: #14532d;
+}
+.dark .text-green-500 {
+    color: #34d399;
+}
+.dark .bg-purple-100 {
+    background-color: #4c1d95;
+}
+.dark .text-purple-500 {
+    color: #a78bfa;
+}
+.dark .bg-red-100 {
+    background-color: #7f1d1d;
+}
+.dark .text-red-500 {
+    color: #f87171;
+}
+.dark .bg-indigo-100 {
+    background-color: #312e81;
+}
+.dark .text-indigo-500 {
+    color: #818cf8;
+}
+.dark .bg-teal-100 {
+    background-color: #134e4a;
+}
+.dark .text-teal-500 {
+    color: #2dd4bf;
+}
+.dark .bg-orange-100 {
+    background-color: #7c2d12;
+}
+.dark .text-orange-500 {
+    color: #f97316;
+}
+.dark .text-yellow-400 {
+    color: #fbbf24;
+}
+.dark .bg-gray-200 {
+    background-color: #374151;
+}
+.dark .text-gray-400 {
+    color: #9ca3af;
+}
+.dark .bg-gray-100 {
+    background-color: #374151;
+}
+.dark .text-gray-600 {
+    color: #d1d5db;
+}
+.dark .border-gray-300 {
+    border-color: #4b5563;
+}
+.dark .focus\:ring-primary:focus {
+    --tw-ring-color: rgba(29, 78, 216, 0.5);
+}
+.dark .focus\:border-primary:focus {
+    border-color: #60a5fa;
+}
+.dark .bg-secondary\/10 {
+    background-color: rgba(16, 185, 129, 0.1);
+}
+.dark .text-secondary {
+    color: #34d399;
+}
+.dark input {
+    color: #f3f4f6;
+    background-color: #1f2937;
+}
+.dark input::placeholder {
+    color: #9ca3af;
+}
 </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -27,7 +181,8 @@ border-radius: 9999px;
 <div class="max-w-7xl mx-auto px-4">
 <div class="flex justify-between h-16">
 <div class="flex items-center space-x-4">
-<img src="https://static.readdy.ai/image/aa25c844f62f8160325b22e96cce821b/1008a332fa04fcc766da511172b85ad6.jpeg" alt="Cydsa Logo" class="h-8">
+<img src="public/cydsa-logo-black (1).svg" alt="CYDSA Logo" class="h-8 w-auto object-contain logo-black">
+<img src="public/cydsa-logo-white (1).svg" alt="CYDSA Logo" class="h-8 w-auto object-contain logo-white">
 <button type="button" class="mobile-menu-button md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary">
 <i class="ri-menu-line text-xl"></i>
 </button>
@@ -39,6 +194,9 @@ border-radius: 9999px;
 </div>
 </div>
 <div class="flex items-center space-x-4">
+<button id="themeToggle" class="text-gray-600 dark:text-gray-300 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+<i class="ri-sun-line text-xl"></i>
+</button>
 <button class="relative">
 <div class="w-8 h-8 flex items-center justify-center">
 <i class="ri-notification-3-line text-gray-600"></i>
@@ -48,6 +206,10 @@ border-radius: 9999px;
 <div class="flex items-center space-x-3">
 <img class="h-8 w-8 rounded-full object-cover" src="https://public.readdy.ai/ai/img_res/a28a60f1580ab41a22e29d2454ba5a9a.jpg" alt="Usuario">
 <span class="text-sm font-medium text-gray-700">Carlos Rodríguez</span>
+<button id="logoutButton" class="text-gray-600 hover:text-red-500 p-2 rounded-full hover:bg-gray-100">
+<i class="ri-logout-box-line text-xl"></i>
+</button>
+</div>
 </div>
 </div>
 </div>
@@ -196,65 +358,94 @@ border-radius: 9999px;
 <script type="module">
 import { moodleService } from './services/moodleService.js';
 
-// Replace the mockData with real data fetching
+// Check if user is logged in
+const username = localStorage.getItem('username');
+if (!username) {
+    window.location.href = 'login.html';
+}
+
+// Update user information
+document.addEventListener('DOMContentLoaded', async function() {
+    try {
+        const userInfo = await moodleService.getUserInfo();
+        
+        // Update user profile
+        const userElements = document.querySelectorAll('.text-sm.font-medium.text-gray-700');
+        userElements.forEach(element => {
+            element.textContent = userInfo.fullname;
+        });
+        
+        // Update user avatar
+        const userImages = document.querySelectorAll('img[alt="Usuario"]');
+        userImages.forEach(img => {
+            img.src = userInfo.profileimageurl;
+            img.alt = userInfo.fullname;
+        });
+
+        // Update welcome message
+        const welcomeMessage = document.querySelector('h1.text-3xl.font-bold.text-gray-900');
+        if (welcomeMessage) {
+            welcomeMessage.textContent = `¡Bienvenido de nuevo, ${userInfo.fullname}!`;
+        }
+    } catch (error) {
+        console.error('Error updating user information:', error);
+    }
+});
+
+// Handle logout
+document.getElementById('logoutButton').addEventListener('click', () => {
+    localStorage.removeItem('username');
+    window.location.href = 'login.html';
+});
+
 async function loadDashboard() {
     try {
-        // Get user info and courses
-        const [userInfo, courses] = await Promise.all([
-            moodleService.getUserInfo(),
-            moodleService.getUserCourses()
-        ]);
+        // Get stored username
+        const username = localStorage.getItem('username');
+        if (!username) {
+            window.location.href = 'login.html';
+            return;
+        }
 
         // Update user profile
-        document.querySelector('.text-sm.font-medium.text-gray-700').textContent = userInfo.fullname;
-        document.querySelector('.h-8.w-8.rounded-full.object-cover').src = userInfo.profileimageurl;
+        const userElements = document.querySelectorAll('.text-sm.font-medium.text-gray-700');
+        userElements.forEach(element => {
+            element.textContent = username;
+        });
+        
+        // Update user avatar
+        const userImages = document.querySelectorAll('img[alt="Usuario"]');
+        const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=3176FF&color=fff`;
+        userImages.forEach(img => {
+            img.src = avatarUrl;
+            img.alt = username;
+        });
 
+        // Update welcome message
+        const welcomeMessage = document.querySelector('h1.text-3xl.font-bold.text-gray-900');
+        if (welcomeMessage) {
+            welcomeMessage.textContent = `¡Bienvenido de nuevo, ${username}!`;
+        }
+
+        // Get user courses
+        const courses = await moodleService.getUserCourses();
+        
         // Calculate progress
-        const completedCourses = courses.filter(course => course.progress === 100).length;
-        const totalCourses = courses.length;
-        const progressPercentage = Math.round((completedCourses / totalCourses) * 100) || 0;
+        const completedModules = 0; // This will be updated when we have real data
+        const totalModules = 9;
+        const progressPercentage = Math.round((completedModules / totalModules) * 100) || 0;
 
         // Update progress indicators
         document.querySelector('.text-2xl.font-bold.text-primary').textContent = `${progressPercentage}%`;
         document.querySelector('.bg-primary.h-2\\.5.rounded-full').style.width = `${progressPercentage}%`;
-
-        // Update completed courses count
-        document.querySelector('.text-3xl.font-bold.text-gray-900').textContent = completedCourses;
-        document.querySelector('.text-sm.text-gray-500').textContent = `de ${totalCourses} cursos`;
-
-        // Update courses in progress
-        const inProgressCourses = courses
-            .filter(course => course.progress > 0 && course.progress < 100)
-            .slice(0, 3);  // Show only first 3 courses
-
-        const coursesContainer = document.querySelector('.grid.grid-cols-1.md\\:grid-cols-3.gap-6');
-        coursesContainer.innerHTML = inProgressCourses.map(course => `
-            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-                <img src="${course.overviewfiles[0]?.fileurl || 'default-course-image.jpg'}" 
-                     alt="${course.fullname}" 
-                     class="w-full h-48 object-cover">
-                <div class="p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">${course.fullname}</h3>
-                    <p class="text-sm text-gray-600 mb-4">${course.summary}</p>
-                    <progress class="course-progress w-full h-2 mb-2" 
-                              value="${course.progress}" 
-                              max="100"></progress>
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm text-gray-500">${course.progress}% completado</span>
-                        <a href="Lección.html?courseid=${course.id}" 
-                           class="text-sm font-medium text-primary hover:text-primary/80">
-                            Continuar
-                        </a>
-                    </div>
-                </div>
-            </div>
-        `).join('');
+        document.querySelector('.mt-2.text-sm.text-gray-500').textContent = `${completedModules} de ${totalModules} módulos completados`;
 
     } catch (error) {
         console.error('Failed to load dashboard:', error);
-        // Redirect to login if unauthorized
-        if (error.message.includes('Failed to fetch')) {
-            window.location.href = 'login.html';
+        // Show a more user-friendly error or fallback content
+        const progressElement = document.querySelector('.text-2xl.font-bold.text-primary');
+        if (progressElement) {
+            progressElement.textContent = '0%';
         }
     }
 }
@@ -262,10 +453,45 @@ async function loadDashboard() {
 // Load dashboard data when page loads
 document.addEventListener('DOMContentLoaded', loadDashboard);
 
-// Add logout functionality
+// Add mobile menu functionality
 document.querySelector('.mobile-menu-button').addEventListener('click', function() {
     const mobileMenu = document.querySelector('.mobile-menu');
     mobileMenu.classList.toggle('hidden');
+});
+</script>
+
+<script>
+// Add theme toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = themeToggle.querySelector('i');
+    const logoutButton = document.getElementById('logoutButton');
+    
+    // Check for saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark');
+        themeIcon.classList.replace('ri-sun-line', 'ri-moon-line');
+    }
+
+    themeToggle.addEventListener('click', function() {
+        document.body.classList.toggle('dark');
+        if (document.body.classList.contains('dark')) {
+            localStorage.setItem('theme', 'dark');
+            themeIcon.classList.replace('ri-sun-line', 'ri-moon-line');
+        } else {
+            localStorage.setItem('theme', 'light');
+            themeIcon.classList.replace('ri-moon-line', 'ri-sun-line');
+        }
+    });
+
+    // Add logout functionality
+    logoutButton.addEventListener('click', function() {
+        // Clear user data
+        localStorage.removeItem('username');
+        // Redirect to login page
+        window.location.href = 'login.html';
+    });
 });
 </script>
 </body>

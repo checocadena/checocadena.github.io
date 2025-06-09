@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mis Logros - EcoLearn</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<link href="./dist/output.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,6 +22,161 @@ tailwind.config={theme:{extend:{colors:{primary:'#3176FF',secondary:'#00B8A9'},b
   transition: stroke-dashoffset 0.35s;
   transform-origin: 50% 50%;
 }
+.logo-black {
+    display: block;
+}
+.dark .logo-black {
+    display: none;
+}
+.logo-white {
+    display: none;
+}
+.dark .logo-white {
+    display: block;
+}
+body.dark {
+    background-color: #111827;
+    color: #f3f4f6;
+}
+.dark .bg-white {
+    background-color: #1f2937;
+}
+.dark .text-gray-900 {
+    color: #f3f4f6;
+}
+.dark .text-gray-600 {
+    color: #e5e7eb;
+}
+.dark .text-gray-700 {
+    color: #f3f4f6;
+}
+.dark .text-gray-500 {
+    color: #e5e7eb;
+}
+.dark .text-gray-400 {
+    color: #e5e7eb;
+}
+.dark .border-gray-200 {
+    border-color: #374151;
+}
+.dark .bg-gray-50 {
+    background-color: #1f2937;
+}
+.dark .bg-primary {
+    background-color: #1d4ed8;
+}
+.dark .text-primary {
+    color: #60a5fa;
+}
+.dark .bg-primary\/10 {
+    background-color: rgba(29, 78, 216, 0.1);
+}
+.dark .bg-primary\/90 {
+    background-color: rgba(29, 78, 216, 0.9);
+}
+.dark .bg-gray-200 {
+    background-color: #374151;
+}
+.dark .border-gray-300 {
+    border-color: #4b5563;
+}
+.dark .hover\:bg-gray-200:hover {
+    background-color: #374151;
+}
+.dark .hover\:text-gray-900:hover {
+    color: #f3f4f6;
+}
+.dark .hover\:bg-primary\/90:hover {
+    background-color: rgba(29, 78, 216, 0.9);
+}
+.dark .hover\:text-primary:hover {
+    color: #60a5fa;
+}
+.dark .bg-yellow-100 {
+    background-color: #713f12;
+}
+.dark .text-yellow-500 {
+    color: #f59e0b;
+}
+.dark .bg-blue-100 {
+    background-color: #1e3a8a;
+}
+.dark .text-blue-500 {
+    color: #60a5fa;
+}
+.dark .bg-green-100 {
+    background-color: #14532d;
+}
+.dark .text-green-500 {
+    color: #34d399;
+}
+.dark .bg-purple-100 {
+    background-color: #4c1d95;
+}
+.dark .text-purple-500 {
+    color: #a78bfa;
+}
+.dark .bg-red-100 {
+    background-color: #7f1d1d;
+}
+.dark .text-red-500 {
+    color: #f87171;
+}
+.dark .bg-indigo-100 {
+    background-color: #312e81;
+}
+.dark .text-indigo-500 {
+    color: #818cf8;
+}
+.dark .bg-teal-100 {
+    background-color: #134e4a;
+}
+.dark .text-teal-500 {
+    color: #2dd4bf;
+}
+.dark .bg-orange-100 {
+    background-color: #7c2d12;
+}
+.dark .text-orange-500 {
+    color: #f97316;
+}
+.dark .text-yellow-400 {
+    color: #fbbf24;
+}
+.dark .bg-gray-200 {
+    background-color: #374151;
+}
+.dark .text-gray-400 {
+    color: #9ca3af;
+}
+.dark .bg-gray-100 {
+    background-color: #374151;
+}
+.dark .text-gray-600 {
+    color: #d1d5db;
+}
+.dark .border-gray-300 {
+    border-color: #4b5563;
+}
+.dark .focus\:ring-primary:focus {
+    --tw-ring-color: rgba(29, 78, 216, 0.5);
+}
+.dark .focus\:border-primary:focus {
+    border-color: #60a5fa;
+}
+.dark .bg-secondary\/10 {
+    background-color: rgba(16, 185, 129, 0.1);
+}
+.dark .text-secondary {
+    color: #34d399;
+}
+.dark input {
+    color: #f3f4f6;
+    background-color: #1f2937;
+}
+.dark input::placeholder {
+    color: #9ca3af;
+}
 </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -29,7 +184,8 @@ tailwind.config={theme:{extend:{colors:{primary:'#3176FF',secondary:'#00B8A9'},b
 <div class="max-w-7xl mx-auto px-4">
 <div class="flex justify-between h-16">
 <div class="flex items-center space-x-4">
-<img src="https://static.readdy.ai/image/aa25c844f62f8160325b22e96cce821b/1008a332fa04fcc766da511172b85ad6.jpeg" alt="Cydsa Logo" class="h-8">
+<img src="public/cydsa-logo-black (1).svg" alt="CYDSA Logo" class="h-8 w-auto object-contain logo-black">
+<img src="public/cydsa-logo-white (1).svg" alt="CYDSA Logo" class="h-8 w-auto object-contain logo-white">
 <button type="button" class="mobile-menu-button md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary">
 <i class="ri-menu-line text-xl"></i>
 </button>
@@ -41,15 +197,21 @@ tailwind.config={theme:{extend:{colors:{primary:'#3176FF',secondary:'#00B8A9'},b
 </div>
 </div>
 <div class="flex items-center space-x-4">
-<div class="relative">
-<div class="w-8 h-8 flex items-center justify-center cursor-pointer">
+<button id="themeToggle" class="text-gray-600 dark:text-gray-300 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+<i class="ri-sun-line text-xl"></i>
+</button>
+<button class="relative">
+<div class="w-8 h-8 flex items-center justify-center">
 <i class="ri-notification-3-line text-gray-600"></i>
 </div>
 <span class="absolute top-0 right-0 h-4 w-4 bg-red-500 rounded-full flex items-center justify-center text-xs text-white">3</span>
-</div>
+</button>
 <div class="flex items-center space-x-3">
-<img class="h-8 w-8 rounded-full object-cover" src="https://public.readdy.ai/ai/img_res/074bc3dd1877565257c5f066d232de26.jpg" alt="Usuario">
-<span class="text-sm font-medium text-gray-700">Carlos Rodríguez</span>
+<img class="h-8 w-8 rounded-full object-cover" src="https://public.readdy.ai/ai/img_res/e6fc6e9f5fddc40965f692da20d1bceb.jpg" alt="Usuario">
+<span class="text-sm font-medium text-gray-700 dark:text-gray-300">Carlos</span>
+<button id="logoutButton" class="text-gray-600 hover:text-red-500 p-2 rounded-full hover:bg-gray-100">
+<i class="ri-logout-box-line text-xl"></i>
+</button>
 </div>
 </div>
 </div>
@@ -61,8 +223,8 @@ tailwind.config={theme:{extend:{colors:{primary:'#3176FF',secondary:'#00B8A9'},b
 <a href="Progreso.html" class="text-gray-900 hover:text-primary px-3 py-2 text-sm font-medium">Progreso</a>
 <a href="Logros.html" class="text-primary px-3 py-2 text-sm font-medium">Logros</a>
 <div class="flex items-center space-x-3 px-3 py-2">
-<img class="h-8 w-8 rounded-full object-cover" src="https://public.readdy.ai/ai/img_res/074bc3dd1877565257c5f066d232de26.jpg" alt="Usuario">
-<span class="text-sm font-medium text-gray-700">Carlos Rodríguez</span>
+<img class="h-8 w-8 rounded-full object-cover" src="https://public.readdy.ai/ai/img_res/e6fc6e9f5fddc40965f692da20d1bceb.jpg" alt="Usuario">
+<span class="text-sm font-medium text-gray-700">Carlos</span>
 </div>
 </div>
 </div>
@@ -204,77 +366,6 @@ tailwind.config={theme:{extend:{colors:{primary:'#3176FF',secondary:'#00B8A9'},b
 </div>
 </div>
 </div>
-<div class="bg-white rounded-lg shadow-sm p-6">
-<h2 class="text-xl font-bold text-gray-900 mb-6">Próximos Logros</h2>
-<div class="space-y-6">
-<div class="flex items-start space-x-4">
-<div class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-full shrink-0">
-<i class="ri-medal-line text-gray-400 ri-xl"></i>
-</div>
-<div class="flex-1">
-<h4 class="font-medium text-gray-900">Experto en Biodiversidad</h4>
-<p class="text-sm text-gray-600 mt-1">Completa el curso avanzado de biodiversidad</p>
-<div class="w-full bg-gray-200 rounded-full h-2 mt-2">
-<div class="bg-primary h-2 rounded-full" style="width: 75%"></div>
-</div>
-<span class="text-sm text-gray-500 mt-1">75% completado</span>
-</div>
-</div>
-
-<div class="flex items-start space-x-4">
-<div class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-full shrink-0">
-<i class="ri-shield-star-line text-gray-400 ri-xl"></i>
-</div>
-<div class="flex-1">
-<h4 class="font-medium text-gray-900">Innovador Sostenible</h4>
-<p class="text-sm text-gray-600 mt-1">Propón 3 iniciativas de sustentabilidad</p>
-<div class="w-full bg-gray-200 rounded-full h-2 mt-2">
-<div class="bg-primary h-2 rounded-full" style="width: 30%"></div>
-</div>
-<span class="text-sm text-gray-500 mt-1">1 de 3 completadas</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<div class="md:col-span-1">
-<div class="bg-white rounded-lg shadow-sm p-6 mb-8">
-<h2 class="text-xl font-bold text-gray-900 mb-6">Estadísticas</h2>
-<div id="achievementsChart" class="w-full h-64"></div>
-</div>
-
-<div class="bg-white rounded-lg shadow-sm p-6">
-<h2 class="text-xl font-bold text-gray-900 mb-6">Ranking</h2>
-<div class="space-y-4">
-<div class="flex items-center justify-between">
-<div class="flex items-center space-x-3">
-<div class="w-8 h-8 flex items-center justify-center bg-yellow-100 rounded-full text-sm font-medium text-yellow-600">1</div>
-<img class="w-8 h-8 rounded-full" src="https://public.readdy.ai/ai/img_res/684aa06deb1659b21320948b7e1ad194.jpg" alt="Ana">
-<span class="font-medium">Ana Martínez</span>
-</div>
-<span class="text-sm font-medium text-primary">18,500 XP</span>
-</div>
-
-<div class="flex items-center justify-between">
-<div class="flex items-center space-x-3">
-<div class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-sm font-medium text-gray-600">2</div>
-<img class="w-8 h-8 rounded-full" src="https://public.readdy.ai/ai/img_res/1d2ec88069b3492d8f17d58e8ae55688.jpg" alt="Carlos">
-<span class="font-medium">Carlos Rodríguez</span>
-</div>
-<span class="text-sm font-medium text-primary">15,750 XP</span>
-</div>
-<div class="flex items-center justify-between">
-<div class="flex items-center space-x-3">
-<div class="w-8 h-8 flex items-center justify-center bg-orange-100 rounded-full text-sm font-medium text-orange-600">3</div>
-<img class="w-8 h-8 rounded-full" src="https://public.readdy.ai/ai/img_res/51a0303664528d0204f27597afbc964c.jpg" alt="Miguel">
-<span class="font-medium">Miguel López</span>
-</div>
-<span class="text-sm font-medium text-primary">14,200 XP</span>
-</div>
-</div>
-</div>
-</div>
 </div>
 </div>
 </main>
@@ -282,123 +373,65 @@ tailwind.config={theme:{extend:{colors:{primary:'#3176FF',secondary:'#00B8A9'},b
 <script type="module">
 import { moodleService } from './services/moodleService.js';
 
-async function loadAchievements() {
-    try {
-        // Get user info and courses
-        const [userInfo, courses] = await Promise.all([
-            moodleService.getUserInfo(),
-            moodleService.getUserCourses()
-        ]);
-
-        // Update user profile
-        document.querySelector('.text-sm.font-medium.text-gray-700').textContent = userInfo.fullname;
-        document.querySelector('img[alt="Usuario"]').src = userInfo.profileimageurl;
-
-        // Calculate achievements
-        const completedCourses = courses.filter(course => course.progress === 100);
-        const totalXP = completedCourses.length * 1000; // 1000 XP per completed course
-        const level = Math.floor(totalXP / 1000); // 1 level per 1000 XP
-
-        // Update level and XP display
-        document.querySelector('.text-3xl.font-bold.text-gray-900').textContent = `Nivel ${level}`;
-        document.querySelector('.text-2xl.font-bold.text-primary').textContent = `${totalXP} XP`;
-
-        // Calculate progress ring
-        const progressRing = document.querySelector('.progress-ring circle:last-child');
-        const circumference = 2 * Math.PI * 34; // r = 34
-        const progress = (totalXP % 1000) / 1000;
-        progressRing.style.strokeDasharray = circumference;
-        progressRing.style.strokeDashoffset = circumference * (1 - progress);
-
-        // Update achievement counts
-        const medals = completedCourses.length;
-        const certificates = Math.floor(completedCourses.length / 3); // 1 certificate per 3 completed courses
-        const badges = completedCourses.reduce((total, course) => 
-            total + (course.completiondata?.completions?.length || 0), 0);
-
-        document.querySelectorAll('.text-2xl.font-bold.text-primary').forEach((el, index) => {
-            if (index === 1) el.textContent = medals;
-            if (index === 2) el.textContent = certificates;
-            if (index === 3) el.textContent = badges;
-        });
-
-        // Update recent achievements
-        const recentAchievements = courses
-            .filter(course => course.progress === 100)
-            .sort((a, b) => b.timemodified - a.timemodified)
-            .slice(0, 3);
-
-        const achievementsContainer = document.querySelector('.space-y-6');
-        achievementsContainer.innerHTML = recentAchievements
-            .map(course => `
-                <div class="flex items-start space-x-4">
-                    <div class="w-12 h-12 flex items-center justify-center bg-yellow-100 rounded-full shrink-0">
-                        <i class="ri-medal-line text-yellow-500 ri-xl"></i>
-                    </div>
-                    <div class="flex-1">
-                        <div class="flex items-center justify-between">
-                            <h4 class="font-medium text-gray-900">Curso Completado: ${course.fullname}</h4>
-                            <span class="text-sm text-gray-500">
-                                ${new Date(course.timemodified * 1000).toLocaleDateString()}
-                            </span>
-                        </div>
-                        <p class="text-sm text-gray-600 mt-1">${course.summary}</p>
-                        <div class="flex items-center mt-2">
-                            <i class="ri-star-fill text-yellow-400 mr-1"></i>
-                            <span class="text-sm text-gray-500">1000 XP</span>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-
-        // Update achievements chart
-        const chartDom = document.getElementById('achievementsChart');
-        const myChart = echarts.init(chartDom);
-        const option = {
-            animation: false,
-            tooltip: {
-                trigger: 'item'
-            },
-            series: [
-                {
-                    type: 'pie',
-                    radius: ['50%', '70%'],
-                    data: [
-                        { value: medals, name: 'Medallas', itemStyle: { color: 'rgba(87, 181, 231, 1)' } },
-                        { value: certificates, name: 'Certificados', itemStyle: { color: 'rgba(141, 211, 199, 1)' } },
-                        { value: badges, name: 'Insignias', itemStyle: { color: 'rgba(251, 191, 114, 1)' } }
-                    ],
-                    label: {
-                        show: true,
-                        position: 'outside',
-                        formatter: '{b}: {c}'
-                    },
-                    emphasis: {
-                        itemStyle: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        }
-                    }
-                }
-            ]
-        };
-        myChart.setOption(option);
-
-    } catch (error) {
-        console.error('Failed to load achievements:', error);
-        if (error.message.includes('Failed to fetch')) {
-            window.location.href = 'login.html';
-        }
-    }
+// Check if user is logged in
+const username = localStorage.getItem('username');
+if (!username) {
+    window.location.href = 'login.html';
 }
 
-// Load achievements when page loads
-document.addEventListener('DOMContentLoaded', loadAchievements);
+// Update user information
+document.addEventListener('DOMContentLoaded', async function() {
+    try {
+        const userInfo = await moodleService.getUserInfo();
+        
+        // Update user profile
+        const userElements = document.querySelectorAll('.text-sm.font-medium.text-gray-700');
+        userElements.forEach(element => {
+            element.textContent = userInfo.fullname;
+        });
+        
+        // Update user avatar
+        const userImages = document.querySelectorAll('img[alt="Usuario"]');
+        userImages.forEach(img => {
+            img.src = userInfo.profileimageurl;
+            img.alt = userInfo.fullname;
+        });
+    } catch (error) {
+        console.error('Error updating user information:', error);
+    }
+});
+
+// Handle logout
+document.getElementById('logoutButton').addEventListener('click', () => {
+    localStorage.removeItem('username');
+    window.location.href = 'login.html';
+});
 
 // Mobile menu toggle
 document.querySelector('.mobile-menu-button').addEventListener('click', function() {
     document.querySelector('.mobile-menu').classList.toggle('hidden');
+});
+
+// Add theme toggle functionality
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = themeToggle.querySelector('i');
+    
+    // Check for saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark');
+        themeIcon.classList.replace('ri-sun-line', 'ri-moon-line');
+    }
+
+    themeToggle.addEventListener('click', function() {
+        document.body.classList.toggle('dark');
+        if (document.body.classList.contains('dark')) {
+            localStorage.setItem('theme', 'dark');
+            themeIcon.classList.replace('ri-sun-line', 'ri-moon-line');
+        } else {
+            localStorage.setItem('theme', 'light');
+            themeIcon.classList.replace('ri-moon-line', 'ri-sun-line');
+        }
 });
 </script>
 </body>

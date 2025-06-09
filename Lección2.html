@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 1: ¿Qué es el cambio climático?</title>
+<script>
+// Check for saved theme preference before any content loads
+(function() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+    }
+})();
+
+// Check if user is logged in
+const username = localStorage.getItem('username');
+if (!username) {
+    window.location.href = 'login.html';
+}
+
+// Update user information
+document.addEventListener('DOMContentLoaded', function() {
+    const username = localStorage.getItem('username');
+    if (username) {
+        // Update user profile - only target elements in the user profile section
+        const userElements = document.querySelectorAll('.flex.items-center.space-x-3 .text-sm.font-medium.text-gray-700');
+        userElements.forEach(element => {
+            element.textContent = username;
+        });
+        
+        // Update user avatar - only target elements in the user profile section
+        const userImages = document.querySelectorAll('.flex.items-center.space-x-3 img[alt="Usuario"]');
+        const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=3176FF&color=fff`;
+        userImages.forEach(img => {
+            img.src = avatarUrl;
+            img.alt = username;
+        });
+    }
+});
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+    darkMode: 'class',
+    theme: {
+        extend: {
+            colors: {
+                primary: '#3b82f6',
+                secondary: '#10b981'
+            },
+            borderRadius: {
+                'none': '0px',
+                'sm': '4px',
+                DEFAULT: '8px',
+                'md': '12px',
+                'lg': '16px',
+                'xl': '20px',
+                '2xl': '24px',
+                '3xl': '32px',
+                'full': '9999px',
+                'button': '8px'
+            }
+        }
+    }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+:root {
+    color-scheme: light dark;
+    --header-height: 3rem;
+    --progress-height: 2.5rem;
+    --nav-bottom-height: 4rem;
+    --top-offset: 8.5rem;
+}
+
+.page {
+    position: absolute;
+    width: 100%;
+    height: calc(100vh - var(--top-offset) - var(--nav-bottom-height) - 2rem);
+    opacity: 0;
+    transform: translateX(30px);
+    transition: all 0.4s ease-out;
+    visibility: hidden;
+    overflow-y: auto;
+    padding: 1rem;
+    box-sizing: border-box;
+    left: 0;
+    top: 0;
+}
+
+.page.active {
+    opacity: 1;
+    transform: translateX(0);
+    visibility: visible;
+}
+
+.page.hidden {
+    visibility: hidden;
+}
+
+/* Simplify the animations */
+.page.next-enter {
+    transform: translateX(30px);
+    opacity: 0;
+}
+
+.page.prev-enter {
+    transform: translateX(-30px);
+    opacity: 0;
+}
+
+.page.next-exit {
+    transform: translateX(-30px);
+    opacity: 0;
+}
+
+.page.prev-exit {
+    transform: translateX(30px);
+    opacity: 0;
+}
+
+.card-container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    overflow: visible; /* Allow cards to animate outside */
+}
+
+.card-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden; /* Prevent content overflow */
+}
+
+.card-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+    box-sizing: border-box;
+}
+
+#mainContent {
+    padding-top: var(--top-offset);
+    padding-bottom: var(--nav-bottom-height);
+    min-height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden; /* Hide overflow at the wrapper level */
+}
+
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f8fafc;
+    transition: background-color 0.3s ease;
+}
+body.dark {
+    background-color: #111827;
+    color: #e5e7eb;
+}
+.dark .bg-white {
+    background-color: #1f2937;
+}
+.dark .text-gray-800 {
+    color: #f3f4f6;
+}
+.dark .text-gray-600 {
+    color: #d1d5db;
+}
+.dark .text-gray-700 {
+    color: #e5e7eb;
+}
+.dark .text-gray-500 {
+    color: #9ca3af;
+}
+.dark .border-gray-200 {
+    border-color: rgba(17, 24, 39, 0.7);
+}
+.dark .bg-gray-50 {
+    background-color: #111827;
+}
+.dark .bg-blue-50 {
+    background-color: #1e3a8a;
+}
+.dark .bg-orange-50 {
+    background-color: #7c2d12;
+}
+.dark .bg-yellow-50 {
+    background-color: #713f12;
+}
+.dark .bg-red-50 {
+    background-color: #7f1d1d;
+}
+.dark .bg-purple-50 {
+    background-color: #4c1d95;
+}
+.dark .bg-green-50 {
+    background-color: #14532d;
+}
+.dark .bg-gray-100 {
+    background-color: #374151;
+}
+.dark .border-gray-300 {
+    border-color: #374151;
+}
+.dark .shadow-sm {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+}
+.dark .bg-primary {
+    background-color: #1d4ed8;
+}
+.dark .text-primary {
+    color: #60a5fa;
+}
+.dark .bg-primary\/10 {
+    background-color: rgba(29, 78, 216, 0.1);
+}
+.dark .bg-primary\/90 {
+    background-color: rgba(29, 78, 216, 0.9);
+}
+.dark .bg-gray-200 {
+    background-color: #374151;
+}
+.dark .text-gray-900 {
+    color: #f3f4f6;
+}
+.dark .border-gray-300 {
+    border-color: #4b5563;
+}
+.dark .hover\:bg-gray-200:hover {
+    background-color: #374151;
+}
+.dark .hover\:text-gray-900:hover {
+    color: #f3f4f6;
+}
+.dark .hover\:bg-primary\/90:hover {
+    background-color: rgba(29, 78, 216, 0.9);
+}
+.dark .hover\:text-primary:hover {
+    color: #60a5fa;
+}
+.dark .bg-yellow-100 {
+    background-color: #713f12;
+}
+.dark .text-yellow-500 {
+    color: #f59e0b;
+}
+.dark .bg-blue-100 {
+    background-color: #1e3a8a;
+}
+.dark .text-blue-500 {
+    color: #60a5fa;
+}
+.dark .bg-green-100 {
+    background-color: #14532d;
+}
+.dark .text-green-500 {
+    color: #34d399;
+}
+.dark .bg-purple-100 {
+    background-color: #4c1d95;
+}
+.dark .text-purple-500 {
+    color: #a78bfa;
+}
+.dark .bg-red-100 {
+    background-color: #7f1d1d;
+}
+.dark .text-red-500 {
+    color: #f87171;
+}
+.dark .bg-indigo-100 {
+    background-color: #312e81;
+}
+.dark .text-indigo-500 {
+    color: #818cf8;
+}
+.dark .bg-teal-100 {
+    background-color: #134e4a;
+}
+.dark .text-teal-500 {
+    color: #2dd4bf;
+}
+.dark .bg-orange-100 {
+    background-color: #7c2d12;
+}
+.dark .text-orange-500 {
+    color: #f97316;
+}
+.dark .text-yellow-400 {
+    color: #fbbf24;
+}
+.dark .bg-gray-200 {
+    background-color: #374151;
+}
+.dark .text-gray-400 {
+    color: #9ca3af;
+}
+.dark .bg-gray-100 {
+    background-color: #374151;
+}
+.dark .text-gray-600 {
+    color: #d1d5db;
+}
+.dark .border-gray-300 {
+    border-color: #4b5563;
+}
+.dark .focus\:ring-primary:focus {
+    --tw-ring-color: rgba(29, 78, 216, 0.5);
+}
+.dark .focus\:border-primary:focus {
+    border-color: #60a5fa;
+}
+.dark .bg-secondary\/10 {
+    background-color: rgba(16, 185, 129, 0.1);
+}
+.dark .text-secondary {
+    color: #34d399;
+}
+.progress-bar::-webkit-progress-bar {
+    background-color: #e5e7eb;
+    border-radius: 9999px;
+}
+.progress-bar::-webkit-progress-value {
+    background-color: #3b82f6;
+    border-radius: 9999px;
+}
+.nav .h-12 {
+    height: var(--header-height);
+}
+.py-1 {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+.custom-checkbox {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #d1d5db;
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.custom-checkbox:checked {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+}
+.custom-checkbox:checked::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M5 13l4 4L19 7' /%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+@media (max-width: 768px) {
+    :root {
+        --header-height: 2.5rem;
+        --progress-height: 2rem;
+    }
+}
+.intro-card {
+    position: absolute;
+    width: 100%;
+    height: calc(100vh - 12rem - 4rem);
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.intro-card.active {
+    opacity: 1;
+    transform: scale(1);
+}
+.intro-card.hidden {
+    opacity: 0;
+    transform: scale(1.2);
+}
+.outro-card {
+    position: absolute;
+    width: 100%;
+    height: calc(100vh - 12rem - 4rem);
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.outro-card.active {
+    opacity: 1;
+    transform: scale(1);
+}
+.outro-card.hidden {
+    opacity: 0;
+    transform: scale(1.2);
+}
+.text-gray-900 {
+    color: #111827;
+}
+.dark .text-gray-900 {
+    color: #f3f4f6;
+}
+.text-black {
+    color: #000000 !important;
+}
+.dark .text-black {
+    color: #f3f4f6 !important;
+}
+.logo-black {
+    display: block;
+}
+.dark .logo-black {
+    display: none;
+}
+.logo-white {
+    display: none;
+}
+.dark .logo-white {
+    display: block;
+}
+.dark .text-secondary {
+    color: #34d399;
+}
+.dark input {
+    color: #f3f4f6;
+    background-color: #1f2937;
+}
+.dark input::placeholder {
+    color: #9ca3af;
+}
+.dark textarea {
+    color: #f3f4f6;
+    background-color: #1f2937;
+}
+.dark textarea::placeholder {
+    color: #9ca3af;
+}
+.dark nav.shadow-sm,
+.dark .bg-white.shadow-sm {
+    border-bottom: 1px solid rgba(17, 24, 39, 0.7);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+}
+.dark #sidebar {
+    border-right: 1px solid rgba(17, 24, 39, 0.7);
+}
+.dark .card-container .bg-white {
+    border: 1px solid rgba(17, 24, 39, 0.7);
+}
+.dark .border-b {
+    border-color: rgba(17, 24, 39, 0.7);
+}
+
+/* Add these styles */
+.card-header {
+    padding: 0.75rem 1.5rem;
+    border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    background-color: rgba(59, 130, 246, 0.05);
+}
+
+.card-header-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.card-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    flex-shrink: 0;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    line-height: 1.2;
+}
+
+.dark .card-header {
+    border-bottom-color: rgba(17, 24, 39, 0.7);
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.dark .card-title {
+    color: #f3f4f6;
+}
+
+/* Add styles for the explanation animation */
+.explanation-box {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.5s ease-out;
+}
+
+.explanation-box.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Add styles for card animations */
+.example-card {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.5s ease-out;
+}
+
+.example-card.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#topSection {
+    opacity: 1;
+    transform: none;
+    transition: none;
+}
+
+#normalSection, #changeSection {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease-out;
+}
+
+#normalSection.show, #changeSection.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Add these styles to your existing styles */
+.drag-item.dragging {
+    opacity: 0.5;
+    transform: scale(0.95);
+}
+
+.drop-zone.can-drop {
+    background-color: rgba(252, 211, 77, 0.2);
+    border-style: solid;
+}
+
+.drop-zone.correct-match {
+    border-color: #34D399;
+    background-color: rgba(52, 211, 153, 0.1);
+}
+
+.drop-zone.wrong-match {
+    border-color: #EF4444;
+    background-color: rgba(239, 68, 68, 0.1);
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Add these styles to your existing styles */
+@media (min-width: 768px) {
+    #questionsContainer.show-results,
+    #dragContainer.show-results {
+        width: 50%;
+        transition: all 0.5s ease-in-out;
+    }
+    
+    #quizResult.show-results,
+    #dragResult.show-results {
+        display: block;
+        width: 50%;
+        opacity: 1;
+        transform: translateX(0);
+        transition: all 0.5s ease-in-out;
+    }
+}
+
+#quizResult,
+#dragResult {
+    transform: translateX(20px);
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+}
+
+#quizResult.show-results,
+#dragResult.show-results {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.card-body > div {
+    height: 100%;
+}
+
+/* Add these to your existing styles */
+.aspect-w-16 {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+}
+
+.aspect-w-16 > * {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+/* Add these card-specific styles */
+.card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transform: translateX(30px);
+    transition: all 0.4s ease-out;
+    visibility: hidden;
+}
+
+.card.active {
+    opacity: 1;
+    transform: translateX(0);
+    visibility: visible;
+    position: relative;
+}
+
+.card.hidden {
+    display: none;
+}
+
+.card-container {
+    position: relative;
+    min-height: calc(100vh - var(--top-offset) - var(--nav-bottom-height));
+    width: 100%;
+}
+
+.card-content {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    height: 100%;
+}
+
+.dark .card-content {
+    background-color: #1f2937;
+    border: 1px solid rgba(17, 24, 39, 0.7);
+}
+
+.card-body {
+    height: 100%;
+    overflow-y: auto;
+}
+
+/* Add transition classes */
+.next-enter {
+    transform: translateX(30px);
+    opacity: 0;
+}
+
+.prev-enter {
+    transform: translateX(-30px);
+    opacity: 0;
+}
+
+.next-exit {
+    transform: translateX(-30px);
+    opacity: 0;
+}
+
+.prev-exit {
+    transform: translateX(30px);
+    opacity: 0;
+}
+</style>
+</head>
+<body class="bg-gray-50">
+<nav class="bg-white shadow-sm fixed w-full z-[60]">
+<div class="max-w-7xl mx-auto px-4">
+<div class="flex justify-between h-12">
+<div class="flex items-center space-x-4">
+<button id="sidebarToggle" class="md:hidden text-gray-600">
+  <i class="ri-menu-line text-xl"></i>
+</button>
+<a href="index.html" class="flex items-center space-x-2">
+<i class="ri-arrow-left-line text-gray-600"></i>
+<span class="text-gray-600 hidden md:inline">Volver</span>
+</a>
+</div>
+<div class="flex items-center">
+<img src="public/cydsa-logo-black (1).svg" alt="CYDSA Logo" class="h-8 w-auto object-contain logo-black">
+<img src="public/cydsa-logo-white (1).svg" alt="CYDSA Logo" class="h-8 w-auto object-contain logo-white">
+</div>
+<div class="flex items-center space-x-4">
+<div class="flex items-center space-x-3">
+<button id="themeToggle" class="text-gray-600 dark:text-gray-300">
+<i class="ri-sun-line text-xl"></i>
+</button>
+<img class="h-6 w-6 rounded-full object-cover" id="userAvatar" src="" alt="Usuario">
+<span class="text-sm font-medium text-gray-700 dark:text-gray-300 hidden md:inline" id="userName"></span>
+</div>
+</div>
+</div>
+</div>
+</nav>
+
+<div class="bg-white shadow-sm fixed w-full top-12 z-[50]">
+<div class="max-w-7xl mx-auto px-4 py-1 md:py-2">
+<div class="flex items-center justify-between">
+<div class="flex-1">
+<div class="flex items-center space-x-4">
+<h1 class="text-sm md:text-lg font-bold text-black dark:text-gray-100">Módulo 1: ¿Qué es el cambio climático?</h1>
+</div>
+<div class="mt-0.5 md:mt-1">
+<progress id="progressBar" class="progress-bar w-full h-1 md:h-1.5" value="0" max="100"></progress>
+<div class="flex justify-between mt-0.5 md:mt-1 text-xs text-gray-500">
+<span id="progressText">0% completado</span>
+<span id="timeDisplay">15 min</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="flex">
+<div id="sidebar" class="w-64 bg-white shadow-sm overflow-y-auto fixed h-[calc(100vh-8.5rem)] top-[8.5rem] transition-transform duration-300 transform -translate-x-full md:translate-x-0 z-[40]">
+<div class="p-3">
+<div class="space-y-2">
+<div class="border-b pb-1">
+<h3 class="font-medium text-sm text-gray-900">Contenido del Curso</h3>
+</div>
+<div class="space-y-1">
+<div class="flex items-center text-primary bg-blue-50 p-1.5 rounded text-sm">
+<i class="ri-play-circle-fill mr-2"></i>
+<span>1. ¿Qué es el cambio climático?</span>
+</div>
+<div class="flex items-center text-gray-500 p-2 rounded">
+<i class="ri-lock-line mr-2"></i>
+<span class="text-sm">2. ¿Por qué está cambiando el clima?</span>
+</div>
+<div class="flex items-center text-gray-500 p-2 rounded">
+<i class="ri-lock-line mr-2"></i>
+<span class="text-sm">3. ¿Qué pasa si no hacemos nada?</span>
+</div>
+<div class="flex items-center text-gray-500 p-2 rounded">
+<i class="ri-lock-line mr-2"></i>
+<span class="text-sm">4. ¿Qué están haciendo los gobiernos?</span>
+</div>
+<div class="flex items-center text-gray-500 p-2 rounded">
+<i class="ri-lock-line mr-2"></i>
+<span class="text-sm">5. ¿Cómo se mide la contaminación?</span>
+</div>
+<div class="flex items-center text-gray-500 p-2 rounded">
+<i class="ri-lock-line mr-2"></i>
+<span class="text-sm">6. ¿Cómo podemos contaminar menos?</span>
+</div>
+<div class="flex items-center text-gray-500 p-2 rounded">
+<i class="ri-lock-line mr-2"></i>
+<span class="text-sm">7. ¿Cómo podemos adaptarnos?</span>
+</div>
+<div class="flex items-center text-gray-500 p-2 rounded">
+<i class="ri-lock-line mr-2"></i>
+<span class="text-sm">8. ¿Qué es el mercado de carbono?</span>
+</div>
+<div class="flex items-center text-gray-500 p-2 rounded">
+<i class="ri-lock-line mr-2"></i>
+<span class="text-sm">9. ¿Qué está haciendo CYDSA?</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="mainContent" class="flex-1 md:ml-64 transition-all duration-300 pt-[8.5rem]">
+<div class="max-w-4xl mx-auto px-4 md:px-8 py-4">
+    <div class="card-container bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+        <!-- Cards here -->
+        <div class="card active" id="intro">
+            <div class="card-content">
+                <div class="card-body">
+                    <h2 class="text-2xl font-bold mb-4">¿Por qué está cambiando el clima?</h2>
+                    <p class="mb-4">En este módulo exploraremos las causas principales del cambio climático y cómo las actividades humanas están afectando nuestro planeta.</p>
+                    <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg mb-4">
+                        <h3 class="font-semibold mb-2">Objetivos de aprendizaje:</h3>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Comprender el efecto invernadero natural y su importancia</li>
+                            <li>Identificar los principales gases de efecto invernadero</li>
+                            <li>Analizar el impacto de las actividades humanas en el clima</li>
+                            <li>Explorar las diferentes fuentes de emisiones</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Rest of the cards with the same structure -->
+        <div class="card hidden" id="card1">
+            <div class="card-content">
+                <div class="card-body">
+                    <h2 class="text-2xl font-bold mb-4">El efecto invernadero</h2>
+                    <p class="mb-4">El efecto invernadero es un proceso natural que mantiene la temperatura de la Tierra en un rango habitable. Sin embargo, las actividades humanas están intensificando este efecto.</p>
+                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg mb-4">
+                        <h3 class="font-semibold mb-2">¿Cómo funciona?</h3>
+                        <ol class="list-decimal pl-5 space-y-2">
+                            <li>La energía solar llega a la Tierra</li>
+                            <li>Parte de esta energía es reflejada de vuelta al espacio</li>
+                            <li>Los gases de efecto invernadero atrapan parte del calor</li>
+                            <li>Este calor atrapado mantiene la temperatura del planeta</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card hidden" id="card2">
+            <div class="card-content">
+                <div class="card-body">
+                    <h2 class="text-2xl font-bold mb-4">Gases de efecto invernadero</h2>
+                    <p class="mb-4">Los principales gases de efecto invernadero son:</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">Dióxido de carbono (CO₂)</h3>
+                            <p>Principal gas emitido por la quema de combustibles fósiles</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">Metano (CH₄)</h3>
+                            <p>Emitido por la ganadería y la descomposición de residuos</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">Óxido nitroso (N₂O)</h3>
+                            <p>Producido por fertilizantes y procesos industriales</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">Gases fluorados</h3>
+                            <p>Usados en refrigeración y procesos industriales</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card hidden" id="card3">
+            <div class="card-content">
+                <div class="card-body">
+                    <h2 class="text-2xl font-bold mb-4">Actividades humanas</h2>
+                    <p class="mb-4">Las actividades humanas han aumentado significativamente las concentraciones de gases de efecto invernadero en la atmósfera.</p>
+                    <div class="bg-yellow-50 dark:bg-yellow-900 p-4 rounded-lg mb-4">
+                        <h3 class="font-semibold mb-2">Principales fuentes de emisiones:</h3>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Quema de combustibles fósiles</li>
+                            <li>Deforestación</li>
+                            <li>Agricultura y ganadería</li>
+                            <li>Procesos industriales</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card hidden" id="card4">
+            <div class="card-content">
+                <div class="card-body">
+                    <h2 class="text-2xl font-bold mb-4">Impacto industrial</h2>
+                    <p class="mb-4">La industria es responsable de aproximadamente el 21% de las emisiones globales de gases de efecto invernadero.</p>
+                    <div class="bg-red-50 dark:bg-red-900 p-4 rounded-lg mb-4">
+                        <h3 class="font-semibold mb-2">Principales sectores industriales:</h3>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Producción de energía</li>
+                            <li>Manufactura</li>
+                            <li>Construcción</li>
+                            <li>Procesos químicos</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card hidden" id="card5">
+            <div class="card-content">
+                <div class="card-body">
+                    <h2 class="text-2xl font-bold mb-4">Deforestación</h2>
+                    <p class="mb-4">La deforestación contribuye significativamente al cambio climático al reducir la capacidad de los bosques para absorber CO₂.</p>
+                    <div class="bg-green-50 dark:bg-green-900 p-4 rounded-lg mb-4">
+                        <h3 class="font-semibold mb-2">Impactos de la deforestación:</h3>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Pérdida de sumideros de carbono</li>
+                            <li>Liberación de CO₂ almacenado</li>
+                            <li>Pérdida de biodiversidad</li>
+                            <li>Alteración de patrones climáticos locales</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card hidden" id="card6">
+            <div class="card-content">
+                <div class="card-body">
+                    <h2 class="text-2xl font-bold mb-4">Transporte y energía</h2>
+                    <p class="mb-4">El sector del transporte es responsable de aproximadamente el 14% de las emisiones globales.</p>
+                    <div class="bg-purple-50 dark:bg-purple-900 p-4 rounded-lg mb-4">
+                        <h3 class="font-semibold mb-2">Principales fuentes:</h3>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Transporte terrestre</li>
+                            <li>Aviación</li>
+                            <li>Transporte marítimo</li>
+                            <li>Generación de energía</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card hidden" id="card7">
+            <div class="card-content">
+                <div class="card-body">
+                    <h2 class="text-2xl font-bold mb-4">Agricultura y ganadería</h2>
+                    <p class="mb-4">La agricultura y la ganadería son responsables de aproximadamente el 24% de las emisiones globales.</p>
+                    <div class="bg-orange-50 dark:bg-orange-900 p-4 rounded-lg mb-4">
+                        <h3 class="font-semibold mb-2">Principales fuentes:</h3>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Emisiones de metano del ganado</li>
+                            <li>Uso de fertilizantes</li>
+                            <li>Cambio de uso del suelo</li>
+                            <li>Procesamiento de alimentos</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card hidden" id="card8">
+            <div class="card-content">
+                <div class="card-body">
+                    <h2 class="text-2xl font-bold mb-4">Actividad interactiva</h2>
+                    <p class="mb-4">Relaciona cada actividad humana con su impacto en el clima:</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">Actividades</h3>
+                            <div class="space-y-2">
+                                <div class="drag-item p-2 bg-white dark:bg-gray-700 rounded cursor-move">Quema de carbón</div>
+                                <div class="drag-item p-2 bg-white dark:bg-gray-700 rounded cursor-move">Deforestación</div>
+                                <div class="drag-item p-2 bg-white dark:bg-gray-700 rounded cursor-move">Ganadería</div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">Impactos</h3>
+                            <div class="space-y-2">
+                                <div class="drop-zone p-2 bg-white dark:bg-gray-700 rounded">Emisiones de CO₂</div>
+                                <div class="drop-zone p-2 bg-white dark:bg-gray-700 rounded">Pérdida de sumideros de carbono</div>
+                                <div class="drop-zone p-2 bg-white dark:bg-gray-700 rounded">Emisiones de metano</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card hidden" id="card9">
+            <div class="card-content">
+                <div class="card-body">
+                    <h2 class="text-2xl font-bold mb-4">Cuestionario</h2>
+                    <div class="space-y-4">
+                        <div class="quiz-question">
+                            <p class="font-semibold mb-2">1. ¿Cuál es el principal gas de efecto invernadero emitido por actividades humanas?</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="radio" name="q1" value="a" class="mr-2">
+                                    <span>Metano (CH₄)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="q1" value="b" class="mr-2">
+                                    <span>Dioxido de carbono (CO₂)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="q1" value="c" class="mr-2">
+                                    <span>Óxido nitroso (N₂O)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="quiz-question">
+                            <p class="font-semibold mb-2">2. ¿Qué sector es responsable de la mayor parte de las emisiones globales?</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="radio" name="q2" value="a" class="mr-2">
+                                    <span>Transporte</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="q2" value="b" class="mr-2">
+                                    <span>Energía</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="q2" value="c" class="mr-2">
+                                    <span>Agricultura</span>
+                                </label>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary mt-4">Verificar respuestas</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card hidden" id="card10">
+            <div class="card-content">
+                <div class="card-body">
+                    <h2 class="text-2xl font-bold mb-4">Conclusión</h2>
+                    <p class="mb-4">Hemos explorado las principales causas del cambio climático y cómo las actividades humanas están afectando nuestro planeta.</p>
+                    <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg mb-4">
+                        <h3 class="font-semibold mb-2">Lo que hemos aprendido:</h3>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>El efecto invernadero natural y su intensificación</li>
+                            <li>Los principales gases de efecto invernadero</li>
+                            <li>Las diferentes fuentes de emisiones</li>
+                            <li>El impacto de las actividades humanas</li>
+                        </ul>
+                    </div>
+                    <p class="mt-4">En el siguiente módulo, exploraremos las soluciones y acciones que podemos tomar para mitigar el cambio climático.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- First, add the overlay HTML before the closing body tag -->
+<div id="completionOverlay" class="fixed inset-0 bg-black/50 z-[70] hidden items-center justify-center backdrop-blur-sm">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 md:p-8 max-w-lg w-full mx-4 transform scale-95 opacity-0 transition-all duration-300">
+        <div class="flex flex-col items-center text-center">
+            <div class="w-16 h-16 md:w-24 md:h-24 flex items-center justify-center bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400 rounded-full mb-4 md:mb-6">
+                <i class="ri-medal-line text-2xl md:text-4xl"></i>
+            </div>
+            <h2 class="text-xl md:text-3xl font-bold text-gray-800 dark:text-white mb-2 md:mb-4">¡Felicidades!</h2>
+            <p class="text-base md:text-xl text-gray-600 dark:text-gray-300 mb-4 md:mb-6">Has completado el Módulo 1: ¿Qué es el cambio climático?</p>
+            <div class="flex items-center space-x-2 text-sm md:text-base text-gray-500 dark:text-gray-400 mb-6 md:mb-8">
+                <i class="ri-time-line"></i>
+                <span>Módulo completado</span>
+            </div>
+            <div class="flex flex-col md:flex-row gap-3 w-full">
+                <a href="index.html" class="px-4 md:px-6 py-2 md:py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm md:text-base font-medium rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex items-center justify-center">
+                    <i class="ri-arrow-left-line mr-2"></i>
+    Volver al inicio
+    </a>
+                <a href="Lección2.html" class="px-4 md:px-6 py-2 md:py-3 bg-primary text-white text-sm md:text-base font-medium rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center">
+    Siguiente módulo
+                    <i class="ri-arrow-right-line ml-2"></i>
+    </a>
+    </div>
+    </div>
+    </div>
+    </div>
+
+</div>
+</div>
+</div>
+</div>
+
+<!-- Navigation buttons at the bottom -->
+<div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 z-[50] md:left-64" style="height: 4rem;">
+    <div class="max-w-2xl mx-auto flex justify-between">
+        <button onclick="prevCard()" class="px-4 py-2 border border-gray-300 text-gray-700 font-medium !rounded-button whitespace-nowrap flex items-center text-sm">
+            <div class="w-4 h-4 flex items-center justify-center mr-1">
+                <i class="ri-arrow-left-line"></i>
+            </div>
+            Anterior
+        </button>
+        <button onclick="nextCard()" class="px-4 py-2 bg-primary text-white font-medium !rounded-button whitespace-nowrap flex items-center text-sm">
+            Siguiente
+            <div class="w-4 h-4 flex items-center justify-center ml-1">
+                <i class="ri-arrow-right-line"></i>
+            </div>
+        </button>
+</div>
+</div>
+
+<script>
+// Update these variables at the top
+let currentCard = 0;
+const totalCards = 10; // We have 10 cards (intro + 9 content cards)
+
+// Initialize cards on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize all cards
+    const cards = [
+        'intro', // Changed from 'intro-card'
+        'card1', 'card2', 'card3', 'card4', 'card5',
+        'card6', 'card7', 'card8', 'card9', 'card10'  // Removed card11
+    ];
+
+    // Hide all cards except intro
+    cards.forEach((cardId, index) => {
+        const card = document.getElementById(cardId);
+        if (card) {
+            if (index === 0) {
+                // Show intro card
+                card.classList.add('active');
+                card.classList.remove('hidden');
+            } else {
+                // Hide all other cards
+                card.classList.add('hidden');
+                card.classList.remove('active');
+            }
+        }
+    });
+    
+    // Initialize progress
+    updateProgress();
+});
+
+function getCardId(index) {
+    if (index === 0) return 'intro';
+    return `card${index}`;
+}
+
+// Update the card navigation functions
+function showCard(index) {
+    const cards = document.querySelectorAll('.card');
+    cards.forEach((card, i) => {
+        if (i === index) {
+            card.classList.remove('hidden');
+            setTimeout(() => {
+                card.classList.add('active');
+            }, 50);
+        } else {
+            card.classList.remove('active');
+            card.classList.add('hidden');
+        }
+    });
+    updateProgress();
+}
+
+function nextCard() {
+    if (currentCard < totalCards - 1) {
+        const currentElement = document.querySelector('.card.active');
+        if (currentElement) {
+            currentElement.classList.remove('active');
+            setTimeout(() => {
+                currentElement.classList.add('hidden');
+                currentCard++;
+                const nextElement = document.getElementById(getCardId(currentCard));
+                if (nextElement) {
+                    nextElement.classList.remove('hidden');
+                    setTimeout(() => {
+                        nextElement.classList.add('active');
+                    }, 50);
+                }
+                updateProgress();
+            }, 400);
+        }
+    } else {
+        // Show completion overlay when reaching the last card
+        const overlay = document.getElementById('completionOverlay');
+        if (overlay) {
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+            setTimeout(() => {
+                const modal = overlay.querySelector('div');
+                if (modal) {
+                    modal.classList.remove('scale-95', 'opacity-0');
+                    modal.classList.add('scale-100', 'opacity-100');
+                }
+            }, 10);
+            triggerConfetti();
+        }
+    }
+}
+
+function prevCard() {
+    if (currentCard > 0) {
+        const currentElement = document.querySelector('.card.active');
+        if (currentElement) {
+            currentElement.classList.remove('active');
+            setTimeout(() => {
+                currentElement.classList.add('hidden');
+                currentCard--;
+                const prevElement = document.getElementById(getCardId(currentCard));
+                if (prevElement) {
+                    prevElement.classList.remove('hidden');
+                    setTimeout(() => {
+                        prevElement.classList.add('active');
+                    }, 50);
+                }
+                updateProgress();
+            }, 400);
+        }
+    }
+}
+
+function updateProgress() {
+    const progress = (currentCard / (totalCards - 1)) * 100;
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    if (progressBar) progressBar.value = progress;
+    if (progressText) progressText.textContent = `${Math.round(progress)}% completado`;
+}
+
+// ... rest of the existing code ...
+</script>
+</body>
+</html>

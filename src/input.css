@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+:where([class^="ri-"])::before { content: "\f3c2"; }
+
+.course-progress::-webkit-progress-bar {
+  background-color: #e5e7eb;
+  border-radius: 9999px;
+}
+
+.course-progress::-webkit-progress-value {
+  background-color: #3176FF;
+  border-radius: 9999px;
+}
+
+.logo-black {
+  display: block;
+}
+
+.dark .logo-black {
+  display: none;
+}
+
+.logo-white {
+  display: none;
+}
+
+.dark .logo-white {
+  display: block;
+} 
